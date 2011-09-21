@@ -32,6 +32,7 @@ static struct timeval lastTime;
 
 // private libraries
 #include "v_math.h"
+#include "parser.h"
 
 using namespace std;
 
@@ -54,16 +55,6 @@ Viewport	viewport;
 int 		plotX = 0;
 int 		plotY = 0;
 
-void initScene(){
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Clear to black, fully transparent
-
-	glViewport (0,0,viewport.w,viewport.h);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluOrtho2D(0,viewport.w, 0, viewport.h);
-}
-
-
 //****************************************************
 // reshape viewport if the window is resized
 //****************************************************
@@ -74,8 +65,15 @@ void myReshape(int w, int h) {
 	glViewport (0,0,viewport.w,viewport.h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(0, viewport.w, 0, viewport.h);
+	// gluOrtho2D(0, viewport.w, 0, viewport.h);
+	glOrtho(-1, 1, -1, 1, 1, -1);
 
+}
+
+void initScene(){
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Clear to black, fully transparent
+	myReshape(viewport.w,viewport.h);
+	// gluOrtho2D(0,viewport.w, 0, viewport.h);
 }
 
 void setPixel(int x, int y, GLfloat r, GLfloat g, GLfloat b) {
@@ -123,7 +121,9 @@ void myDisplay() {
 
 
 	// Start drawing
-	circle(plotX, plotY, min(viewport.w, viewport.h) / 4);
+	// circle(plotX, plotY, min(viewport.w, viewport.h) / 4);
+	
+	draw_verticies();
 
 	glFlush();
 	glutSwapBuffers();					// swap buffers (we earlier set double buffer)
@@ -163,8 +163,12 @@ void myFrameMove() {
 //****************************************************
 // the usual stuff, nothing exciting here
 //****************************************************
+
 int main(int argc, char *argv[]) {
-  	//This initializes glut
+	// run_glut(argc, argv);
+	//This initializes glut
+	
+	load_verticies(argv[1]);
   	glutInit(&argc, argv);
   
   	//This tells glut to use a double-buffered window with red, green, and blue channels 
@@ -193,14 +197,6 @@ int main(int argc, char *argv[]) {
   	glutIdleFunc(myFrameMove);			
 
   	glutMainLoop();							// infinite loop that will keep drawing and resizing and whatever else
-  
+
   	return 0;
 }
-
-
-
-
-
-
-
-
