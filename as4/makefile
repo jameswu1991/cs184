@@ -22,9 +22,9 @@ GL_LIB  =   -lglut -lGLU -lGL -lX11
 
 #-----------------------------------------
 
-SOURCES=rendering.cpp parser.cpp v_math.cpp
+SOURCES=main.cpp rendering.cpp parser.cpp vertex.cpp polygon.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
-EXECUTABLE=rendering
+EXECUTABLE=render
 
 #-----------------------------------------
 
