@@ -1,40 +1,5 @@
 // Simple OpenGL example for CS184 F06 by Nuttapong Chentanez, modified from sample code for CS184 on Sp06
-#include <vector>
-#include <iostream>
-#include <fstream>
-#include <cmath>
-
-#ifdef _WIN32
-#	include <windows.h>
-#else
-#	include <sys/time.h>
-#endif
-
-#ifdef OSX
-#include <GLUT/glut.h>
-#include <OpenGL/glu.h>
-#else
-#include <GL/glut.h>
-#include <GL/glu.h>
-#endif
-
-#include <time.h>
-#include <math.h>
-#include <math.h>
-
-#ifdef _WIN32
-static DWORD lastTime;
-#else
-static struct timeval lastTime;
-#endif
-
-#define PI 3.14159265
-
-// private libraries
-#include "v_math.h"
-#include "parser.h"
-
-using namespace std;
+#include "rendering.h"
 
 //****************************************************
 // Some Classes
@@ -123,7 +88,7 @@ void myDisplay() {
 	// Start drawing
 	// circle(plotX, plotY, min(viewport.w, viewport.h) / 4);
 	
-	draw_verticies();
+	draw_polygons();
 
 	glFlush();
 	glutSwapBuffers();					// swap buffers (we earlier set double buffer)
@@ -164,11 +129,10 @@ void myFrameMove() {
 // the usual stuff, nothing exciting here
 //****************************************************
 
-int main(int argc, char *argv[]) {
-	// run_glut(argc, argv);
+void run_glut(int argc, char *argv[]) {
 	//This initializes glut
 	
-	load_verticies(argv[1]);
+	load_file(argv[1]);
   	glutInit(&argc, argv);
   
   	//This tells glut to use a double-buffered window with red, green, and blue channels 
@@ -197,6 +161,4 @@ int main(int argc, char *argv[]) {
   	glutIdleFunc(myFrameMove);			
 
   	glutMainLoop();							// infinite loop that will keep drawing and resizing and whatever else
-
-  	return 0;
 }

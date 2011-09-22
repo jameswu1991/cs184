@@ -14,12 +14,14 @@
 #include <GL/glu.h>
 #endif
 
-#include "v_math.h"
+#include "vertex.h"
+#include "polygon.h"
 
 using namespace std;
 
-void load_verticies(char* filename);
+void load_file(char* filename);
 void draw_verticies();
+void draw_polygons();
 vector<string> split(string line, char delimiter);
 
 #endif
