@@ -1,0 +1,4 @@
+to make and run:
+
+$ make
+$ ./render models/dragon.obj
