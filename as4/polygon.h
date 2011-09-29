@@ -5,6 +5,7 @@
 #include <math.h>
 
 #include "vertex.h"
+#include "ray.h"
 
 using namespace std;
 
@@ -14,9 +15,11 @@ public:
 	void addPoint(Vertex v);
 	vector<Vertex > getVerticies();
 	void print();
-	void draw();
+	Vertex normal();
+	Vertex center();
 	Polygon translate(Vertex v);
 	Polygon scale(float v);
+	bool intersect(Ray r);
 };
 
 #endif

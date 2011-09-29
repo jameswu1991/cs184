@@ -1,5 +1,8 @@
 #include "vertex.h"
 
+Vertex::Vertex() {
+}
+
 Vertex::Vertex (float x, float y, float z) {
 	float r[] = {x, y, z};
 	vector<float> v (&r[0], &r[3]);
@@ -53,9 +56,23 @@ Vertex Vertex::normalize() {
 	float mag = magnitude();
 	return scale(1/mag);
 }
+
+Vertex Vertex::invert() {
+	return scale(-1);
+}
 	
 float Vertex::dot(Vertex v) {
 	return mul(v).sum();
+}
+
+Vertex Vertex::cross(Vertex v) {
+	// only suports 3d vector cross because I suck at math
+	if (data.size() != 3 || v.data.size() != 3)
+		throw 1;
+	float x = data[1] * v.data[2] - data[2] * v.data[1];
+	float y = data[2] * v.data[0] - data[0] * v.data[2];
+	float z = data[0] * v.data[1] - data[1] * v.data[0];
+	return Vertex(x, y, z);
 }
 
 float Vertex::sum() {
@@ -83,6 +100,10 @@ void Vertex::print() {
 	cout << ")";
 }
 
-void Vertex::draw() {
-	glVertex3f(data[0], data[1], data[2]);
+int Vertex::size() {
+	return data.size();
+}
+
+float Vertex::get(int index) {
+	return data[index];
 }

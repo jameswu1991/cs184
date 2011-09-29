@@ -5,19 +5,12 @@
 #include <iostream>
 #include <math.h>
 
-#ifdef OSX
-#include <GLUT/glut.h>
-#include <OpenGL/glu.h>
-#else
-#include <GL/glut.h>
-#include <GL/glu.h>
-#endif
-
 using namespace std;
 
 class Vertex {
 	vector<float> data;
 public:
+	Vertex ();
 	Vertex (float x, float y, float z);
 	Vertex (float r[], int length);
 	Vertex (vector<float> _data);
@@ -27,13 +20,17 @@ public:
 	Vertex mul(Vertex v);
 	Vertex scale(float f);
 	
-	Vertex normalize();
+	Vertex cross(Vertex v);
 	float dot(Vertex v);
 	float sum();
 	float magnitude();
 	
+	Vertex normalize();
+	Vertex invert();
+	
+	int size();
+	float get(int index);
 	void print();
-	void draw();
 };
 
 #endif
