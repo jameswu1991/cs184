@@ -7,6 +7,7 @@
 #include "window.h"
 #include "vertex.h"
 #include "polygon.h"
+#include "sphere.h"
 #include "model.h"
 #include "scene.h"
 #include "ray.h"

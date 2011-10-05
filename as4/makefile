@@ -22,7 +22,7 @@ GL_LIB  =   -lglut -lGLU -lGL -lX11
 
 #-----------------------------------------
 
-SOURCES=main.cpp window.cpp parser.cpp vertex.cpp ray.cpp polygon.cpp model.cpp rendering.cpp scene.cpp
+SOURCES=main.cpp window.cpp parser.cpp vertex.cpp ray.cpp polygon.cpp model.cpp rendering.cpp scene.cpp sphere.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=render
 

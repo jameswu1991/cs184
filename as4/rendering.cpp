@@ -35,6 +35,7 @@ void Rendering::render(Scene scene, Window* window) {
 
 float Rendering::raytrace(Ray ray, Scene scene) {
 	vector<Model*> models = scene.getModels();
+	vector<Sphere> spheres = scene.getSpheres();
 	for (int a=0; a<models.size(); a++) {
 		Vertex normal = models[a]->intersect(ray);
 		if (!normal.isNull()) {
@@ -42,6 +43,12 @@ float Rendering::raytrace(Ray ray, Scene scene) {
 			float shade = normal.dot(Vertex(1,1,1));
 			if (shade < 0) shade = -shade;
 			return shade;
+		}
+	}
+	for (int a=0; a<spheres.size(); a++) {
+		vector<float> ts = spheres[a].intersect(ray);
+		if (ts.size()!=0) {
+			return 1;
 		}
 	}
 	return 0;
