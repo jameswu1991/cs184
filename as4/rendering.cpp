@@ -34,8 +34,15 @@ void Rendering::render(Scene scene, Window* window) {
 
 float Rendering::raytrace(Ray ray, Scene scene) {
 	vector<Model*> models = scene.getModels();
+	vector<Sphere> spheres = scene.getSpheres();
 	for (int a=0; a<models.size(); a++) {
 		if (models[a]->intersect(ray)) {
+			return 1;
+		}
+	}
+	for (int a=0; a<spheres.size(); a++) {
+		vector<float> ts = spheres[a].intersect(ray);
+		if (ts.size()!=0) {
 			return 1;
 		}
 	}
