@@ -14,7 +14,7 @@ class Model {
 	vector<Polygon> polygons;
 public:
 	void addPolygon(Polygon p);
-	bool intersect(Ray r);
+	Vertex intersect(Ray r);
 };
 
 #endif

@@ -32,6 +32,7 @@ public:
 	float get(int index);
 	vector<float> getData();
 	void print();
+	bool isNull();
 };
 
 #endif

@@ -19,7 +19,7 @@ public:
 	Vertex center();
 	Polygon translate(Vertex v);
 	Polygon scale(float v);
-	bool intersect(Ray r);
+	float intersect(Ray r);
 };
 
 #endif

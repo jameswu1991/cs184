@@ -74,9 +74,10 @@ void Window::pixel(int x, int y, float r, float g, float b) {
 void Window::render() {
 	glBegin(GL_POINTS);
 	for (int a=0; a<pixels.size(); a++) {
-		if (!(pixels[a].r>=0&&pixels[a].r<=1)) {
-			pixels[a].print();
-		}
+		// if (!(pixels[a].r>=0&&pixels[a].r<=1)) {
+		// 	cout << "warning: invalid pixel [location] (color) ";
+		// 	pixels[a].print();
+		// }
 		glColor3f(pixels[a].r, pixels[a].g, pixels[a].b);
 		glVertex2f(pixels[a].x, pixels[a].y);
 	}

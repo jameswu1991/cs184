@@ -4,10 +4,11 @@ void Model::addPolygon(Polygon p) {
 	polygons.push_back(p);
 }
 
-bool Model::intersect(Ray r) {
+Vertex Model::intersect(Ray r) {
 	for (int a=0; a<polygons.size(); a++) {
-		if (polygons[a].intersect(r))
-			return true;
+		if (polygons[a].intersect(r) > 0) {
+			return polygons[a].normal();
+		}
 	}
-	return false;
+	return Vertex (0, 0, 0);
 }

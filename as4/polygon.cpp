@@ -46,7 +46,7 @@ Vertex Polygon::center() {
 	return sum.scale(1.0f/3.0f);
 }
 
-bool Polygon::intersect(Ray ray) {
+float Polygon::intersect(Ray ray) {
 	Vertex va = verticies[0];
 	Vertex vb = verticies[1];
 	Vertex vc = verticies[2];
@@ -70,17 +70,17 @@ bool Polygon::intersect(Ray ray) {
 	Vertex temp2 (a*k-j*b, j*c-a*l, b*l-k*c);
 	float M = temp.mul(Vertex(a, b, c)).sum();
 	
-	// float t = temp2.mul(Vertex(f, e, d)).sum() / M;
+	float t = -temp2.mul(Vertex(f, e, d)).sum() / M;
 	// TODO: consider t < t0 || t > t1
 	
 	float gamma = temp2.mul(Vertex(i, h, g)).sum() / M;
 	if (gamma < 0 || gamma > 1)
-		return false;
+		return -1;
 	
 	float beta = temp.mul(Vertex(j, k, l)).sum() / M;
 	if (beta < 0 || beta > 1 - gamma)
-		return false;
+		return -1;
 	
-	return true;
+	return t;
 	// return website_intersect(verticies, ray);
 }

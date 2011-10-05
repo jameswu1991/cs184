@@ -111,3 +111,11 @@ float Vertex::get(int index) {
 vector<float> Vertex::getData() {
 	return data;
 }
+
+bool Vertex::isNull() {
+	for (int a=0; a<data.size(); a++) {
+		if (data[a] != 0)
+			return false;
+	}
+	return true;
+}
