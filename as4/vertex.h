@@ -30,6 +30,7 @@ public:
 	
 	int size();
 	float get(int index);
+	vector<float> getData();
 	void print();
 };
 

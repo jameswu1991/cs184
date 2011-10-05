@@ -47,43 +47,40 @@ Vertex Polygon::center() {
 }
 
 bool Polygon::intersect(Ray ray) {
-	// check the math at http://goo.gl/lwNn3
+	Vertex va = verticies[0];
+	Vertex vb = verticies[1];
+	Vertex vc = verticies[2];
+	Vertex vd = ray.getOrigin();
+	Vertex ve = ray.getDirection();
 	
-	Vertex v0 = verticies[0];
-	Vertex u = verticies[1].sub(v0);
-	Vertex v = verticies[2].sub(v0);
-	Vertex n = u.cross(v);
+	float a = va.get(0) - vb.get(0);
+	float b = va.get(1) - vb.get(1);
+	float c = va.get(2) - vb.get(2);
+	float d = va.get(0) - vc.get(0);
+	float e = va.get(1) - vc.get(1);
+	float f = va.get(2) - vc.get(2);
+	float g = vd.get(0);
+	float h = vd.get(1);
+	float i = vd.get(2);
+	float j = va.get(0) - ve.get(0);
+	float k = va.get(1) - ve.get(1);
+	float l = va.get(2) - ve.get(2);
 	
-	Vertex org = ray.getOrigin();
-	Vertex dir = ray.getDirection();
-		
-	// see where ray hits polygon plane
-	float a = n.dot(v0.sub(org));
-	float b = n.dot(dir);
-	if (fabs(b) < 0.00000001) {
-		if (a == 0)
-			return true; // ray is on plane
-		else return false; // ray is paralle to plane
-	}
-	float r = a / b;
-	if (r < 0)
-		return 0; // ray points away from polygon
-	Vertex intersect = org.add(dir.scale(r));
+	Vertex temp (e*i-h*f, g*f-d*i, d*h-e*g);
+	Vertex temp2 (a*k-j*b, j*c-a*l, b*l-k*c);
+	float M = temp.mul(Vertex(a, b, c)).sum();
 	
-	// see if the intersection is in boundaries
-	float uv, uu, vv, wv, wu;
-	float s, t, d;
-	Vertex w = intersect.sub(org);
-	uv = u.dot(v);
-	uu = u.dot(u);
-	vv = v.dot(v);
-	wv = w.dot(v);
-	wu = w.dot(u);
-	d = pow(uv, 2) - uu * vv;
-	s = (uv * wv - vv * wu) / d;
-	t = (uv * wu - uu * wv) / d;
-	if (s < 0 || s > 1) return false;
-	if (t < 0 || s+t > 1) return false;
-
+	// float t = temp2.mul(Vertex(f, e, d)).sum() / M;
+	// TODO: consider t < t0 || t > t1
+	
+	float gamma = temp2.mul(Vertex(i, h, g)).sum() / M;
+	if (gamma < 0 || gamma > 1)
+		return false;
+	
+	float beta = temp.mul(Vertex(j, k, l)).sum() / M;
+	if (beta < 0 || beta > 1 - gamma)
+		return false;
+	
 	return true;
+	// return website_intersect(verticies, ray);
 }

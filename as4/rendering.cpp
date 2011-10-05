@@ -1,12 +1,18 @@
 #include "rendering.h"
+#include <sys/time.h>
 
 void Rendering::render(Scene scene, Window* window) {
-	Vertex eye (0, 0, -5);
+	Vertex eye (0, 0, -4);
 	vector<Vertex> screen = getImagePlane(window);
 	
+	timeval time;
+	gettimeofday(&time, NULL);
+	long millis = (time.tv_sec * 1000) + (time.tv_usec / 1000);
+	
 	for (int a=0; a<screen.size(); a++) {
-		if (a%10 == 0)
-			cout << "rendering " << a << "/" << screen.size() << "\n";
+		
+		// if (a%10 == 0)
+		// 			cout << "rendering " << a << "/" << screen.size() << "\n";
 		
 		Vertex pixel = screen[a];
 		int x = pixel.get(0);
@@ -21,6 +27,9 @@ void Rendering::render(Scene scene, Window* window) {
 		float shade = raytrace(ray, scene);
 		window->pixel(x, y, shade, shade, shade);
 	}
+	
+	gettimeofday(&time, NULL);
+	millis = millis - ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
 float Rendering::raytrace(Ray ray, Scene scene) {

@@ -107,3 +107,7 @@ int Vertex::size() {
 float Vertex::get(int index) {
 	return data[index];
 }
+
+vector<float> Vertex::getData() {
+	return data;
+}
