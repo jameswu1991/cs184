@@ -20,11 +20,12 @@ int main(int argc, char *argv[]) {
 	Window *window = Window::get();
 	window->initialize(argc, argv);
 	
-	//Model* m = parser.loadFile(argv[1]);
-	//scene.addModel(m);
-	Vertex center = Vertex(0, 0, 0);
-	Sphere s = Sphere(center, 0.5);
-	scene.addSphere(s);
+	Model* m = parser.loadFile(argv[1]);
+	scene.addModel(m);
+	scene.addDirectionalLight(-1, -0.2, 0);
+	// Vertex center = Vertex(0, 0, 0);
+	// Sphere s = Sphere(center, 0.5);
+	// 	scene.addSphere(s);
 	rendering.render(scene, window);
 	
 	window->show();

@@ -45,6 +45,14 @@ Vertex Vertex::mul(Vertex v) {
 	return Vertex(prod);
 }
 
+Vertex Vertex::divi(Vertex v) {
+	if (v.data.size() != data.size())
+		throw 1;
+	for (int a=0; a<v.data.size(); a++) 
+		v.data[a] = data[a]/v.data[a];
+	return v;
+}
+
 Vertex Vertex::scale(float f) {
 	vector<float> prod;
 	for (int a=0; a<data.size(); a++) 

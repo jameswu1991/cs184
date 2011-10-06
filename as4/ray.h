@@ -13,6 +13,8 @@ public:
 	Ray (Vertex p0, Vertex p1);
 	Vertex getOrigin();
 	Vertex getDirection();
+	void setOrigin(Vertex o);
+	void setDirection(Vertex d);
 };
 
 #endif

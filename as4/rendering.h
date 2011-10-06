@@ -16,9 +16,10 @@ using namespace std;
 
 class Rendering {
 private:
-	vector<Vertex> getImagePlane(Window* w);
+	vector<vector<Vertex> > getImagePlane(Window* w, float z);
 	float raytrace(Ray ray, Scene scene);
 public:
+	float shade(Ray intersect, Scene scene);
 	void render(Scene s, Window* w);
 };
 

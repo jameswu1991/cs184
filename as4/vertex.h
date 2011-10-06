@@ -18,6 +18,7 @@ public:
 	Vertex add(Vertex v);
 	Vertex sub(Vertex v);
 	Vertex mul(Vertex v);
+	Vertex divi(Vertex v);
 	Vertex scale(float f);
 	
 	Vertex cross(Vertex v);

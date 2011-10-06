@@ -1,48 +1,40 @@
 #include "rendering.h"
 #include <sys/time.h>
 
-void Rendering::render(Scene scene, Window* window) {
-	Vertex eye (0, 0, -7);
-	vector<Vertex> screen = getImagePlane(window);
-	
+long now() {
 	timeval time;
 	gettimeofday(&time, NULL);
-	long millis = (time.tv_sec * 1000) + (time.tv_usec / 1000);
+	return (time.tv_sec * 1000) + (time.tv_usec / 1000);
+}
+
+void Rendering::render(Scene scene, Window* window) {
+	Vertex eye (0, 0, -2);
+	vector<vector<Vertex> > screen = getImagePlane(window, -1);
+	int numPixels = window->getWidth() * window->getHeight();
 	
-	for (int a=0; a<screen.size(); a++) {
-		if (a%(screen.size()/1000) == 0)
-			cout << (float)a/screen.size()*100 << "\%" << endl;
-			// cout << "rendering " << a << "/" << screen.size() << "\n";
-		
-		Vertex pixel = screen[a];
-		int x = pixel.get(0);
-		int y = pixel.get(1);
-		
-		Vertex normPixel (
-			((float)pixel.get(0) - 200)/100, 
-			((float)pixel.get(1) - 200)/100, 
-			pixel.get(2));
-		
-		Ray ray (eye, normPixel);
-		float shade = raytrace(ray, scene);
-		window->pixel(x, y, shade, shade, shade);
+	long start = now();
+	
+	
+	for (int x=0; x<screen.size(); x++) {
+		cout << "rendering column " << x << "/" << screen.size() << "\r";
+		for (int y=0; y<screen[x].size(); y++) {
+			Ray ray (eye, screen[x][y]);
+			float shade = raytrace(ray, scene);
+			window->pixel(x, y, shade, shade, shade);
+		}
 	}
 	
-	gettimeofday(&time, NULL);
-	millis = ((time.tv_sec * 1000) + (time.tv_usec / 1000)) - millis;
-	cout << millis << " milliseconds taken" << endl;
+	cout << now() - start << " total milliseconds taken" << endl;
 }
 
 float Rendering::raytrace(Ray ray, Scene scene) {
 	vector<Model*> models = scene.getModels();
 	vector<Sphere> spheres = scene.getSpheres();
 	for (int a=0; a<models.size(); a++) {
-		Vertex normal = models[a]->intersect(ray);
-		if (!normal.isNull()) {
-			// normal.reflect(ray.direction())
-			float shade = normal.dot(Vertex(1,1,1));
-			if (shade < 0) shade = -shade;
-			return shade;
+		Ray intersect = models[a]->intersect(ray);
+		// if intersect, then shade
+		if (!intersect.getDirection().isNull()) {
+			return shade(intersect, scene) + 0.1;
 		}
 	}
 	for (int a=0; a<spheres.size(); a++) {
@@ -54,13 +46,41 @@ float Rendering::raytrace(Ray ray, Scene scene) {
 	return 0;
 }
 
-vector<Vertex> Rendering::getImagePlane(Window* window) {
-	vector<Vertex> screen;
-	for (int x=0; x<window->getWidth(); x++) {
-		for (int y=0; y<window->getHeight(); y++) {
-			Vertex pixel (x, y, -5);
-			screen.push_back(pixel);
+float Rendering::shade(Ray intersect, Scene scene) {
+	float shade = 0;
+	Vertex surface = intersect.getOrigin();
+	Vertex normal = intersect.getDirection();
+	vector<Model*> models = scene.getModels();
+	
+	vector<Vertex> lights = scene.getDirectionalLights();
+	for (int a=0; a<lights.size(); a++) {
+		Vertex light = lights[a].scale(-1);
+		float change = light.dot(normal);
+		for (int a=0; a<models.size(); a++) {
+			Ray shadowDetector = intersect;
+			shadowDetector.setDirection(light);
+			if (models[a]->intersect_b(shadowDetector)) {
+				change = 0;
+			}
 		}
+		shade += max(0.0f, change);
 	}
+	
+	return shade;
+}
+
+vector<vector<Vertex> > Rendering::getImagePlane(Window* window, float z) {
+	int width = window->getWidth();
+	int height = window->getHeight();
+	float xcenter = width/2;
+	float ycenter = height/2;
+	vector<vector<Vertex> > screen (width, vector<Vertex>(height));
+	for (int x=0; x<width; x++)
+		for (int y=0; y<height; y++){
+			screen[x][y] = Vertex(
+				(x - xcenter) / xcenter,
+				(y - ycenter) / ycenter,
+				z);
+		}
 	return screen;
 }

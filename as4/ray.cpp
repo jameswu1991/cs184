@@ -12,3 +12,11 @@ Vertex Ray::getOrigin() {
 Vertex Ray::getDirection() {
 	return direction;
 }
+
+void Ray::setOrigin(Vertex o) {
+	origin = o;
+}
+
+void Ray::setDirection(Vertex d) {
+	direction = d;
+}

@@ -22,7 +22,11 @@ Vertex Polygon::normal() {
 		throw 1;
 	Vertex basis1 = verticies[1].sub(verticies[0]);
 	Vertex basis2 = verticies[2].sub(verticies[0]);
-	return basis1.cross(basis2).normalize();
+	Vertex normal = basis1.cross(basis2).normalize();
+	// keep the normals pointing towards the -z access
+	if (normal.get(2)>0)
+		normal = normal.scale(-1);
+	return normal;
 }
 
 Polygon Polygon::translate(Vertex v) {
