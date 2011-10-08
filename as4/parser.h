@@ -5,6 +5,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "vertex.h"
 #include "polygon.h"

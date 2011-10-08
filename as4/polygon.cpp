@@ -54,8 +54,8 @@ float Polygon::intersect(Ray ray) {
 	Vertex va = verticies[0];
 	Vertex vb = verticies[1];
 	Vertex vc = verticies[2];
-	Vertex vd = ray.getOrigin();
-	Vertex ve = ray.getDirection();
+	Vertex vd = ray.getDirection();
+	Vertex ve = ray.getOrigin();
 	
 	float a = va.get(0) - vb.get(0);
 	float b = va.get(1) - vb.get(1);
@@ -86,5 +86,4 @@ float Polygon::intersect(Ray ray) {
 		return -1;
 	
 	return t;
-	// return website_intersect(verticies, ray);
 }

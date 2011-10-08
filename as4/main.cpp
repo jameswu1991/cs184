@@ -17,17 +17,19 @@ Rendering rendering;
 Scene scene;
 
 int main(int argc, char *argv[]) {
+
 	Window *window = Window::get();
 	window->initialize(argc, argv);
 	
 	Model* m = parser.loadFile(argv[1]);
 	scene.addModel(m);
-	scene.addDirectionalLight(-1, -0.2, 0);
-	// Vertex center = Vertex(0, 0, 0);
+	scene.addDirectionalLight(-0.5, -1, 0);
+	scene.addDirectionalLight(-0.1, -0.1, 0.1);
 	// Sphere s = Sphere(center, 0.5);
-	// 	scene.addSphere(s);
+	// scene.addSphere(s);
 	rendering.render(scene, window);
 	
 	window->show();
+	
 	return 0;
 }

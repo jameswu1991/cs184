@@ -57,7 +57,10 @@ float Rendering::shade(Ray intersect, Scene scene) {
 		Vertex light = lights[a].scale(-1);
 		float change = light.dot(normal);
 		for (int a=0; a<models.size(); a++) {
-			Ray shadowDetector = intersect;
+			Ray shadowDetector = Ray(Vertex(0,0,0),Vertex(0,0,0));
+			float floatInaccuracyConst = 0.0001;
+			shadowDetector.setOrigin(
+				intersect.getOrigin().add(intersect.getDirection().scale(floatInaccuracyConst)));
 			shadowDetector.setDirection(light);
 			if (models[a]->intersect_b(shadowDetector)) {
 				change = 0;

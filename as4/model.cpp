@@ -10,7 +10,7 @@ Ray Model::intersect(Ray r) {
 		float t = polygons[a].intersect(r);
 		if (t > 0) {
 			Vertex intersect = r.getOrigin().add(r.getDirection().scale(t));
-			cout << t << endl;
+			// cout << t << endl;
 			Vertex normal = polygons[a].normal();
 			intersection.setOrigin(intersect);
 			intersection.setDirection(normal);
