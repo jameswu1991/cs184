@@ -83,6 +83,11 @@ Vertex Vertex::cross(Vertex v) {
 	return Vertex(x, y, z);
 }
 
+Vertex Vertex::reflect(Vertex l) {
+	// r = n[(n.l)2] - l
+	return scale(dot(l)*2).sub(l);
+}
+
 float Vertex::sum() {
 	float sum = 0;
 	for (int a=0; a<data.size(); a++) 
