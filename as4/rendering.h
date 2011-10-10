@@ -17,10 +17,10 @@ using namespace std;
 class Rendering {
 private:
 	vector<vector<Vertex> > getImagePlane(Window* w, float z);
-	float raytrace(Ray ray, Scene scene, int numReflections);
 	float shade(Ray intersect, Scene scene);
 	float reflect(Ray intersection, Vertex incomingLight, Scene scene, int numReflections);
 public:
+	float raytrace(Ray ray, Scene scene, int numReflections);
 	void render(Scene s, Window* w);
 };
 

@@ -10,6 +10,7 @@ private:
 	Vertex origin;
 	Vertex direction;
 public:
+	Ray ();
 	Ray (Vertex p0, Vertex p1);
 	Vertex getOrigin();
 	Vertex getDirection();

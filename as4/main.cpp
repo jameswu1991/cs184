@@ -65,6 +65,13 @@ int main(int argc, char *argv[]) {
 	rendering.render(scene, window);
 	
 	window->show();
+
+/*
+	Model* m = parser.loadFile(argv[1]);
+	Ray ray (Vertex(0,0,-2), Vertex(0,0,-1));
+	scene.addModel(m);
+	rendering.raytrace(ray, scene, 1);
+*/
 	
 	return 0;
 }

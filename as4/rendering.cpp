@@ -20,7 +20,7 @@ void Rendering::render(Scene scene, Window* window) {
 		cout << "rendering column " << x << "/" << screen.size() << "\r";
 		for (int y=0; y<screen[x].size(); y++) {
 			Ray ray (eye, screen[x][y]);
-			float shade = raytrace(ray, scene, 1);
+			float shade = raytrace(ray, scene, 4);
 			window->pixel(x, y, shade, shade, shade);
 		}
 	}
@@ -57,21 +57,18 @@ float Rendering::shade(Ray intersect, Scene scene) {
 	// intersect is a ray with origin at the point of intersect,
 	// and direction of the normal of the intersected polygon
 	float shade = 0;
-	Vertex surface = intersect.getOrigin();
-	Vertex normal = intersect.getDirection();
 	vector<Model*> models = scene.getModels();
 	
 	// for every light, calculate the shadow contribution
 	vector<Vertex> lights = scene.getDirectionalLights();
 	for (int a=0; a<lights.size(); a++) {
 		Vertex light = lights[a].scale(-1);
-		float change = light.dot(normal);
+		float change = light.dot(intersect.getDirection());
 		// see if that light is blocked, if so, it's shadow
 		for (int a=0; a<models.size(); a++) {
 			Ray shadowDetector = Ray(Vertex(0,0,0),Vertex(0,0,0));
 			float floatInaccuracyConst = 0.0001; // to prevent self-shadowing
-			shadowDetector.setOrigin(
-				intersect.getOrigin().add(intersect.getDirection().scale(floatInaccuracyConst)));
+			shadowDetector.setOrigin(intersect.getOrigin());
 			shadowDetector.setDirection(light);
 			// intersect_b() is the same as intersect(), except returns a boolean
 			if (models[a]->intersect_b(shadowDetector)) {
@@ -90,7 +87,9 @@ float Rendering::reflect(Ray intersection, Vertex incomingLight, Scene scene, in
 		return 0;
 	Vertex direction = intersection.getDirection().reflect(incomingLight);
 	Vertex origin = intersection.getOrigin();
-	Ray reflectionRay = Ray(origin, direction);
+	Ray reflectionRay;
+	reflectionRay.setOrigin(origin);
+	reflectionRay.setDirection(direction);
 	return raytrace(reflectionRay, scene, numReflections-1);
 }
 
