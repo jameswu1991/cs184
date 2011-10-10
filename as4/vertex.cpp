@@ -85,7 +85,9 @@ Vertex Vertex::cross(Vertex v) {
 
 Vertex Vertex::reflect(Vertex l) {
 	// r = n[(n.l)2] - l
-	return scale(dot(l)*2).sub(l);
+	l = l.scale(-1);
+	Vertex n = normalize();
+	return n.scale(n.dot(l)*2).sub(l);
 }
 
 float Vertex::sum() {

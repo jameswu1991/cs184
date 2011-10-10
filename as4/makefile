@@ -32,7 +32,7 @@ LIBS = $(X_LIB) $(GL_LIB)
 INCS = $(X_INC) 
 
 CCOPTS = $(OPT) $(INCS) -c
-LDOPTS = $(OPT) $(INCS) $(LIBS) -L./ -lfreeimage
+LDOPTS = $(OPT) $(INCS) $(LIBS) -lfreeimage
 
 #-----------------------------------------
 #-----------------------------------------

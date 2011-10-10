@@ -27,6 +27,7 @@ Scene scene;
 
 int main(int argc, char *argv[]) {
 
+	/*
 	FreeImage_Initialise();
 	
 	FIBITMAP* bitmap = FreeImage_Allocate(WIDTH, HEIGHT, BPP);
@@ -49,8 +50,8 @@ int main(int argc, char *argv[]) {
 		cout << "Image_successfully_saved!" <<endl;
 	
 	FreeImage_DeInitialise(); 
+	*/
 
-/*
 	Window *window = Window::get();
 	window->initialize(argc, argv);
 	
@@ -66,5 +67,4 @@ int main(int argc, char *argv[]) {
 	window->show();
 	
 	return 0;
-*/
 }

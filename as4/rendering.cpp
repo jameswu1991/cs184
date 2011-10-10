@@ -37,7 +37,11 @@ float Rendering::raytrace(Ray ray, Scene scene, int numReflections) {
 		Ray intersect = models[a]->intersect(ray);
 		// if intersect, then shade
 		if (!intersect.getDirection().isNull()) {
-			return shade(intersect, scene, numReflections) + 0.1;
+			float color = 0;
+			color += 0.5 * shade(intersect, scene);
+			color += 0.5 * reflect(intersect, ray.getDirection(), scene, numReflections);
+			color += 0.1;
+			return color;
 		}
 	}
 	for (int a=0; a<spheres.size(); a++) {
@@ -49,7 +53,7 @@ float Rendering::raytrace(Ray ray, Scene scene, int numReflections) {
 	return 0;
 }
 
-float Rendering::shade(Ray intersect, Scene scene, int numReflections) {
+float Rendering::shade(Ray intersect, Scene scene) {
 	// intersect is a ray with origin at the point of intersect,
 	// and direction of the normal of the intersected polygon
 	float shade = 0;
