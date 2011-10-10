@@ -11,8 +11,8 @@ OPT   = -O3
 
 #-----------------------------------------
 # X       --------------------------------
-X_INC  =   -I/usr/X11R6/include -I/sw/include -I/usr/sww/include -I/usr/sww/pkg/Mesa/include
-X_LIB  =   -L/usr/X11R6/lib -L/sw/lib -L/usr/sww/lib -L/usr/sww/bin -L/usr/sww/pkg/Mesa/lib
+X_INC  =   -I/usr/X11R6/include -I/sw/include -I/usr/sww/include -I/usr/sww/pkg/Mesa/include 
+X_LIB  =   -L/usr/X11R6/lib -L/sw/lib -L/usr/sww/lib -L/usr/sww/bin -L/usr/sww/pkg/Mesa/lib 
 
 #-----------------------------------------
 
@@ -28,11 +28,11 @@ EXECUTABLE=render
 
 #-----------------------------------------
 
-LIBS = $(X_LIB) $(GL_LIB)
-INCS = $(X_INC)
+LIBS = $(X_LIB) $(GL_LIB) 
+INCS = $(X_INC) 
 
-CCOPTS = $(OPT) $(INCS)
-LDOPTS = $(OPT) $(INCS) $(LIBS)
+CCOPTS = $(OPT) $(INCS) -c
+LDOPTS = $(OPT) $(INCS) $(LIBS) -L./ -lfreeimage
 
 #-----------------------------------------
 #-----------------------------------------
