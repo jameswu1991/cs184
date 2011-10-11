@@ -62,7 +62,7 @@ void Rendering::render(Scene scene, Window* window) {
 		cout << "rendering column " << x << "/" << screen.size() << "\r";
 		for (int y=0; y<screen[x].size(); y++) {
 			Ray ray (eye, screen[x][y]);
-			float shade = raytrace(ray, scene, 4);
+			float shade = raytrace(ray, scene, 1);
 			window->pixel(x, y, shade, shade, shade);
 		}
 	}
