@@ -25,7 +25,17 @@ Rendering rendering;
 Scene scene;
 
 int main(int argc, char *argv[]) {
+
 /*
+=======
+
+	Window *window = Window::get();
+	window->initialize(argc, argv, 400, 400);
+	
+	Model* m = parser.loadFile(argv[1]);
+	m->rotate(Vertex(0.1, 0.1, 0.1));
+	scene.addModel(m);
+>>>>>>> c2d3b42ed6b607cd2b8da19409faf621293abe48
 	scene.addDirectionalLight(-0.5, -1, 0);
 	scene.addDirectionalLight(-0.1, -0.1, 0.1);
 	Vertex center = Vertex(0, 0, 1);

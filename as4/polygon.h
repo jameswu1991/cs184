@@ -20,6 +20,8 @@ public:
 	Polygon translate(Vertex v);
 	Polygon scale(float v);
 	float intersect(Ray r);
+	Polygon rotate(Vertex rotation);
+	Polygon eRotate(vector<Vertex> eulerAngles);
 };
 
 #endif

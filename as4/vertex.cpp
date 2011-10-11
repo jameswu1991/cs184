@@ -90,6 +90,37 @@ Vertex Vertex::reflect(Vertex l) {
 	return n.scale(n.dot(l)*2).sub(l);
 }
 
+Vertex Vertex::eRotate(vector<Vertex> eulerAngles) {
+	return Vertex (dot(eulerAngles[0]), dot(eulerAngles[1]), dot(eulerAngles[2]));
+}
+
+Vertex Vertex::rotate(Vertex rotation) {
+	if (rotation.size()!=3)
+		throw 1;
+	float xrot = rotation.get(0);
+	float yrot = rotation.get(1);
+	float zrot = rotation.get(2);
+	
+	Vertex xrot1 (1, 0, 0);
+	Vertex xrot2 (0, cos(xrot), -sin(xrot));
+	Vertex xrot3 (0, sin(xrot), cos(xrot));
+	
+	Vertex yrot1 (cos(yrot), 0, sin(yrot));
+	Vertex yrot2 (0, 1, 0);
+	Vertex yrot3 (-sin(yrot), 0, cos(yrot));
+	
+	Vertex zrot1 (cos(zrot), -sin(zrot), 0);
+	Vertex zrot2 (sin(zrot), cos(zrot), 0);
+	Vertex zrot3 (0, 0, 1);
+	
+	Vertex final = Vertex(data);
+	final = Vertex(final.dot(xrot1), final.dot(xrot2), final.dot(xrot3));
+	final = Vertex(final.dot(yrot1), final.dot(yrot2), final.dot(yrot3));
+	final = Vertex(final.dot(zrot1), final.dot(zrot2), final.dot(zrot3));
+	
+	return final;
+}
+
 float Vertex::sum() {
 	float sum = 0;
 	for (int a=0; a<data.size(); a++) 

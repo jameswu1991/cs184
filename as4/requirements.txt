@@ -1,0 +1,35 @@
+
+[ ] Features
+	-Ellipsoid rendering
+	-Triangle rendering
+	-Phong shading with color
+	-Shadows
+	-Reflections
+	-Linear transformations
+	-Point/directional lights
+	-Write to image
+
+[ ] Class-account website updated
+	-All link to the same page
+	-Page should have all members' names, linked
+	-Caption with cmd prompt, time, features
+	-Creative .obj objects
+
+[ ] Model files named input-##
+[ ] Note files named note-nn
+	-command line prompt
+	-how long to run
+	-what features are demonstrated
+[ ] Images named image-##.png
+	-640x480
+
+[ ] Compilable by calling "make"
+
+[ ] Readme file
+	Jingchen Wu (cs184-aw, 21171406), Connie Guo ()
+	Developed on Ubuntu Linux, tested on SD Mac
+	Submitted by Jingchen Wu, compiled on viking.cs.berkeley.edu
+	Features list
+
+[ ] Turn in by 12th, 11pm
+
