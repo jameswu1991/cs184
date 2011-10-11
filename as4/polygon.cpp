@@ -29,6 +29,20 @@ Vertex Polygon::normal() {
 	return normal;
 }
 
+Polygon Polygon::rotate(Vertex rotation) {
+	Polygon p;
+	for (int a=0; a<verticies.size(); a++)
+		p.addPoint(verticies[a].rotate(rotation));
+	return p;
+}
+
+Polygon Polygon::eRotate(vector<Vertex> eulerAngles) {
+	Polygon p;
+	for (int a=0; a<verticies.size(); a++)
+		p.addPoint(verticies[a].eRotate(eulerAngles));
+	return p;
+}
+
 Polygon Polygon::translate(Vertex v) {
 	Polygon p;
 	for (int i=0; i<verticies.size(); i++) {

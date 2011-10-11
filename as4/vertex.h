@@ -29,6 +29,8 @@ public:
 	Vertex normalize();
 	Vertex invert();
 	Vertex reflect(Vertex l);
+	Vertex eRotate(vector<Vertex> eulerAngles);
+	Vertex rotate(Vertex rotation);
 	
 	int size();
 	float get(int index);

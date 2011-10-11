@@ -15,6 +15,7 @@ class Model {
 public:
 	void addPolygon(Polygon p);
 	void scale(float s);
+	void rotate(Vertex rotation);
 	Ray intersect(Ray r);
 	bool intersect_b(Ray r);
 };
