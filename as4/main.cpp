@@ -65,14 +65,24 @@ int main(int argc, char *argv[]) {
 	
 	Model* m = parser.loadFile(argv[1]);
 	scene.addModel(m);
-	scene.addDirectionalLight(-0.5, -1, 0);
-	scene.addDirectionalLight(-0.1, -0.1, 0.1);
-	Vertex center = Vertex(0, 0, 2);
-	Sphere s = Sphere(center, 1);
-	Vertex center1 = Vertex(2, 0.5, 3.0);
-	Sphere s1 = Sphere(center1, 0.5);
-	scene.addSphere(s);
+	scene.addDirectionalLight(0.57735027, -0.57735027, -0.57735027);
+	scene.addDirectionalLight(-0.57735027, 0.57735027, 0.57735027);
+	//scene.addDirectionalLight(-0.1, -0.1, 0.1);
+	//Vertex center1 = Vertex(3,3,2);
+	Sphere s1 = Sphere(Vertex(0, 4, -17), 1.5);
+	Sphere s2 = Sphere(Vertex(0, -4, -17), 1.5);
+	Sphere s3 = Sphere(Vertex(0,0,-17), 2.0);
+	//Ray result = s.intersect(test);
+	//result.getOrigin().print();
+	//result.getDirection().print();
+	//scene.addSphere(s1);
 	scene.addSphere(s1);
+	scene.addSphere(s2);
+	scene.addSphere(s3);
+	//rendering.shade(result, scene);
+
+	//scene.addSphere(s);
+	//scene.addSphere(s1);
 	rendering.render(scene, window);
 	
 	window->saveFile();

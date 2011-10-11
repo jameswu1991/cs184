@@ -6,15 +6,15 @@ void Model::addPolygon(Polygon p) {
 
 Ray Model::intersect(Ray r) {
 	Ray intersection (Vertex(0,0,0), Vertex(0,0,0));
+	float lowestT = 100000;
 	for (int a=0; a<polygons.size(); a++) {
 		float t = polygons[a].intersect(r);
-		if (t > 0) {
+		if (t > 0 && t < lowestT) {
 			Vertex intersect = r.getOrigin().add(r.getDirection().scale(t - 0.0001));
-			// cout << t << endl;
 			Vertex normal = polygons[a].normal();
 			intersection.setOrigin(intersect);
 			intersection.setDirection(normal);
-			return intersection;
+			lowestT = t;
 		}
 	}
 	return intersection;
