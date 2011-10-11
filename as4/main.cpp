@@ -59,22 +59,25 @@ int main(int argc, char *argv[]) {
 	FreeImage_DeInitialise(); 
 	*/
 
-/*
+
 	Window *window = Window::get();
-	window->initialize(argc, argv, 100, 100);
+	window->initialize(argc, argv, 400, 400);
 	
 	Model* m = parser.loadFile(argv[1]);
 	scene.addModel(m);
 	scene.addDirectionalLight(-0.5, -1, 0);
 	scene.addDirectionalLight(-0.1, -0.1, 0.1);
-	Vertex center = Vertex(0, 0, 1);
-	Sphere s = Sphere(center, 0.1);
+	Vertex center = Vertex(0, 0, 2);
+	Sphere s = Sphere(center, 1);
+	Vertex center1 = Vertex(2, 0.5, 3.0);
+	Sphere s1 = Sphere(center1, 0.5);
 	scene.addSphere(s);
+	scene.addSphere(s1);
 	rendering.render(scene, window);
 	
 	window->saveFile();
 	window->show();
-*/
+
 
 /*
 	Model* m = parser.loadFile(argv[1]);
