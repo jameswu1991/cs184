@@ -2,6 +2,7 @@
 #include <sys/time.h>
 
 long now() {
+	// return current time in milliseconds
 	timeval time;
 	gettimeofday(&time, NULL);
 	return (time.tv_sec * 1000) + (time.tv_usec / 1000);
@@ -13,6 +14,7 @@ void Rendering::render(Scene scene, Window* window) {
 	vector<vector<Vertex> > screen = getImagePlane(window, -1);
 	int numPixels = window->getWidth() * window->getHeight();
 	
+	// start a timer to print out the time at the end
 	long start = now();
 	
 	// for each pixel on the screen, cast a screen and shade
@@ -32,13 +34,15 @@ float Rendering::raytrace(Ray ray, Scene scene, int numReflections) {
 	vector<Model*> models = scene.getModels();
 	vector<Sphere> spheres = scene.getSpheres();
 	
-	// for every model, check if intersect. if so, color with the shade of the obj
+	// for every model, check if intersect. if so, shade it as the pixel's color
 	for (int a=0; a<models.size(); a++) {
 		Ray intersect = models[a]->intersect(ray);
 		// if intersect, then shade
 		if (!intersect.getDirection().isNull()) {
 			float color = 0;
+			// some of the color is from the shade of the object
 			color += 0.5 * shade(intersect, scene);
+			// some of the color is from the reflection of the object
 			color += 0.5 * reflect(intersect, ray.getDirection(), scene, numReflections);
 			color += 0.1;
 			return color;
@@ -83,6 +87,7 @@ float Rendering::shade(Ray intersect, Scene scene) {
 }
 
 float Rendering::reflect(Ray intersection, Vertex incomingLight, Scene scene, int numReflections) {
+	// trace a line from point of intersection out with direction of the reflection off of the normal
 	if (numReflections == 0)
 		return 0;
 	Vertex direction = intersection.getDirection().reflect(incomingLight);
@@ -90,6 +95,7 @@ float Rendering::reflect(Ray intersection, Vertex incomingLight, Scene scene, in
 	Ray reflectionRay;
 	reflectionRay.setOrigin(origin);
 	reflectionRay.setDirection(direction);
+	// return the color of that ray
 	return raytrace(reflectionRay, scene, numReflections-1);
 }
 
