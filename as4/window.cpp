@@ -1,4 +1,8 @@
 #include "window.h"
+#include "FreeImage.h"
+
+int width = 400;
+int height = 400;
 
 void onGlutRedraw() {
 	glClear(GL_COLOR_BUFFER_BIT); // clear the color buffer
@@ -34,15 +38,15 @@ Window* Window::get() {
 	return singleton;
 }
 
-void Window::initialize(int argc, char *argv[]) {
+void Window::initialize(int argc, char *argv[], int width, int height) {
 	glutInit(&argc, argv);
   	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-	glutInitWindowSize(400, 400);
+	glutInitWindowSize(width, height);
   	glutInitWindowPosition(0,0);
   	glutCreateWindow("Render");
 
    	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	onGlutResize(400, 400);
+	onGlutResize(width, height);
 	
   	glutDisplayFunc(onGlutRedraw);
   	glutReshapeFunc(onGlutResize);	// resized window
@@ -51,6 +55,32 @@ void Window::initialize(int argc, char *argv[]) {
 
 void Window::show() {
 	glutMainLoop();
+}
+
+void Window::saveFile() {
+	FreeImage_Initialise();
+	
+	FIBITMAP* bitmap = FreeImage_Allocate(width, height, 24);
+	RGBQUAD color;
+	int counter = 0;
+	
+	if (!bitmap)
+		exit (1);
+		
+	//Draws a gradient from blue to green;
+	for (int a=0; a<pixels.size(); a++) {
+			Pixel current = pixels[a];
+			color.rgbRed = (double) current.r * 255.0;
+			color.rgbGreen = (double) current.g * 255.0;
+			color.rgbBlue = (double) current.b * 255.0;
+			FreeImage_SetPixelColor(bitmap, current.x, current.y, &color);
+			counter++;
+	}
+	
+	if (FreeImage_Save(FIF_PNG, bitmap, "test.png", 0))
+		cout << "Image_successfully_saved!" <<endl;
+	
+	FreeImage_DeInitialise(); 
 }
 
 int Window::getWidth() {
@@ -74,6 +104,10 @@ void Window::pixel(int x, int y, float r, float g, float b) {
 void gl_setPixel(int x, int y, GLfloat r, GLfloat g, GLfloat b) {
 	glColor3f(r, g, b);
 	glVertex2f(x+0.5, y+0.5);
+}
+
+Pixel Window::getPixel(int pos) {
+	return pixels[pos];
 }
 
 void Window::render() {

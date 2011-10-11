@@ -1,10 +1,50 @@
 #include "rendering.h"
+#include <iostream>
+#include "FreeImage.h"
 #include <sys/time.h>
+
+using namespace std;
 
 long now() {
 	timeval time;
 	gettimeofday(&time, NULL);
 	return (time.tv_sec * 1000) + (time.tv_usec / 1000);
+}
+
+void Rendering::saveFile(Window* window, int BPP) {
+	
+	long start = now();
+	
+	int width = window->getWidth();
+	int height = window->getHeight();
+	
+	FreeImage_Initialise();
+	
+	FIBITMAP* bitmap = FreeImage_Allocate(width, height, BPP);
+	RGBQUAD color;
+	int counter = 0;
+	
+	if (!bitmap)
+		exit (1);
+	
+	//Draws a gradient from blue to green;
+	for (int i=0; i<width; i++) {
+		for (int j=0; j<height; j++) {	
+			Pixel current = window->getPixel(counter);
+			color.rgbRed = current.r;
+			color.rgbGreen = current.g;
+			color.rgbBlue = current.b;
+			FreeImage_SetPixelColor(bitmap, i, j, &color);
+			counter++;
+		}
+	}
+	
+	if (FreeImage_Save(FIF_PNG, bitmap, "test.png", 0))
+		cout << "Image_successfully_saved!" <<endl;
+	
+	FreeImage_DeInitialise(); 
+	
+	cout << now() - start << " total milliseconds taken" << endl;
 }
 
 void Rendering::render(Scene scene, Window* window) {
@@ -51,6 +91,7 @@ float Rendering::shade(Ray intersect, Scene scene) {
 	Vertex surface = intersect.getOrigin();
 	Vertex normal = intersect.getDirection();
 	vector<Model*> models = scene.getModels();
+	vector<Sphere> spheres = scene.getSpheres();
 	
 	vector<Vertex> lights = scene.getDirectionalLights();
 	for (int a=0; a<lights.size(); a++) {
@@ -87,3 +128,5 @@ vector<vector<Vertex> > Rendering::getImagePlane(Window* window, float z) {
 		}
 	return screen;
 }
+
+

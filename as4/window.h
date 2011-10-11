@@ -44,9 +44,11 @@ private:
 public:
 	int getWidth();
 	int getHeight();
+	Pixel getPixel(int pos);
 	void setSize(int w, int h);
-	void initialize(int argc, char *argv[]);
+	void initialize(int argc, char *argv[], int width, int height);
 	void show();
+	void saveFile();
 	void pixel(int x, int y, float r, float g, float b);
 	void render();
 	static Window* get();
