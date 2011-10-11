@@ -104,7 +104,7 @@ float Rendering::shade(Ray intersect, Scene scene) {
 	vector<Model*> models = scene.getModels();
 	vector<Sphere> spheres = scene.getSpheres();
 	
-	// for every light, calculate the shadow contribution
+	// for every light, calculate the shade contribution
 	vector<Vertex> lights = scene.getDirectionalLights();
 	for (int a=0; a<lights.size(); a++) {
 		Vertex light = lights[a].scale(-1);
@@ -117,7 +117,7 @@ float Rendering::shade(Ray intersect, Scene scene) {
 			shadowDetector.setDirection(light);
 			// intersect_b() is the same as intersect(), except returns a boolean
 			if (models[a]->intersect_b(shadowDetector)) {
-				// if light is blocked, shadow the contribution
+				// if light is blocked (shadowed), no light contribution
 				change = 0;
 			}
 		}
