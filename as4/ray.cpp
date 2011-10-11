@@ -1,5 +1,10 @@
 #include "ray.h"
 
+Ray::Ray() {
+	origin = Vertex(0,0,0);
+	direction = Vertex(0,0,0);
+}
+
 Ray::Ray(Vertex p0, Vertex p1) {
 	origin = p0;
 	direction = p1.sub(p0);

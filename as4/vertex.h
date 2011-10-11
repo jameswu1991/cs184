@@ -28,6 +28,7 @@ public:
 	
 	Vertex normalize();
 	Vertex invert();
+	Vertex reflect(Vertex l);
 	
 	int size();
 	float get(int index);
