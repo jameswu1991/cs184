@@ -12,42 +12,6 @@ long now() {
 	return (time.tv_sec * 1000) + (time.tv_usec / 1000);
 }
 
-void Rendering::saveFile(Window* window, int BPP) {
-	
-	long start = now();
-	
-	int width = window->getWidth();
-	int height = window->getHeight();
-	
-	FreeImage_Initialise();
-	
-	FIBITMAP* bitmap = FreeImage_Allocate(width, height, BPP);
-	RGBQUAD color;
-	int counter = 0;
-	
-	if (!bitmap)
-		exit (1);
-	
-	//Draws a gradient from blue to green;
-	for (int i=0; i<width; i++) {
-		for (int j=0; j<height; j++) {	
-			Pixel current = window->getPixel(counter);
-			color.rgbRed = current.r;
-			color.rgbGreen = current.g;
-			color.rgbBlue = current.b;
-			FreeImage_SetPixelColor(bitmap, i, j, &color);
-			counter++;
-		}
-	}
-	
-	if (FreeImage_Save(FIF_PNG, bitmap, "test.png", 0))
-		cout << "Image_successfully_saved!" <<endl;
-	
-	FreeImage_DeInitialise(); 
-	
-	cout << now() - start << " total milliseconds taken" << endl;
-}
-
 void Rendering::render(Scene scene, Window* window) {
 	Vertex eye (0, 0, -2);
 	// get a 2d array of Vertexes, one for each pixel
@@ -89,9 +53,15 @@ float Rendering::raytrace(Ray ray, Scene scene, int numReflections) {
 		}
 	}
 	for (int a=0; a<spheres.size(); a++) {
-		vector<float> ts = spheres[a].intersect(ray);
-		if (ts.size()!=0) {
-			return 1;
+		Ray intersect = spheres[a].intersect(ray);
+		if (!intersect.getDirection().isNull()) {
+			float color = 0;
+			printf("Inside spheres code\n");
+			// some of the color is from the shade of the object
+			color += 0.5 * shade(intersect, scene);
+			color += 0.1;
+			printf("Color is %f\n", color);
+			return color;
 		}
 	}
 	return 0;
@@ -119,6 +89,17 @@ float Rendering::shade(Ray intersect, Scene scene) {
 			if (models[a]->intersect_b(shadowDetector)) {
 				// if light is blocked, shadow the contribution
 				change = 0;
+			}
+		}
+		for (int b=0; b<spheres.size(); b++) {
+			Ray shadowDetector = Ray(Vertex(0,0,0),Vertex(0,0,0));
+			float floatInaccuracyConst = 0.0001; // to prevent self-shadowing
+			shadowDetector.setOrigin(intersect.getOrigin());
+			shadowDetector.setDirection(light);
+			// intersect_b() is the same as intersect(), except returns a boolean
+			if (spheres[b].intersect_b(shadowDetector)) {
+				// if light is blocked, shadow the contribution
+				change += 0;
 			}
 		}
 		shade += max(0.0f, change);
