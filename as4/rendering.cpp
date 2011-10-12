@@ -13,7 +13,7 @@ long now() {
 }
 
 void Rendering::render(Scene scene, Window* window) {
-	Vertex eye (0, 0, 0);
+	Vertex eye (0, 0, -2);
 	// get a 2d array of Vertexes, one for each pixel
 	vector<vector<Vertex> > screen = getImagePlane(window, -1);
 	int numPixels = window->getWidth() * window->getHeight();

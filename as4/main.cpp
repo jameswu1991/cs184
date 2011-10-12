@@ -26,25 +26,16 @@ Scene scene;
 
 int main(int argc, char *argv[]) {
 
-/*
-=======
-
 	Window *window = Window::get();
 	window->initialize(argc, argv, 400, 400);
 	
 	Model* m = parser.loadFile(argv[1]);
-	m->rotate(Vertex(0,0,0.7));
-	m->scale(1, 1.5, 1);
 	scene.addModel(m);
->>>>>>> c2d3b42ed6b607cd2b8da19409faf621293abe48
 	scene.addDirectionalLight(-0.5, -1, 0);
 	scene.addDirectionalLight(-0.1, -0.1, 0.1);
-	Vertex center = Vertex(0, 0, 1);
-	Sphere s = Sphere(center, 0.1);
-	scene.addSphere(s);
-	rendering.renderFile(scene, 400, 400, 24);
-*/
-
+	rendering.render(scene, window);
+	window->show();
+	
 	/*
 	FreeImage_Initialise();
 	
@@ -70,7 +61,7 @@ int main(int argc, char *argv[]) {
 	FreeImage_DeInitialise(); 
 	*/
 
-
+/*
 	Window *window = Window::get();
 	window->initialize(argc, argv, 400, 400);
 	
@@ -98,7 +89,7 @@ int main(int argc, char *argv[]) {
 	
 	window->saveFile();
 	window->show();
-
+*/
 
 /*
 	Model* m = parser.loadFile(argv[1]);
