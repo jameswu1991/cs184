@@ -10,15 +10,16 @@
 using namespace std;
 
 class Sphere {
+public:
 	Vertex center;
 	float radius;
-public:
 	Sphere ();
 	Sphere (Vertex c, float rad);
 	
 	Vertex normal(Vertex v);
+	Ray intersect(Ray r);
+	bool intersect_b(Ray r);
 	void scale(float f);
-	vector<float> intersect(Ray r);
 };
 
 #endif

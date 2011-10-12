@@ -26,6 +26,9 @@ Scene scene;
 
 int main(int argc, char *argv[]) {
 
+/*
+=======
+
 	Window *window = Window::get();
 	window->initialize(argc, argv, 400, 400);
 	
@@ -33,18 +36,77 @@ int main(int argc, char *argv[]) {
 	m->rotate(Vertex(0,0,0.7));
 	m->scale(1, 1.5, 1);
 	scene.addModel(m);
+>>>>>>> c2d3b42ed6b607cd2b8da19409faf621293abe48
 	scene.addDirectionalLight(-0.5, -1, 0);
 	scene.addDirectionalLight(-0.1, -0.1, 0.1);
-/*
 	Vertex center = Vertex(0, 0, 1);
 	Sphere s = Sphere(center, 0.1);
 	scene.addSphere(s);
+	rendering.renderFile(scene, 400, 400, 24);
 */
+
+	/*
+	FreeImage_Initialise();
+	
+	FIBITMAP* bitmap = FreeImage_Allocate(WIDTH, HEIGHT, BPP);
+	RGBQUAD color;
+	
+	if (!bitmap)
+		exit (1);
+	
+	//Draws a gradient from blue to green;
+	for (int i=0; i<WIDTH; i++) {
+		for (int j=0; j<HEIGHT; j++) {
+			color.rgbRed = 0;
+			color.rgbGreen = (double) i / WIDTH * 255.0;
+			color.rgbBlue = (double) j / HEIGHT * 255.0;
+			FreeImage_SetPixelColor(bitmap, i, j, &color);
+		}
+	}
+	
+	if (FreeImage_Save(FIF_PNG, bitmap, "test.png", 0))
+		cout << "Image_successfully_saved!" <<endl;
+	
+	FreeImage_DeInitialise(); 
+	*/
+
+
+	Window *window = Window::get();
+	window->initialize(argc, argv, 400, 400);
+	
+	Model* m = parser.loadFile(argv[1]);
+	scene.addModel(m);
+	scene.addDirectionalLight(0.57735027, -0.57735027, -0.57735027);
+	scene.addDirectionalLight(-0.57735027, 0.57735027, 0.57735027);
+	//scene.addDirectionalLight(-0.1, -0.1, 0.1);
+	//Vertex center1 = Vertex(3,3,2);
+	Sphere s1 = Sphere(Vertex(0, 4, -17), 1.5);
+	Sphere s2 = Sphere(Vertex(0, -4, -17), 1.5);
+	Sphere s3 = Sphere(Vertex(0,0,-17), 2.0);
+	//Ray result = s.intersect(test);
+	//result.getOrigin().print();
+	//result.getDirection().print();
+	//scene.addSphere(s1);
+	scene.addSphere(s1);
+	scene.addSphere(s2);
+	scene.addSphere(s3);
+	//rendering.shade(result, scene);
+
+	//scene.addSphere(s);
+	//scene.addSphere(s1);
 	rendering.render(scene, window);
 	
 	window->saveFile();
 	window->show();
 
+
+/*
+	Model* m = parser.loadFile(argv[1]);
+	Ray ray (Vertex(0,0,-2), Vertex(0,0,-1));
+	scene.addModel(m);
+	rendering.raytrace(ray, scene, 1);
+*/
+	
 	return 0;
 
 }
