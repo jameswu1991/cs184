@@ -31,10 +31,10 @@ int main(int argc, char *argv[]) {
 	// scene.addDirectionalLight(-0.5, -1, 0);
 	// scene.addDirectionalLight(-0.1, -0.1, 0.1);
 	
-	//Model* m = parser.loadFile(argv[1]);
-	//scene.addModel(m);
+	// Model* m = parser.loadFile(argv[1]);
+	// scene.addModel(m);
 	scene.addSphere(Sphere(Vertex(-0.5,0,0.5), 0.25));
-	scene.addSphere(Sphere(Vertex(0.5,0,-0.5), 0.25));
+	scene.addSphere(Sphere(Vertex(0.5,0,0.5), 0.25));
 	scene.addPointLight(0,0,0);
 	
 	rendering.render(scene, window);

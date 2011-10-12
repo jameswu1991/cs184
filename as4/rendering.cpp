@@ -48,7 +48,7 @@ float Rendering::raytrace(Ray ray, Scene scene, int numReflections) {
 		// if intersect, then shade
 		if (!intersect.getDirection().isNull()) {
 			float color = 0;
-			color += 0.5 * shade(intersect, scene);
+			color += 0.5 * shade(intersect, scene, ray.getDirection());
 			color += 0.5 * reflect(intersect, ray.getDirection(), scene, numReflections);
 			color += 0.1;
 			return color;
@@ -59,7 +59,7 @@ float Rendering::raytrace(Ray ray, Scene scene, int numReflections) {
 		Ray intersect = spheres[a].intersect(ray);
 		if (!intersect.getDirection().isNull()) {
 			float color = 0;
-			color += 0.5 * shade(intersect, scene);
+			color += 0.5 * shade(intersect, scene, ray.getDirection());
 			color += 0.5 * reflect(intersect, ray.getDirection(), scene, numReflections);
 			color += 0.1;
 			return color;
@@ -68,26 +68,32 @@ float Rendering::raytrace(Ray ray, Scene scene, int numReflections) {
 	return 0;
 }
 
-float Rendering::shade(Ray intersect, Scene scene) {
+float Rendering::shade(Ray intersect, Scene scene, Vertex viewerDirection) {
 	// intersect is a ray with origin at the point of intersect,
 	// and direction of the normal of the intersected polygon
 	float shade = 0;
 	
-	// for every light, calculate the shade contribution
 	vector<Vertex> lights = scene.getDirectionalLights();
 	for (int a=0; a<lights.size(); a++) {
 		// see if that light is blocked, if so, it's shadow
 		Vertex light = lights[a].scale(-1);
-		if (!isShadowed(intersect.getOrigin(), light, scene, false))
-			shade += max(0.0f, light.normalize().dot(intersect.getDirection()));
+		if (!isShadowed(intersect.getOrigin(), light, scene, false)) {
+			light = light.normalize();
+			shade += max(0.0f, light.dot(intersect.getDirection()));
+			float specular = intersect.getDirection().reflect(light.scale(-1)).dot(viewerDirection.scale(-1).normalize());
+			shade += pow(max(0.0f, specular),10);
+		}
 	}
 	
-	// for every light, calculate the shade contribution
 	vector<Vertex> plights = scene.getPointLights();
 	for (int a=0; a<plights.size(); a++) {
 		Vertex light = plights[a].sub(intersect.getOrigin());
-		if (!isShadowed(intersect.getOrigin(), light, scene, true))
-			shade += max(0.0f, light.normalize().dot(intersect.getDirection()));
+		if (!isShadowed(intersect.getOrigin(), light, scene, true)) {
+			light = light.normalize();
+			shade += max(0.0f, light.dot(intersect.getDirection()));
+			float specular = intersect.getDirection().reflect(light.scale(-1)).dot(viewerDirection.scale(-1).normalize());
+			shade += pow(max(0.0f, specular),10);
+		}
 	}
 	return shade;
 }

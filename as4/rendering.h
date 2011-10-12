@@ -23,7 +23,7 @@ private:
 	bool isShadowed(Vertex surfaceIntersect, Vertex lightDirection, Scene scene, bool isPointSource);
 public:
 	void render(Scene s, Window* w);
-	float shade(Ray intersect, Scene scene);
+	float shade(Ray intersect, Scene scene, Vertex viewerDirection);
 	void saveFile(Window* w, int BPP);
 };
 
