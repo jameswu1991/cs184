@@ -30,7 +30,8 @@ int main(int argc, char *argv[]) {
 	window->initialize(argc, argv, 400, 400);
 	
 	Model* m = parser.loadFile(argv[1]);
-	m->rotate(Vertex(0.1, 0.1, 0.1));
+	m->rotate(Vertex(0,0,0.7));
+	m->scale(1, 1.5, 1);
 	scene.addModel(m);
 	scene.addDirectionalLight(-0.5, -1, 0);
 	scene.addDirectionalLight(-0.1, -0.1, 0.1);

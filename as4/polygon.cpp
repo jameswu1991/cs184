@@ -51,10 +51,10 @@ Polygon Polygon::translate(Vertex v) {
 	return p;
 }
 
-Polygon Polygon::scale(float f) {
+Polygon Polygon::scale(float x, float y, float z) {
 	Polygon p;
 	for (int i=0; i<verticies.size(); i++) {
-		p.addPoint(verticies[i].scale(f));
+		p.addPoint(verticies[i].scale(x, y, z));
 	}
 	return p;
 }

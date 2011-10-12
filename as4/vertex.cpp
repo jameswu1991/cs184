@@ -53,6 +53,14 @@ Vertex Vertex::divi(Vertex v) {
 	return v;
 }
 
+Vertex Vertex::scale(float x, float y, float z) {
+	vector<float> prod;
+	prod.push_back(data[0]*x);
+	prod.push_back(data[1]*y);
+	prod.push_back(data[2]*z);
+	return Vertex(prod);
+}
+
 Vertex Vertex::scale(float f) {
 	vector<float> prod;
 	for (int a=0; a<data.size(); a++) 

@@ -18,7 +18,7 @@ public:
 	Vertex normal();
 	Vertex center();
 	Polygon translate(Vertex v);
-	Polygon scale(float v);
+	Polygon scale(float x, float y, float z);
 	float intersect(Ray r);
 	Polygon rotate(Vertex rotation);
 	Polygon eRotate(vector<Vertex> eulerAngles);
