@@ -19,6 +19,7 @@ public:
 	Vertex normal(Vertex v);
 	Ray intersect(Ray r);
 	bool intersect_b(Ray r);
+	bool unitIntersect_b(Ray r);
 	void scale(float f);
 };
 
