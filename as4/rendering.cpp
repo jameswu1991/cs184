@@ -13,7 +13,7 @@ long now() {
 }
 
 void Rendering::render(Scene scene, Window* window) {
-	Vertex eye (0, 0, 0);
+	Vertex eye (0, 0, -2);
 	// get a 2d array of Vertexes, one for each pixel
 	vector<vector<Vertex> > screen = getImagePlane(window, -1);
 	int numPixels = window->getWidth() * window->getHeight();
@@ -58,7 +58,19 @@ float Rendering::raytrace(Ray ray, Scene scene, int numReflections) {
 			float color = 0;
 			// some of the color is from the shade of the object
 			color += 0.5 * shade(intersect, scene);
-			color += 0.5 * reflect(intersect, ray.getDirection(), scene, numReflections);
+			float refl = reflect(intersect, ray.getDirection(), scene, numReflections);
+			
+			if (refl > 0) {
+				intersect.getOrigin().print();
+				intersect.getDirection().print();
+				ray.getDirection().print();
+				printf("Reflection float is %f\n", refl);
+			}
+			//if (refl < 0) { refl = 0; }
+			printf("Reflection float is %f\n", refl);
+			color += 0.5*refl;
+			//color += 0.5 * reflect(intersect, ray.getDirection(), scene, numReflections);
+			//printf("Reflection float is %f\n", reflect(intersect, ray.getDirection(), scene, numReflections));
 			color += 0.2;
 			//printf("Color is %f\n", color);
 			return color;
@@ -93,25 +105,14 @@ float Rendering::shade(Ray intersect, Scene scene) {
 		}
 		for (int b=0; b<spheres.size(); b++) {
 			Ray shadowDetector = Ray(Vertex(0,0,0),Vertex(0,0,0));
-			float floatInaccuracyConst = 0.0001; // to prevent self-shadowing
 			shadowDetector.setOrigin(intersect.getOrigin());
 			shadowDetector.setDirection(light);
-			//printf("Shadow detector origin:v");
-			//shadowDetector.getOrigin().print();
-			//printf(" Shadow detector direction: ");
-			//shadowDetector.getDirection().print();
-			//printf("\n");
 			// intersect_b() is the same as intersect(), except returns a boolean
 			
 			if (spheres[b].intersect_b(shadowDetector)) {
 				// if light is blocked, shadow the contribution
 				change = 0;
-				//printf("Sphere center is\n", b);
-				//spheres[b].center.print();
 			}
-			//printf("Change inside for loop is %f for sphere", change, b);
-			//spheres[b].center.print();
-			//printf("\n");
 		}
 		shade += max(0.0f, change);
 	}
