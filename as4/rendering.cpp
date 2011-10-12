@@ -117,8 +117,7 @@ bool Rendering::isShadowed(Vertex surfaceIntersect, Vertex lightDirection, Scene
 		shadowDetector.setOrigin(surfaceIntersect);
 		shadowDetector.setDirection(lightDirection);
 		
-		//float t = spheres[sphereIndex].intersect_t(shadowDetector);
-		float t = 0;
+		float t = spheres[sphereIndex].intersect_t(shadowDetector);
 		if (t > 0) {
 			if (!isPointSource)
 				return true;

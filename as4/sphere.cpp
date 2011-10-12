@@ -79,12 +79,52 @@ Ray Sphere::intersect(Ray ray) {
 			intersection.setOrigin(intersect);
 			intersection.setDirection(norm);
 		}
-		else {
-			return intersection;
-		}
 		return intersection;
 	}
 	return intersection;
+}
+
+float Sphere::intersect_t(Ray ray) {
+	Vertex ve = ray.getOrigin();
+	Vertex vd = ray.getDirection();
+	float t=0;
+	float t1=0;
+	float t2=0;
+	float discriminant = pow(vd.dot(ve.sub(center)), 2) - (vd.dot(vd))*((ve.sub(center)).dot(ve.sub(center)) - pow(radius, 2));
+	if (discriminant < 0)
+	{
+		return t;
+	}
+	else if (discriminant == 0) 
+	{
+		t1 = ((vd.dot(ve.sub(center))) *-1)/(vd.dot(vd));
+		if (t1 > 0) {
+			return t1;
+		}
+		return t;	
+	}
+	else 
+	{
+		t1 = (((vd.dot(ve.sub(center))) * -1) + sqrt(discriminant))/(vd.dot(vd));
+		t2 = (((vd.dot(ve.sub(center))) * -1) - sqrt(discriminant))/(vd.dot(vd));
+		if ((t1 < 0) && (t2 < 0)) {
+			return t;
+		}
+		else if ((t1 < 0) && (t2 > 0)) {
+			return t2;
+		}
+		else if ((t2 < 0) && (t1 > 0)) {
+			return t1;
+		}
+		else if (t1 < t2) {
+			return t1;
+		}
+		else if (t2 < t1) {
+			return t2;
+		}
+		return t;
+	}
+	return t;
 }
 
 bool Sphere::intersect_b(Ray ray) {

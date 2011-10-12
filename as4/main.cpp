@@ -29,13 +29,13 @@ int main(int argc, char *argv[]) {
 	Window *window = Window::get();
 	window->initialize(argc, argv, 400, 400);
 	// scene.addDirectionalLight(-0.5, -1, 0);
-	scene.addDirectionalLight(-0.1, -0.1, 0.1);
+	// scene.addDirectionalLight(-0.1, -0.1, 0.1);
 	
-	Model* m = parser.loadFile(argv[1]);
-	scene.addModel(m);
-	
-	scene.addSphere(Sphere(Vertex(1, 0, -0.5), 0.25));
-	// scene.addPointLight(0.2,0.4,0);
+	//Model* m = parser.loadFile(argv[1]);
+	//scene.addModel(m);
+	scene.addSphere(Sphere(Vertex(-0.5,0,0.5), 0.25));
+	scene.addSphere(Sphere(Vertex(0.5,0,-0.5), 0.25));
+	scene.addPointLight(0,0,0);
 	
 	rendering.render(scene, window);
 	window->show();
