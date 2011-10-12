@@ -13,7 +13,7 @@ long now() {
 }
 
 void Rendering::render(Scene scene, Window* window) {
-	Vertex eye (0, 0, -2);
+	Vertex eye (0, 0, -10);
 	// get a 2d array of Vertexes, one for each pixel
 	vector<vector<Vertex> > screen = getImagePlane(window, -1);
 	int numPixels = window->getWidth() * window->getHeight();
@@ -26,7 +26,7 @@ void Rendering::render(Scene scene, Window* window) {
 		cout << "rendering column " << x << "/" << screen.size() << "\r";
 		for (int y=0; y<screen[x].size(); y++) {
 			Ray ray (eye, screen[x][y]);
-			float shade = raytrace(ray, scene, 1);
+			float shade = raytrace(ray, scene, 5);
 			window->pixel(x, y, shade, shade, shade);
 		}
 	}
@@ -43,7 +43,7 @@ float Rendering::raytrace(Ray ray, Scene scene, int numReflections) {
 	//cout << endl;
 	
 	// for every model, check if intersect. if so, shade it as the pixel's color
-	/*for (int a=0; a<models.size(); a++) {
+	for (int a=0; a<models.size(); a++) {
 		Ray intersect = models[a]->intersect(ray);
 		// if intersect, then shade
 		if (!intersect.getDirection().isNull()) {
@@ -55,7 +55,7 @@ float Rendering::raytrace(Ray ray, Scene scene, int numReflections) {
 			color += 0.1;
 			return color;
 		}
-	}*/
+	}
 	
 	for (int a=0; a<spheres.size(); a++) {
 		Ray intersect = spheres[a].intersect(ray);
@@ -67,10 +67,7 @@ float Rendering::raytrace(Ray ray, Scene scene, int numReflections) {
 			// some of the color is from the shade of the object
 			color += 0.5 * shade(intersect, scene);
 			color += 0.5*reflect(intersect, ray.getDirection(), scene, numReflections);
-			//color += 0.5 * reflect(intersect, ray.getDirection(), scene, numReflections);
-			//printf("Reflection float is %f\n", reflect(intersect, ray.getDirection(), scene, numReflections));
 			color += 0.2;
-			//printf("Color is %f\n", color);
 			return color;
 		}
 	}
