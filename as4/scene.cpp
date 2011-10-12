@@ -8,13 +8,13 @@ void Scene::addSphere(Sphere sphere) {
 	spheres.push_back(sphere);
 }
 
-void Scene::addPointLight(float x, float y, float z) {
-	Vertex l (x, y, z);
+void Scene::addPointLight(float x, float y, float z, float r, float g, float b) {
+	Vertex l (x, y, z, r, g, b);
 	pointLights.push_back(l);
 }
 
-void Scene::addDirectionalLight(float x, float y, float z) {
-	Vertex l (x, y, z);
+void Scene::addDirectionalLight(float x, float y, float z, float r, float g, float b) {
+	Vertex l (x, y, z, r, g, b);
 	directionalLights.push_back(l);
 }
 

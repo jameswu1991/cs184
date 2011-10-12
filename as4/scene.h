@@ -15,8 +15,8 @@ class Scene {
 public:
 	void addModel(Model* m);
 	void addSphere(Sphere s);
-	void addPointLight(float x, float y, float z);
-	void addDirectionalLight(float x, float y, float z);
+	void addPointLight(float x, float y, float z, float r, float g, float b);
+	void addDirectionalLight(float x, float y, float z, float r, float g, float b);
 	vector<Model*> getModels();
 	vector<Sphere> getSpheres();
 	vector<Vertex> getPointLights();

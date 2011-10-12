@@ -9,6 +9,12 @@ Vertex::Vertex (float x, float y, float z) {
 	data = v;
 }
 
+Vertex::Vertex (float x, float y, float z, float r, float g, float b) {
+	float s[] = {x, y, z, r, g, b};
+	vector<float> v (&s[0], &s[6]);
+	data = v;
+}
+
 Vertex::Vertex (float r[], int length) {
 	vector<float> v (&r[0], &r[length]);
 	data = v;

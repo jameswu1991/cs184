@@ -3,7 +3,7 @@
 	[ ] Ellipsoid rendering
 	[x] Triangle rendering
 	[x] Specularity
-	[ ] Colors
+	[x] Colors
 	[x] Shadows
 	[x] Reflections
 	[x] Linear transformations

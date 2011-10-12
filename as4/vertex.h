@@ -12,6 +12,7 @@ class Vertex {
 public:
 	Vertex ();
 	Vertex (float x, float y, float z);
+	Vertex (float x, float y, float z, float r, float g, float b);
 	Vertex (float r[], int length);
 	Vertex (vector<float> _data);
 	
