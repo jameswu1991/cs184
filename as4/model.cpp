@@ -27,6 +27,17 @@ bool Model::intersect_b(Ray r) {
 	return false;
 }
 
+float Model::intersect_t(Ray r) {
+	float lowestT = 0;
+	for (int a=0; a<polygons.size(); a++) {
+		float t = polygons[a].intersect(r);
+		if (t > 0 && (lowestT == 0 || t < lowestT)) {
+			lowestT = t;
+		}
+	}
+	return lowestT;
+}
+
 void Model::scale(float x, float y, float z) {
 	for (int a=0; a<polygons.size(); a++) 
 		polygons[a] = polygons[a].scale(x, y, z);

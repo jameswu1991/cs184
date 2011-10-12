@@ -31,8 +31,9 @@ int main(int argc, char *argv[]) {
 	
 	Model* m = parser.loadFile(argv[1]);
 	scene.addModel(m);
-	scene.addDirectionalLight(-0.5, -1, 0);
-	scene.addDirectionalLight(-0.1, -0.1, 0.1);
+	//scene.addDirectionalLight(-0.5, -1, 0);
+	//scene.addDirectionalLight(-0.1, -0.1, 0.1);
+	scene.addPointLight(0.2,0.4,0);
 	rendering.render(scene, window);
 	window->show();
 	

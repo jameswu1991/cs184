@@ -20,6 +20,7 @@ private:
 	vector<vector<Vertex> > getImagePlane(Window* w, float z);
 	float reflect(Ray intersection, Vertex incomingLight, Scene scene, int numReflections);
 	float raytrace(Ray ray, Scene scene, int numReflections);
+	bool isShadowed(Vertex surfaceIntersect, Vertex lightDirection, Scene scene, bool isPointSource);
 public:
 	void render(Scene s, Window* w);
 	float shade(Ray intersect, Scene scene);

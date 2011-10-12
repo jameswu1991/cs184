@@ -77,20 +77,12 @@ float Rendering::shade(Ray intersect, Scene scene) {
 	// for every light, calculate the shade contribution
 	vector<Vertex> lights = scene.getDirectionalLights();
 	for (int a=0; a<lights.size(); a++) {
-		Vertex light = lights[a].scale(-1);
-		float change = light.dot(intersect.getDirection());
 		// see if that light is blocked, if so, it's shadow
-		for (int a=0; a<models.size(); a++) {
-			Ray shadowDetector = Ray(Vertex(0,0,0),Vertex(0,0,0));
-			float floatInaccuracyConst = 0.0001; // to prevent self-shadowing
-			shadowDetector.setOrigin(intersect.getOrigin());
-			shadowDetector.setDirection(light);
-			// intersect_b() is the same as intersect(), except returns a boolean
-			if (models[a]->intersect_b(shadowDetector)) {
-				// if light is blocked (shadowed), no light contribution
-				change = 0;
-			}
-		}
+		Vertex light = lights[a].scale(-1);
+		if (!isShadowed(intersect.getOrigin(), light, scene, false))
+			shade += max(0.0f, light.normalize().dot(intersect.getDirection()));
+		
+		float change = light.dot(intersect.getDirection());
 		for (int b=0; b<spheres.size(); b++) {
 			Ray shadowDetector = Ray(Vertex(0,0,0),Vertex(0,0,0));
 			float floatInaccuracyConst = 0.0001; // to prevent self-shadowing
@@ -115,7 +107,37 @@ float Rendering::shade(Ray intersect, Scene scene) {
 		}
 		shade += max(0.0f, change);
 	}
+	
+	// for every light, calculate the shade contribution
+	vector<Vertex> plights = scene.getPointLights();
+	for (int a=0; a<plights.size(); a++) {
+		Vertex light = plights[a].sub(intersect.getOrigin());
+		if (!isShadowed(intersect.getOrigin(), light, scene, true))
+			shade += max(0.0f, light.normalize().dot(intersect.getDirection()));
+	}
 	return shade;
+}
+
+bool Rendering::isShadowed(Vertex surfaceIntersect, Vertex lightDirection, Scene scene, bool isPointSource) {
+	vector<Model*> models = scene.getModels();
+	for (int modelIndex=0; modelIndex<models.size(); modelIndex++) {
+		// create a ray starting from point of intersect and going in the direction of light
+		Ray shadowTracer;
+		shadowTracer.setOrigin(surfaceIntersect);
+		shadowTracer.setDirection(lightDirection);
+		
+		// if the ray hits something
+		float t = models[modelIndex]->intersect_t(shadowTracer);
+		if (t > 0) {
+			// if it's a directional source, then it is being shadowed
+			if (!isPointSource)
+				return true;
+			// if it's a point light source and intersection is in front of point source, then it is being shadowed
+			else if (t < 1)
+				return true;
+		}
+	}
+	return false;
 }
 
 float Rendering::reflect(Ray intersection, Vertex incomingLight, Scene scene, int numReflections) {

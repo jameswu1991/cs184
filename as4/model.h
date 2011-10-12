@@ -18,6 +18,7 @@ public:
 	void rotate(Vertex rotation);
 	Ray intersect(Ray r);
 	bool intersect_b(Ray r);
+	float intersect_t(Ray r);
 };
 
 #endif

@@ -1,13 +1,14 @@
 
 [ ] Features
-	-Ellipsoid rendering
-	-Triangle rendering
-	-Phong shading with color
-	-Shadows
-	-Reflections
-	-Linear transformations
-	-Point/directional lights
-	-Write to image
+	[ ] Ellipsoid rendering
+	[x] Triangle rendering
+	[ ] Specularity
+	[ ] Colors
+	[x] Shadows
+	[x] Reflections
+	[x] Linear transformations
+	[ ] Point/directional lights
+	[x] Write to image
 
 [ ] Class-account website updated
 	-All link to the same page
