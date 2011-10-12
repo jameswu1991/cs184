@@ -38,8 +38,12 @@ float Rendering::raytrace(Ray ray, Scene scene, int numReflections) {
 	vector<Model*> models = scene.getModels();
 	vector<Sphere> spheres = scene.getSpheres();
 	
+	//ray.getOrigin().print();
+	//ray.getDirection().print();
+	//cout << endl;
+	
 	// for every model, check if intersect. if so, shade it as the pixel's color
-	for (int a=0; a<models.size(); a++) {
+	/*for (int a=0; a<models.size(); a++) {
 		Ray intersect = models[a]->intersect(ray);
 		// if intersect, then shade
 		if (!intersect.getDirection().isNull()) {
@@ -51,14 +55,20 @@ float Rendering::raytrace(Ray ray, Scene scene, int numReflections) {
 			color += 0.1;
 			return color;
 		}
-	}
+	}*/
+	
 	for (int a=0; a<spheres.size(); a++) {
 		Ray intersect = spheres[a].intersect(ray);
 		if (!intersect.getDirection().isNull()) {
+			//intersect.getOrigin().print();
+			//intersect.getDirection().print();
+			//cout << endl;
 			float color = 0;
 			// some of the color is from the shade of the object
 			color += 0.5 * shade(intersect, scene);
-			color += 0.5 * reflect(intersect, ray.getDirection(), scene, numReflections);
+			color += 0.5*reflect(intersect, ray.getDirection(), scene, numReflections);
+			//color += 0.5 * reflect(intersect, ray.getDirection(), scene, numReflections);
+			//printf("Reflection float is %f\n", reflect(intersect, ray.getDirection(), scene, numReflections));
 			color += 0.2;
 			//printf("Color is %f\n", color);
 			return color;
@@ -85,25 +95,14 @@ float Rendering::shade(Ray intersect, Scene scene) {
 		float change = light.dot(intersect.getDirection());
 		for (int b=0; b<spheres.size(); b++) {
 			Ray shadowDetector = Ray(Vertex(0,0,0),Vertex(0,0,0));
-			float floatInaccuracyConst = 0.0001; // to prevent self-shadowing
 			shadowDetector.setOrigin(intersect.getOrigin());
 			shadowDetector.setDirection(light);
-			//printf("Shadow detector origin:v");
-			//shadowDetector.getOrigin().print();
-			//printf(" Shadow detector direction: ");
-			//shadowDetector.getDirection().print();
-			//printf("\n");
 			// intersect_b() is the same as intersect(), except returns a boolean
 			
 			if (spheres[b].intersect_b(shadowDetector)) {
 				// if light is blocked, shadow the contribution
 				change = 0;
-				//printf("Sphere center is\n", b);
-				//spheres[b].center.print();
 			}
-			//printf("Change inside for loop is %f for sphere", change, b);
-			//spheres[b].center.print();
-			//printf("\n");
 		}
 		shade += max(0.0f, change);
 	}

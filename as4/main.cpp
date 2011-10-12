@@ -28,12 +28,15 @@ int main(int argc, char *argv[]) {
 
 	Window *window = Window::get();
 	window->initialize(argc, argv, 400, 400);
+	// scene.addDirectionalLight(-0.5, -1, 0);
+	scene.addDirectionalLight(-0.1, -0.1, 0.1);
 	
-	Model* m = parser.loadFile(argv[1]);
-	scene.addModel(m);
-	//scene.addDirectionalLight(-0.5, -1, 0);
-	//scene.addDirectionalLight(-0.1, -0.1, 0.1);
-	scene.addPointLight(0.2,0.4,0);
+	// Model* m = parser.loadFile(argv[1]);
+	// scene.addModel(m);
+	scene.addSphere(Sphere(Vertex(0, 0, 0), 0.5));
+	scene.addSphere(Sphere(Vertex(1, 0, 0), 0.5));
+	// scene.addPointLight(0.2,0.4,0);
+	
 	rendering.render(scene, window);
 	window->show();
 	
@@ -68,20 +71,17 @@ int main(int argc, char *argv[]) {
 	
 	Model* m = parser.loadFile(argv[1]);
 	scene.addModel(m);
-	scene.addDirectionalLight(0.57735027, -0.57735027, -0.57735027);
-	scene.addDirectionalLight(-0.57735027, 0.57735027, 0.57735027);
+	scene.addDirectionalLight(-1, -1, -1);
 	//scene.addDirectionalLight(-0.1, -0.1, 0.1);
 	//Vertex center1 = Vertex(3,3,2);
-	Sphere s1 = Sphere(Vertex(0, 4, -17), 1.5);
-	Sphere s2 = Sphere(Vertex(0, -4, -17), 1.5);
-	Sphere s3 = Sphere(Vertex(0,0,-17), 2.0);
+	Sphere s1 = Sphere(Vertex(0, 0, 0), 0.5);
+	//Sphere s2 = Sphere(Vertex(1, 0, 0), 0.5);
 	//Ray result = s.intersect(test);
 	//result.getOrigin().print();
 	//result.getDirection().print();
 	//scene.addSphere(s1);
 	scene.addSphere(s1);
-	scene.addSphere(s2);
-	scene.addSphere(s3);
+	//scene.addSphere(s2);
 	//rendering.shade(result, scene);
 
 	//scene.addSphere(s);
