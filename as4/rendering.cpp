@@ -38,8 +38,12 @@ float Rendering::raytrace(Ray ray, Scene scene, int numReflections) {
 	vector<Model*> models = scene.getModels();
 	vector<Sphere> spheres = scene.getSpheres();
 	
+	//ray.getOrigin().print();
+	//ray.getDirection().print();
+	//cout << endl;
+	
 	// for every model, check if intersect. if so, shade it as the pixel's color
-	for (int a=0; a<models.size(); a++) {
+	/*for (int a=0; a<models.size(); a++) {
 		Ray intersect = models[a]->intersect(ray);
 		// if intersect, then shade
 		if (!intersect.getDirection().isNull()) {
@@ -51,24 +55,18 @@ float Rendering::raytrace(Ray ray, Scene scene, int numReflections) {
 			color += 0.1;
 			return color;
 		}
-	}
+	}*/
+	
 	for (int a=0; a<spheres.size(); a++) {
 		Ray intersect = spheres[a].intersect(ray);
 		if (!intersect.getDirection().isNull()) {
+			//intersect.getOrigin().print();
+			//intersect.getDirection().print();
+			//cout << endl;
 			float color = 0;
 			// some of the color is from the shade of the object
 			color += 0.5 * shade(intersect, scene);
-			float refl = reflect(intersect, ray.getDirection(), scene, numReflections);
-			
-			if (refl > 0) {
-				intersect.getOrigin().print();
-				intersect.getDirection().print();
-				ray.getDirection().print();
-				printf("Reflection float is %f\n", refl);
-			}
-			//if (refl < 0) { refl = 0; }
-			printf("Reflection float is %f\n", refl);
-			color += 0.5*refl;
+			color += 0.5*reflect(intersect, ray.getDirection(), scene, numReflections);
 			//color += 0.5 * reflect(intersect, ray.getDirection(), scene, numReflections);
 			//printf("Reflection float is %f\n", reflect(intersect, ray.getDirection(), scene, numReflections));
 			color += 0.2;
@@ -92,7 +90,7 @@ float Rendering::shade(Ray intersect, Scene scene) {
 		Vertex light = lights[a].scale(-1);
 		float change = light.dot(intersect.getDirection());
 		// see if that light is blocked, if so, it's shadow
-		for (int a=0; a<models.size(); a++) {
+		/*for (int a=0; a<models.size(); a++) {
 			Ray shadowDetector = Ray(Vertex(0,0,0),Vertex(0,0,0));
 			float floatInaccuracyConst = 0.0001; // to prevent self-shadowing
 			shadowDetector.setOrigin(intersect.getOrigin());
@@ -102,7 +100,7 @@ float Rendering::shade(Ray intersect, Scene scene) {
 				// if light is blocked (shadowed), no light contribution
 				change = 0;
 			}
-		}
+		}*/
 		for (int b=0; b<spheres.size(); b++) {
 			Ray shadowDetector = Ray(Vertex(0,0,0),Vertex(0,0,0));
 			shadowDetector.setOrigin(intersect.getOrigin());
