@@ -18,7 +18,7 @@ void Rendering::render(Scene scene, Window* window) {
 	vector<vector<Vertex> > screen = getImagePlane(window, -1);
 	int numPixels = window->getWidth() * window->getHeight();
 	
-	// start a timer to print out the time at the end
+	// start a timer to print out the time at the endintersect
 	long start = now();
 	
 	// for each pixel on the screen, cast a screen and shade
@@ -26,7 +26,7 @@ void Rendering::render(Scene scene, Window* window) {
 		cout << "rendering column " << x << "/" << screen.size() << "\r";
 		for (int y=0; y<screen[x].size(); y++) {
 			Ray ray (eye, screen[x][y]);
-			float shade = raytrace(ray, scene, 5);
+			float shade = raytrace(ray, scene, 1);
 			window->pixel(x, y, shade, shade, shade);
 		}
 	}
@@ -48,9 +48,7 @@ float Rendering::raytrace(Ray ray, Scene scene, int numReflections) {
 		// if intersect, then shade
 		if (!intersect.getDirection().isNull()) {
 			float color = 0;
-			// some of the color is from the shade of the object
 			color += 0.5 * shade(intersect, scene);
-			// some of the color is from the reflection of the object
 			color += 0.5 * reflect(intersect, ray.getDirection(), scene, numReflections);
 			color += 0.1;
 			return color;
@@ -60,14 +58,10 @@ float Rendering::raytrace(Ray ray, Scene scene, int numReflections) {
 	for (int a=0; a<spheres.size(); a++) {
 		Ray intersect = spheres[a].intersect(ray);
 		if (!intersect.getDirection().isNull()) {
-			//intersect.getOrigin().print();
-			//intersect.getDirection().print();
-			//cout << endl;
 			float color = 0;
-			// some of the color is from the shade of the object
 			color += 0.5 * shade(intersect, scene);
-			color += 0.5*reflect(intersect, ray.getDirection(), scene, numReflections);
-			color += 0.2;
+			color += 0.5 * reflect(intersect, ray.getDirection(), scene, numReflections);
+			color += 0.1;
 			return color;
 		}
 	}
@@ -78,8 +72,6 @@ float Rendering::shade(Ray intersect, Scene scene) {
 	// intersect is a ray with origin at the point of intersect,
 	// and direction of the normal of the intersected polygon
 	float shade = 0;
-	vector<Model*> models = scene.getModels();
-	vector<Sphere> spheres = scene.getSpheres();
 	
 	// for every light, calculate the shade contribution
 	vector<Vertex> lights = scene.getDirectionalLights();
@@ -88,20 +80,6 @@ float Rendering::shade(Ray intersect, Scene scene) {
 		Vertex light = lights[a].scale(-1);
 		if (!isShadowed(intersect.getOrigin(), light, scene, false))
 			shade += max(0.0f, light.normalize().dot(intersect.getDirection()));
-		
-		float change = light.dot(intersect.getDirection());
-		for (int b=0; b<spheres.size(); b++) {
-			Ray shadowDetector = Ray(Vertex(0,0,0),Vertex(0,0,0));
-			shadowDetector.setOrigin(intersect.getOrigin());
-			shadowDetector.setDirection(light);
-			// intersect_b() is the same as intersect(), except returns a boolean
-			
-			if (spheres[b].intersect_b(shadowDetector)) {
-				// if light is blocked, shadow the contribution
-				change = 0;
-			}
-		}
-		shade += max(0.0f, change);
 	}
 	
 	// for every light, calculate the shade contribution
@@ -116,6 +94,7 @@ float Rendering::shade(Ray intersect, Scene scene) {
 
 bool Rendering::isShadowed(Vertex surfaceIntersect, Vertex lightDirection, Scene scene, bool isPointSource) {
 	vector<Model*> models = scene.getModels();
+	vector<Sphere> spheres = scene.getSpheres();
 	for (int modelIndex=0; modelIndex<models.size(); modelIndex++) {
 		// create a ray starting from point of intersect and going in the direction of light
 		Ray shadowTracer;
@@ -133,6 +112,21 @@ bool Rendering::isShadowed(Vertex surfaceIntersect, Vertex lightDirection, Scene
 				return true;
 		}
 	}
+	for (int sphereIndex=0; sphereIndex<spheres.size(); sphereIndex++) {
+		Ray shadowDetector;
+		shadowDetector.setOrigin(surfaceIntersect);
+		shadowDetector.setDirection(lightDirection);
+		
+		//float t = spheres[sphereIndex].intersect_t(shadowDetector);
+		float t = 0;
+		if (t > 0) {
+			if (!isPointSource)
+				return true;
+			else if (t < 1)
+				return true;
+		}
+	}
+		
 	return false;
 }
 
