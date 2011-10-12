@@ -19,7 +19,8 @@ public:
 	Vertex sub(Vertex v);
 	Vertex mul(Vertex v);
 	Vertex divi(Vertex v);
-	Vertex scale(float f);
+	Vertex scale(float s);
+	Vertex scale(float x, float y, float z);
 	
 	Vertex cross(Vertex v);
 	float dot(Vertex v);

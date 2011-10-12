@@ -27,9 +27,9 @@ bool Model::intersect_b(Ray r) {
 	return false;
 }
 
-void Model::scale(float scale) {
+void Model::scale(float x, float y, float z) {
 	for (int a=0; a<polygons.size(); a++) 
-		polygons[a] = polygons[a].scale(scale);
+		polygons[a] = polygons[a].scale(x, y, z);
 }
 
 void Model::rotate(Vertex rotation) {
