@@ -14,6 +14,7 @@ class Model {
 	vector<Polygon> polygons;
 public:
 	void addPolygon(Polygon p);
+	void translate(float x, float y, float z);
 	void scale(float x, float y, float z);
 	void rotate(Vertex rotation);
 	Ray intersect(Ray r);

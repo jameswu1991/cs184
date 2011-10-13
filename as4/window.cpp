@@ -1,8 +1,8 @@
 #include "window.h"
 #include "FreeImage.h"
 
-int width = 400;
-int height = 400;
+int width = 640;
+int height = 640;
 
 void onGlutRedraw() {
 	glClear(GL_COLOR_BUFFER_BIT); // clear the color buffer
@@ -38,10 +38,12 @@ Window* Window::get() {
 	return singleton;
 }
 
-void Window::initialize(int argc, char *argv[], int width, int height) {
+void Window::initialize(int argc, char *argv[], int wwidth, int wheight) {
+	width = wwidth;
+	height = wheight;
 	glutInit(&argc, argv);
   	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-	glutInitWindowSize(width, height);
+	glutInitWindowSize(wwidth, wheight);
   	glutInitWindowPosition(0,0);
   	glutCreateWindow("Render");
 

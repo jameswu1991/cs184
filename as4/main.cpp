@@ -25,6 +25,7 @@ Parser parser;
 Scene scene;
 bool writeToFile = false;
 char* filename;
+int size = 640;
 
 Rendering parseArgs(int argc, char** argv) {
 	for (int i=0; i<argc; i++) {
@@ -53,7 +54,6 @@ Rendering parseArgs(int argc, char** argv) {
 				atof(argv[i+4]),
 				atof(argv[i+5]),
 				atof(argv[i+6]));
-		/*
 		if (s.compare("-rotate") == 0)
 			scene.rotate(
 				atof(argv[i+1]),
@@ -64,7 +64,11 @@ Rendering parseArgs(int argc, char** argv) {
 				atof(argv[i+1]),
 				atof(argv[i+2]),
 				atof(argv[i+3]));
-		*/
+		if (s.compare("-translate") == 0)
+			scene.translate(
+				atof(argv[i+1]),
+				atof(argv[i+2]),
+				atof(argv[i+3]));
 		if (s.compare("-sphere") == 0)
 			scene.addSphere(
 				Sphere(Vertex(
@@ -74,6 +78,8 @@ Rendering parseArgs(int argc, char** argv) {
 				atof(argv[i+4])));
 		if (s.compare("-file") == 0)
 			scene.addModel(parser.loadFile(argv[i+1]));
+		if (s.compare("-width") == 0)
+			size = atoi(argv[i+1]);
 		if (s.compare("-output") == 0) {
 			writeToFile = true;
 			filename = argv[i+1];
@@ -82,10 +88,9 @@ Rendering parseArgs(int argc, char** argv) {
 }
 
 int main(int argc, char *argv[]) {
-	Window *window = Window::get();
-	window->initialize(argc, argv, 400, 400);
-	
 	parseArgs(argc, argv);
+	Window *window = Window::get();
+	window->initialize(argc, argv, size, size);
 	
 	rendering.render(scene, window);
 	if (writeToFile) {

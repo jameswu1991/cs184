@@ -38,6 +38,11 @@ float Model::intersect_t(Ray r) {
 	return lowestT;
 }
 
+void Model::translate(float x, float y, float z) {
+	for (int a=0; a<polygons.size(); a++) 
+		polygons[a] = polygons[a].translate(Vertex(x, y, z));
+}
+
 void Model::scale(float x, float y, float z) {
 	for (int a=0; a<polygons.size(); a++) 
 		polygons[a] = polygons[a].scale(x, y, z);

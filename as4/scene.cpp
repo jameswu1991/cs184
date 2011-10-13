@@ -18,6 +18,21 @@ void Scene::addDirectionalLight(float x, float y, float z, float r, float g, flo
 	directionalLights.push_back(l);
 }
 
+void Scene::rotate(float x, float y, float z) {
+	for (int a=0; a<models.size(); a++)
+		models[a]->rotate(Vertex(x,y,z));
+}
+
+void Scene::scale(float x, float y, float z) {
+	for (int a=0; a<models.size(); a++)
+		models[a]->scale(x,y,z);
+}
+
+void Scene::translate(float x, float y, float z) {
+	for (int a=0; a<models.size(); a++)
+		models[a]->translate(x,y,z);
+}
+
 vector<Model*> Scene::getModels() {
 	return models;
 }

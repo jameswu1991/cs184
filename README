@@ -1,4 +1,6 @@
-to make and run:
+Jingchen Wu - cs184-aw
+Connie Guo - cs184-dx
 
-$ make
-$ ./render models/dragon.obj
+Developed and tested on Ubuntu and Mac
+Tested on viking.cs.berkeley.edu
+Source code located on cs184-aw's account, in ~/git/as4/

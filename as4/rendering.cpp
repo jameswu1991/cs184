@@ -30,7 +30,7 @@ void Rendering::render(Scene scene, Window* window) {
 	
 	// for each pixel on the screen, cast a screen and shade
 	for (int x=0; x<screen.size(); x++) {
-		cout << "rendering column " << x << "/" << screen.size() << "\r";
+		cout << "rendering column " << x << "/" << screen.size() << "\n";
 		for (int y=0; y<screen[x].size(); y++) {
 			Ray ray (eye, screen[x][y]);
 			Vertex shade = raytrace(ray, scene, numReflectsConst);

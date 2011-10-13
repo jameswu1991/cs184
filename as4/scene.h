@@ -17,6 +17,9 @@ public:
 	void addSphere(Sphere s);
 	void addPointLight(float x, float y, float z, float r, float g, float b);
 	void addDirectionalLight(float x, float y, float z, float r, float g, float b);
+	void translate(float x, float y, float z);
+	void scale(float x, float y, float z);
+	void rotate (float x, float y, float z);
 	vector<Model*> getModels();
 	vector<Sphere> getSpheres();
 	vector<Vertex> getPointLights();
