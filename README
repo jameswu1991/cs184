@@ -3,7 +3,9 @@ Connie Guo - cs184-dx
 
 Developed and tested on Ubuntu and Mac
 Tested on viking.cs.berkeley.edu
-Source code located on cs184-aw's account, in ~/git/as4/
+Source code located in the root directory of the zipped file. Also on cs184-aw's account, in ~/git/as4/
+All the note-xx, image-xx.png, and input-xx files are in as4/files
+Website URL: http://www-inst.eecs.berkeley.edu/~cs184-aw/as4/as4.html
 
 Note to grader:
 For some reason, X11 windowing doesn't work over ssh -Y. It runs into seg
