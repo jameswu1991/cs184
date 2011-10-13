@@ -1,6 +1,7 @@
 
 [ ] Features
 	[ ] Ellipsoid rendering
+	[x] Spherical rendering
 	[x] Triangle rendering
 	[x] Specularity
 	[x] Colors
@@ -17,7 +18,7 @@
 	-Creative .obj objects
 
 [ ] Model files named input-##
-[ ] Note files named note-nn
+[ ] Note files named note-nngit
 	-command line prompt
 	-how long to run
 	-what features are demonstrated

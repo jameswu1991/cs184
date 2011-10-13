@@ -5,6 +5,13 @@
 
 using namespace std;
 
+Rendering::Rendering() {
+	reflectConst = 0.5;
+	numReflectsConst = 1;
+	ambientConst = 0.1;
+	specularConst = 10;
+}
+
 long now() {
 	// return current time in milliseconds
 	timeval time;
@@ -26,7 +33,7 @@ void Rendering::render(Scene scene, Window* window) {
 		cout << "rendering column " << x << "/" << screen.size() << "\r";
 		for (int y=0; y<screen[x].size(); y++) {
 			Ray ray (eye, screen[x][y]);
-			Vertex shade = raytrace(ray, scene, 1);
+			Vertex shade = raytrace(ray, scene, numReflectsConst);
 			window->pixel(x, y, shade.get(0), shade.get(1), shade.get(2));
 		}
 	}
@@ -54,9 +61,9 @@ Vertex Rendering::raytrace(Ray ray, Scene scene, int numReflections) {
 			if (t < lowestT) {
 				lowestT = t;
 				color = Vertex(0,0,0);
-				color = color.add(shade(intersect, scene, ray.getDirection()).scale(0.5));
-				color = color.add(reflect(intersect, ray.getDirection(), scene, numReflections).scale(0.5));
-				color = color.add(Vertex(0.1,0.1,0.1));
+				color = color.add(shade(intersect, scene, ray.getDirection()).scale(1-reflectConst));
+				color = color.add(reflect(intersect, ray.getDirection(), scene, numReflections).scale(reflectConst));
+				color = color.add(Vertex(ambientConst,ambientConst,ambientConst));
 			}
 		}
 	}
@@ -68,9 +75,9 @@ Vertex Rendering::raytrace(Ray ray, Scene scene, int numReflections) {
 			if (t < lowestT) {
 				lowestT = t;
 				color = Vertex(0,0,0);
-				color = color.add(shade(intersect, scene, ray.getDirection()).scale(0.5));
-				color = color.add(reflect(intersect, ray.getDirection(), scene, numReflections).scale(0.5));
-				color = color.add(Vertex(0.1,0.1,0.1));
+				color = color.add(shade(intersect, scene, ray.getDirection()).scale(1-reflectConst));
+				color = color.add(reflect(intersect, ray.getDirection(), scene, numReflections).scale(reflectConst));
+				color = color.add(Vertex(ambientConst,ambientConst,ambientConst));
 			}
 		}
 	}
@@ -92,7 +99,7 @@ Vertex Rendering::shade(Ray intersect, Scene scene, Vertex viewerDirection) {
 			light = light.normalize();
 			float gradient = max(0.0f, light.dot(intersect.getDirection()));
 			float specular = intersect.getDirection().reflect(light.scale(-1)).dot(viewerDirection.scale(-1).normalize());
-			specular = pow(max(0.0f, specular),10);
+			specular = pow(max(0.0f, specular),specularConst);
 			shade = shade.add(color.scale(gradient+specular));
 		}
 	}

@@ -57,7 +57,7 @@ void Window::show() {
 	glutMainLoop();
 }
 
-void Window::saveFile() {
+void Window::saveFile(char* filename) {
 	FreeImage_Initialise();
 	
 	FIBITMAP* bitmap = FreeImage_Allocate(width, height, 24);
@@ -77,7 +77,7 @@ void Window::saveFile() {
 			counter++;
 	}
 	
-	if (FreeImage_Save(FIF_PNG, bitmap, "test.png", 0))
+	if (FreeImage_Save(FIF_PNG, bitmap, filename, 0))
 		cout << "Image_successfully_saved!" <<endl;
 	
 	FreeImage_DeInitialise(); 
@@ -97,6 +97,9 @@ void Window::setSize(int w, int h) {
 }
 
 void Window::pixel(int x, int y, float r, float g, float b) {
+	if (r>1) r = 1.0;
+	if (g>1) g = 1.0;
+	if (b>1) b = 1.0;
 	Pixel p (x, y, r, g, b);
 	pixels.push_back(p);
 }

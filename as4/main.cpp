@@ -20,85 +20,80 @@
 
 using namespace std;
 
-Parser parser;
 Rendering rendering;
+Parser parser;
 Scene scene;
+bool writeToFile = false;
+char* filename;
+
+Rendering parseArgs(int argc, char** argv) {
+	for (int i=0; i<argc; i++) {
+		string s (argv[i]);
+		if (s.compare("-reflect") == 0)
+			rendering.reflectConst = atof(argv[i+1]);
+		if (s.compare("-numReflections") == 0)
+			rendering.numReflectsConst = atoi(argv[i+1]);
+		if (s.compare("-ambient") == 0)
+			rendering.ambientConst = atof(argv[i+1]);
+		if (s.compare("-specular") == 0)
+			rendering.specularConst = atof(argv[i+1]);
+		if (s.compare("-pl") == 0)
+			scene.addPointLight(
+				atof(argv[i+1]),
+				atof(argv[i+2]),
+				atof(argv[i+3]),
+				atof(argv[i+4]),
+				atof(argv[i+5]),
+				atof(argv[i+6]));
+		if (s.compare("-dl") == 0)
+			scene.addDirectionalLight(
+				atof(argv[i+1]),
+				atof(argv[i+2]),
+				atof(argv[i+3]),
+				atof(argv[i+4]),
+				atof(argv[i+5]),
+				atof(argv[i+6]));
+		/*
+		if (s.compare("-rotate") == 0)
+			scene.rotate(
+				atof(argv[i+1]),
+				atof(argv[i+2]),
+				atof(argv[i+3]));
+		if (s.compare("-scale") == 0)
+			scene.scale(
+				atof(argv[i+1]),
+				atof(argv[i+2]),
+				atof(argv[i+3]));
+		*/
+		if (s.compare("-sphere") == 0)
+			scene.addSphere(
+				Sphere(Vertex(
+					atof(argv[i+1]),
+					atof(argv[i+2]),
+					atof(argv[i+3])),
+				atof(argv[i+4])));
+		if (s.compare("-file") == 0)
+			scene.addModel(parser.loadFile(argv[i+1]));
+		if (s.compare("-output") == 0) {
+			writeToFile = true;
+			filename = argv[i+1];
+		}	
+	}
+}
 
 int main(int argc, char *argv[]) {
 	Window *window = Window::get();
-	window->initialize(argc, argv, 480, 480);
-	// scene.addDirectionalLight(-0.5, -1, 0);
-	scene.addPointLight(-0.5, 0.5, -1, 1.0, 1.0, 0);
-	scene.addPointLight(0.5, -0.5, -1, 1.0, 0, 1.0);
-	
-	Model* m = parser.loadFile(argv[1]);
-	scene.addModel(m);
-	// scene.addSphere(Sphere(Vertex(-0.5,0,0.5), 0.25));
-	scene.addSphere(Sphere(Vertex(0,0,0), 0.25));
-	// scene.addPointLight(0,0,0);
-	
-	rendering.render(scene, window);
-	window->show();
-	
-	/*
-	FreeImage_Initialise();
-	
-	FIBITMAP* bitmap = FreeImage_Allocate(WIDTH, HEIGHT, BPP);
-	RGBQUAD color;
-	
-	if (!bitmap)
-		exit (1);
-	
-	//Draws a gradient from blue to green;
-	for (int i=0; i<WIDTH; i++) {
-		for (int j=0; j<HEIGHT; j++) {
-			color.rgbRed = 0;
-			color.rgbGreen = (double) i / WIDTH * 255.0;
-			color.rgbBlue = (double) j / HEIGHT * 255.0;
-			FreeImage_SetPixelColor(bitmap, i, j, &color);
-		}
-	}
-	
-	if (FreeImage_Save(FIF_PNG, bitmap, "test.png", 0))
-		cout << "Image_successfully_saved!" <<endl;
-	
-	FreeImage_DeInitialise(); 
-	*/
-
-/*
-	Window *window = Window::get();
 	window->initialize(argc, argv, 400, 400);
 	
-	Model* m = parser.loadFile(argv[1]);
-	scene.addModel(m);
-	scene.addDirectionalLight(-1, -1, -1);
-	//scene.addDirectionalLight(-0.1, -0.1, 0.1);
-	//Vertex center1 = Vertex(3,3,2);
-	Sphere s1 = Sphere(Vertex(0, 0, 0), 0.5);
-	//Sphere s2 = Sphere(Vertex(1, 0, 0), 0.5);
-	//Ray result = s.intersect(test);
-	//result.getOrigin().print();
-	//result.getDirection().print();
-	//scene.addSphere(s1);
-	scene.addSphere(s1);
-	//scene.addSphere(s2);
-	//rendering.shade(result, scene);
-
-	//scene.addSphere(s);
-	//scene.addSphere(s1);
-	rendering.render(scene, window);
+	parseArgs(argc, argv);
 	
-	window->saveFile();
-	window->show();
-*/
-
-/*
-	Model* m = parser.loadFile(argv[1]);
-	Ray ray (Vertex(0,0,-2), Vertex(0,0,-1));
-	scene.addModel(m);
-	rendering.raytrace(ray, scene, 1);
-*/
+	rendering.render(scene, window);
+	if (writeToFile) {
+		window->saveFile(filename);
+	}
+	else window->show();
 	
 	return 0;
-
 }
+
+

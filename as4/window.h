@@ -48,7 +48,7 @@ public:
 	void setSize(int w, int h);
 	void initialize(int argc, char *argv[], int width, int height);
 	void show();
-	void saveFile();
+	void saveFile(char* filename);
 	void pixel(int x, int y, float r, float g, float b);
 	void render();
 	static Window* get();

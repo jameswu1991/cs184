@@ -22,6 +22,12 @@ private:
 	Vertex raytrace(Ray ray, Scene scene, int numReflections);
 	bool isShadowed(Vertex surfaceIntersect, Vertex lightDirection, Scene scene, bool isPointSource);
 public:
+	Rendering ();
+	float reflectConst;
+	int numReflectsConst;
+	float ambientConst;
+	float specularConst;
+	
 	void render(Scene s, Window* w);
 	Vertex shade(Ray intersect, Scene scene, Vertex viewerDirection);
 	void saveFile(Window* w, int BPP);
