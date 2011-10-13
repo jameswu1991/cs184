@@ -4,3 +4,9 @@ Connie Guo - cs184-dx
 Developed and tested on Ubuntu and Mac
 Tested on viking.cs.berkeley.edu
 Source code located on cs184-aw's account, in ~/git/as4/
+
+Note to grader:
+For some reason, X11 windowing doesn't work over ssh -Y. It runs into seg
+fault if you call ./render in a X11 session. But if you're on the actual
+machine, it works fine. This was observed with Ubuntu. Not sure if happens
+with other operating systems.
