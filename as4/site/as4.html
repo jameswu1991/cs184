@@ -1,0 +1,203 @@
+<html>
+<head>
+	<title>Assignment #4: Ray Tracer</title>
+</head>
+<body>
+	<h4>Assignment #4: Ray Tracer</h4>
+	<p>
+		Jingchen Wu - cs184-aw<br>
+		Connie Guo - cs184-dx
+	</p>
+	<p>
+		The ray tracer is an algorithm for generating 2D images of 
+		3D scenes. The basic premise is this: cast a ray from the eye 
+		through the screen into the 3D scene, and see what it hits: 
+		what it reflects, and what color are the things it hits, and 
+		if what it hits is under a shadow, return the color, and draw 
+		that color onto the display device.
+	</p>
+	<p>	
+		The way that reflections are done is this: When a ray hits a surface,
+		trace another viewing ray from the point of intersection, in the
+		direction of the reflected beam. This will be a recursive process
+		that can end in one of a few ways: after a certain number of reflections,
+		after the ray has been traced for a certain length, or after the amount
+		of contribution of the reflection to the color of the object is below
+		a certain amount. We chose to limit based on the number of reflections
+		for simple implementation and controlled computation time. The default
+		number of reflections is 1.
+	</p>
+	<p>
+		We chose the .obj file to be our format of triangle models due to its simplicity. 
+		Each .obj file is defined by a list of vertices (ex. v 0 0 0), and a list of faces,
+		with the index of the vertex as its data (ex. f 1 2 3). Models are imported and parsed
+		a parser into a model file in memory, and then rendered using the ray tracer. Spherical
+		and ellipsoids are created with command line arguments instead of passed in through a
+		file. They can then be transformed by the scaling, rotating, and translation functions.
+	</p>
+	<p>
+		Our ray tracer takes in the following params: <br>
+		<table border=1>
+			<tr>
+				<td>-reflect f</td>
+				<td>Proportion of light that is reflected off of a surface</td>
+			</tr>
+			<tr>
+				<td>-numReflections i</td>
+				<td>Number of times the light is bounced around before it stops</td>
+			</tr>
+			<tr>
+				<td>-ambient f</td>
+				<td>Ambient constant to add to the overall brightness</td>
+			</tr>
+			<tr>
+				<td>-specular f</td>
+				<td>Specular power constant for the size of specular highlights</td>
+			</tr>
+			<tr>
+				<td>-pl x y z r g b</td>
+				<td>Add a point light source at [x,y,z] with color (r,g,b)</td>
+			</tr>
+			<tr>
+				<td>-dl x y z r g b</td>
+				<td>Add a directional light source at [x,y,z] with color (r,g,b)</td>
+			</tr>
+			<tr>
+				<td>-sphere x y z r</td>
+				<td>Add a sphere at x y z with radius r</td>
+			</tr>
+			<tr>
+				<td>-file filename.obj</td>
+				<td>Import a model from a .obj file</td>
+			</tr>
+			<tr>
+				<td>-scale xscale yscale zscale</td>
+				<td>Scale everything in the defined directions</td>
+			</tr>
+			<tr>
+				<td>-translate x y z</td>
+				<td>Move everything by [x,y,z]</td>
+			</tr>
+			<tr>
+				<td>-rotate xaxis yaxis zaxis</td>
+				<td>Rotate by each axis in radians</td>
+			</tr>
+			<tr>
+				<td>-output image.png</td>
+				<td>Export the rendering as an image instead of drawing on a window</td>
+			</tr>
+			<tr>
+				<td>-width i</td>
+				<td>Output width of the result image</td>
+			</tr>
+		</table>
+	</p>
+	
+	<p>
+		Here are some result images of our rendering program: <br>
+		<table border=1>
+			<tr>
+				<td valign="top">
+					Rendering a basic sphere<br>
+					<img src="sphere.png" width=200px><br>
+					./render<br>
+					-sphere 0 0 0 0.5<br>
+					-dl -1 -1 1 1 1 1<br>
+					2882ms
+				</td>
+				<td valign="top">
+					Rendering a basic .obj file<br>
+					<img src="star.png" width=200px><br>
+					./render<br>
+					-file models/triangle.obj<br>
+					-dl -1 -1 1 1 1 1<br>
+					29163ms
+				</td>
+				<td valign="top">
+					Phong shading with colors<br>
+					<img src="lights.png" width=200px><br>
+					./render<br>
+					-sphere 0 0 0 0.5<br>
+					-dl -1 -1 1 0 1 0<br>
+					-dl -1 1 1 0 0 1<br>
+					-dl 1 1 1 1 0 0<br>
+					3853ms
+				</td>
+			</tr>
+			<tr>
+				<td valign="top">
+					Shadows from 3 point lights<br>
+					<img src="shadows.png" width=200px><br>
+					./render<br>
+					-sphere -0.5 0 0 0.25<br>
+					-sphere 0.5 0 0 0.1<br>
+					-pl 2 0 0 1 0 0<br>
+					-pl 2 0.1 0 0 1 0<br>
+					-pl 2 -0.1 0 0 0 1<br>
+					3063
+				</td>
+				<td valign="top">
+					Demonstration of reflections<br>
+					<img src="reflections.png" width=200px><br>
+					./render<br>
+					-file models/mirror.obj<br>
+					-sphere 0 0 0 0.25<br>
+					-numReflections 10<br>
+					-dl -1 -1 1 1 1 1<br>
+					17931ms
+				</td>
+				<td valign="top">
+					Point light sources<br>
+					<img src="pointlights.png" width=200px><br>
+					./render<br>
+					-file models/mirror2.obj<br>
+					-pl 0.05 0 -0.05 0 1 0<br>
+					-pl 0.6 0 -0.7 1 0 0<br>
+					6972ms
+				</td>
+			</tr>
+			<tr>
+				<td valign="top">
+					Linear transformations<br>
+					<img src="transformmodel.png" width=200px><br>
+					./render<br>
+					-file models/mirror.obj<br>
+					-dl -1 -1 1 1 1 1<br>
+					-scale 0.5 1.2 1<br>
+					-rotate 0 0.7 0.7<br>
+					-translate 0.5 0 0<br>
+					5762ms
+				</td>
+				<td valign="top">
+					Ellipsoid<br>
+					<img src="ellipsoid.png" width=200px><br>
+					./render<br>
+					
+				</td>
+				<td valign="top">
+					Teddy bear<br>
+					<img src="teddy.png" width=200px><br>
+					./render<br>
+					-file models/teddy.obj<br>
+					-dl -1 -1 1 1 1 1<br>
+					-scale 0.04 0.04 0.04<br>
+					-rotate 0 1.57 0<br>
+					49.79min
+				</td>
+			</tr>
+			
+		</table>
+		Note: we defined our -z axis to be behind the viewer, +z 
+		to be in front. The screen is located with x,y spanning -1 to 1, 
+		with a z-axis at a constant z=-1. The eye is located behind that, 
+		at [0,0,-2].
+	</p>
+	<p>
+		We did not use the eigen library for most of our renderings 
+		(with the exception of the ellipsoid, which we did at the end).
+		Instead we wrote our own primitives from scratch. 
+		Because of this, most of our computations were rather sluggishly
+		slow. All of the renderings were done on a single core of 3.2Ghz.
+	</p>
+</body>
+</html>

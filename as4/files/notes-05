@@ -1,0 +1,3 @@
+./render -file files/input-05 -pl 0.05 0 -0.05 0 1 0 -pl 0.6 0 -0.7 1 0 0
+6972ms
+Demonstrates point light sources. There is a green source between the two planes, and a red source outside on the right. A reflection can be seen on the larger plane.
