@@ -1,5 +1,13 @@
 #include "window.h"
 
+bool smooth = true;
+bool wireframe = false;
+float rotateX = 0.0f;
+float rotateY = 0.0f;
+float translateX = 0.0f;
+float translateY = 0.0f;
+float zoom = -8.0f;
+
 vector<MatrixXf> quads;
 float _angle = -70.0f;
 
@@ -73,11 +81,11 @@ void drawScene() {
 	glLoadIdentity();
 	
 	// put pinhole at 0, 0, -8
-	glTranslatef(0.0f, 0.0f, -8.0f);
+	glTranslatef(translateX, translateY, zoom);
 	
 	addLights();
 	
-	glRotatef(_angle, 0.0f, 1.0f, 0.0f);
+	glRotatef(_angle, _angle*0.1, _angle * 0.2, 0.0f);
 	glColor3f(0.0f, 0.5f, 1.0f); // blue
 	
 	addQuads();
