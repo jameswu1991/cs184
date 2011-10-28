@@ -99,50 +99,50 @@ void drawScene() {
 	glBegin(GL_QUADS);
 	
 	//Front
-	glNormal3f(0.0f, 0.0f, 1.0f);
-	//glNormal3f(-1.0f, 0.0f, 1.0f);
-	glVertex3f(-1.5f, -1.0f, 1.5f);
-	//glNormal3f(1.0f, 0.0f, 1.0f);
-	glVertex3f(1.5f, -1.0f, 1.5f);
-	//glNormal3f(1.0f, 0.0f, 1.0f);
-	glVertex3f(1.5f, 1.0f, 1.5f);
-	//glNormal3f(-1.0f, 0.0f, 1.0f);
-	glVertex3f(-1.5f, 1.0f, 1.5f);
-	
-	//Right
-	glNormal3f(1.0f, 0.0f, 0.0f);
-	//glNormal3f(1.0f, 0.0f, -1.0f);
-	glVertex3f(1.5f, -1.0f, -1.5f);
-	//glNormal3f(1.0f, 0.0f, -1.0f);
-	glVertex3f(1.5f, 1.0f, -1.5f);
-	//glNormal3f(1.0f, 0.0f, 1.0f);
-	glVertex3f(1.5f, 1.0f, 1.5f);
-	//glNormal3f(1.0f, 0.0f, 1.0f);
-	glVertex3f(1.5f, -1.0f, 1.5f);
-	
-	//Back
-	glNormal3f(0.0f, 0.0f, -1.0f);
-	//glNormal3f(-1.0f, 0.0f, -1.0f);
-	glVertex3f(-1.5f, -1.0f, -1.5f);
-	//glNormal3f(-1.0f, 0.0f, -1.0f);
-	glVertex3f(-1.5f, 1.0f, -1.5f);
-	//glNormal3f(1.0f, 0.0f, -1.0f);
-	glVertex3f(1.5f, 1.0f, -1.5f);
-	//glNormal3f(1.0f, 0.0f, -1.0f);
-	glVertex3f(1.5f, -1.0f, -1.5f);
-	
-	//Left
-	glNormal3f(-1.0f, 0.0f, 0.0f);
-	//glNormal3f(-1.0f, 0.0f, -1.0f);
-	glVertex3f(-1.5f, -1.0f, -1.5f);
-	//glNormal3f(-1.0f, 0.0f, 1.0f);
-	glVertex3f(-1.5f, -1.0f, 1.5f);
-	//glNormal3f(-1.0f, 0.0f, 1.0f);
-	glVertex3f(-1.5f, 1.0f, 1.5f);
-	//glNormal3f(-1.0f, 0.0f, -1.0f);
-	glVertex3f(-1.5f, 1.0f, -1.5f);
-	
-	glEnd();
+    //glNormal3f(0.0f, 0.0f, 1.0f);
+    glNormal3f(-1.0f, 0.0f, 1.0f);
+    glVertex3f(-1.5f, -1.0f, 1.5f);
+    glNormal3f(1.0f, 0.0f, 1.0f);
+    glVertex3f(1.5f, -1.0f, 1.5f);
+    glNormal3f(1.0f, 0.0f, 1.0f);
+    glVertex3f(1.5f, 1.0f, 1.5f);
+    glNormal3f(-1.0f, 0.0f, 1.0f);
+    glVertex3f(-1.5f, 1.0f, 1.5f);
+    
+    //Right
+    //glNormal3f(1.0f, 0.0f, 0.0f);
+    glNormal3f(1.0f, 0.0f, -1.0f);
+    glVertex3f(1.5f, -1.0f, -1.5f);
+    glNormal3f(1.0f, 0.0f, -1.0f);
+    glVertex3f(1.5f, 1.0f, -1.5f);
+    glNormal3f(1.0f, 0.0f, 1.0f);
+    glVertex3f(1.5f, 1.0f, 1.5f);
+    glNormal3f(1.0f, 0.0f, 1.0f);
+    glVertex3f(1.5f, -1.0f, 1.5f);
+    
+    //Back
+    //glNormal3f(0.0f, 0.0f, -1.0f);
+    glNormal3f(-1.0f, 0.0f, -1.0f);
+    glVertex3f(-1.5f, -1.0f, -1.5f);
+    glNormal3f(-1.0f, 0.0f, -1.0f);
+    glVertex3f(-1.5f, 1.0f, -1.5f);
+    glNormal3f(1.0f, 0.0f, -1.0f);
+    glVertex3f(1.5f, 1.0f, -1.5f);
+    glNormal3f(1.0f, 0.0f, -1.0f);
+    glVertex3f(1.5f, -1.0f, -1.5f);
+    
+    //Left
+    //glNormal3f(-1.0f, 0.0f, 0.0f);
+    glNormal3f(-1.0f, 0.0f, -1.0f);
+    glVertex3f(-1.5f, -1.0f, -1.5f);
+    glNormal3f(-1.0f, 0.0f, 1.0f);
+    glVertex3f(-1.5f, -1.0f, 1.5f);
+    glNormal3f(-1.0f, 0.0f, 1.0f);
+    glVertex3f(-1.5f, 1.0f, 1.5f);
+    glNormal3f(-1.0f, 0.0f, -1.0f);
+    glVertex3f(-1.5f, 1.0f, -1.5f);
+    
+    glEnd();
 	glEndList();
 	
 	glCallList(index);
