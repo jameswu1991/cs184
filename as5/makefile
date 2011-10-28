@@ -11,7 +11,7 @@ OPT   = -O3
 
 #-----------------------------------------
 # X       --------------------------------
-X_INC  =   -I/usr/X11R6/include -I/sw/include -I/usr/sww/include -I/usr/sww/pkg/Mesa/include 
+X_INC  =   -I/usr/X11R6/include -I/sw/include -I/usr/sww/include -I/usr/sww/pkg/Mesa/include -I. 
 X_LIB  =   -L/usr/X11R6/lib -L/sw/lib -L/usr/sww/lib -L/usr/sww/bin -L/usr/sww/pkg/Mesa/lib 
 
 #-----------------------------------------
@@ -22,7 +22,7 @@ GL_LIB  =   -lglut -lGLU -lGL -lX11
 
 #-----------------------------------------
 
-SOURCES=main.cpp patch.cpp parser.cpp
+SOURCES=main.cpp patch.cpp parser.cpp window.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=run
 
