@@ -10,10 +10,11 @@ using namespace std;
 using namespace Eigen;
 
 class Patch {
+public:
 	vector<Vector3f> points;
 	vector<Vector3f> sdPoints;
 	vector<Vector3f> sdNormals;
-	vector<vector<Vector3f> > quads;
+	vector<MatrixXf> quads;
 public:
 	Patch (vector<Vector3f> points);
 	void print();

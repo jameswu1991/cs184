@@ -103,15 +103,34 @@ void Patch::subdividepatch(float step) {
 		}
 	}
 	while (end+1 < size) {
-		vector<Vector3f> quad;
-		quad.push_back(sdPoints[start]);
-		quad.push_back(sdPoints[start+1]);
-		quad.push_back(sdPoints[end]);
-		quad.push_back(sdPoints[end+1]);
-		quad.push_back(sdNormals[start]);
-		quad.push_back(sdNormals[start+1]);
-		quad.push_back(sdNormals[end]);
-		quad.push_back(sdNormals[end+1]);
+		MatrixXf quad;
+		// add point vectors
+		quad(0,0) = sdPoints[start](0,0);
+		quad(1,0) = sdPoints[start](1,0);
+		quad(2,0) = sdPoints[start](2,0);
+		quad(0,1) = sdPoints[start+1](0,0);
+		quad(1,1) = sdPoints[start+1](1,0);
+		quad(2,1) = sdPoints[start+1](2,0);
+		quad(0,2) = sdPoints[end](0,0);
+		quad(1,2) = sdPoints[end](1,0);
+		quad(2,2) = sdPoints[end](2,0);
+		quad(0,3) = sdPoints[end+1](0,0);
+		quad(1,3) = sdPoints[end+1](1,0);
+		quad(2,3) = sdPoints[end+1](2,0);
+
+		// add normal vectors
+		quad(0,4) = sdNormals[start](0,0);
+		quad(1,4) = sdNormals[start](1,0);
+		quad(2,4) = sdNormals[start](2,0);
+		quad(0,5) = sdNormals[start+1](0,0);
+		quad(1,5) = sdNormals[start+1](1,0);
+		quad(2,5) = sdNormals[start+1](2,0);
+		quad(0,6) = sdNormals[end](0,0);
+		quad(1,6) = sdNormals[end](1,0);
+		quad(2,6) = sdNormals[end](2,0);
+		quad(0,7) = sdNormals[end+1](0,0);
+		quad(1,7) = sdNormals[end+1](1,0);
+		quad(2,7) = sdNormals[end+1](2,0);
 		quads.push_back(quad);
 		start += 2;
 		end = start + numdiv;
