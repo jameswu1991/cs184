@@ -7,10 +7,12 @@
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
+#include <Eigen/Core>
 
 #include "patch.h"
 
 using namespace std;
+using namespace Eigen;
 
 class Parser {
 	vector<string> split(string line, char delimiter);
