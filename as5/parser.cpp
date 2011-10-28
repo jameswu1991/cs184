@@ -5,7 +5,7 @@ vector<Patch> Parser::loadFile(char* filename) {
 	ifstream myfile(filename);
 	string line;
 	
-	vector<MatrixXf> patchPoints;
+	vector<Vector3f> patchPoints;
 	
 	if (myfile.is_open()) {
 		while (myfile.good()) {
@@ -16,7 +16,7 @@ vector<Patch> Parser::loadFile(char* filename) {
 				continue;
 			
 			for (int a=0; a<4; a++) {
-				MatrixXf point (3,1);
+				Vector3f point;
 				point(0,0) = atof(points[a*3].c_str());
 				point(1,0) = atof(points[a*3+1].c_str());
 				point(2,0) = atof(points[a*3+2].c_str());
@@ -26,7 +26,7 @@ vector<Patch> Parser::loadFile(char* filename) {
 			if (patchPoints.size()==16) {
 				Patch patch (patchPoints);
 				patches.push_back(patch);
-				vector<MatrixXf> blank;
+				vector<Vector3f> blank;
 				patchPoints = blank;
 			}
 		}
