@@ -2,34 +2,33 @@
 
 vector<Patch> Parser::loadFile(char* filename) {
 	vector<Patch> patches;
-	
 	ifstream myfile(filename);
+	string line;
+	
+	vector<MatrixXf> patchPoints;
+	
 	if (myfile.is_open()) {
-		
-		string line;
-		
 		while (myfile.good()) {
-			/* getline(myfile, line);
-			vector<string> tokens = split(line, '   ');
-			if (line[0] == 'v') {
-				if (tokens.size() < 4)
-					continue;
-				Vertex v = Vertex(
-					atof(tokens[1].c_str()), 
-					atof(tokens[2].c_str()), 
-					atof(tokens[3].c_str()));
-				verticies.push_back(v);
-			}
-			else if (line[0] == 'f') {
-				Polygon p;
-				for(int a=1; a<tokens.size(); a++) {
-					int index = atoi(tokens[a].c_str());
-					p.addPoint(verticies[index - 1]);
-				}
-				model->addPolygon(p);
+			getline(myfile, line);
+			vector<string> points = split(line, ' ');
+			
+			if (points.size() != 12)
+				continue;
+			
+			for (int a=0; a<4; a++) {
+				MatrixXf point (3,1);
+				point(0,0) = atof(points[a*3].c_str());
+				point(1,0) = atof(points[a*3+1].c_str());
+				point(2,0) = atof(points[a*3+2].c_str());
+				patchPoints.push_back(point);
 			}
 			
-			patches.push_back(patch); */
+			if (patchPoints.size()==16) {
+				Patch patch (patchPoints);
+				patches.push_back(patch);
+				vector<MatrixXf> blank;
+				patchPoints = blank;
+			}
 		}
 	}
 	return patches;

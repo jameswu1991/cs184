@@ -12,6 +12,7 @@ class Patch {
 public:
 	Patch (vector<Eigen::MatrixXf> points);
 	void evaluate(float u, float v);
+	void print();
 };
 
 #endif
