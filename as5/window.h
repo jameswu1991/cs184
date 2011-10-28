@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <Eigen/Core>
+#include <Eigen/Geometry>
 
 #ifdef _WIN32
 #	include <windows.h>

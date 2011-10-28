@@ -1,12 +1,13 @@
 #include "window.h"
 
 bool smooth = true;
+bool hiddenLine = false;
 bool wireframe = false;
 float rotateX = 0.0f;
 float rotateY = 0.0f;
 float translateX = 0.0f;
 float translateY = 0.0f;
-float zoom = -8.0f;
+float zoom = 1.0f;
 
 vector<MatrixXf> quads;
 float _angle = -70.0f;
@@ -14,8 +15,46 @@ float _angle = -70.0f;
 //Called when a key is pressed
 void handleKeypress(unsigned char key, int x, int y) {
 	switch (key) {
-		case 27: //Escape key
-			exit(0);
+		case 61: // equals button
+			zoom += 0.05;
+			break;
+		case 45: // minus button
+			zoom -= 0.05;
+			break;
+		case 115: // s
+			smooth = !smooth;
+			break;
+		case 119: // w
+			wireframe = !wireframe;
+			break;
+		case 104: // h
+			hiddenLine = !hiddenLine;
+			break;
+	}
+}
+
+void handleSpecialKeypress(int key, int x, int y) {
+	switch (key) {
+		case GLUT_KEY_LEFT:
+			if (glutGetModifiers() == GLUT_ACTIVE_SHIFT)
+				translateX -= 0.2;
+			else rotateX -= 1.5;
+			break;
+		case GLUT_KEY_RIGHT:
+			if (glutGetModifiers() == GLUT_ACTIVE_SHIFT)
+				translateX += 0.2;
+			else rotateX += 1.5;
+			break;
+		case GLUT_KEY_DOWN:
+			if (glutGetModifiers() == GLUT_ACTIVE_SHIFT)
+				translateY -= 0.2;
+			else rotateY -= 1.5;
+			break;
+		case GLUT_KEY_UP:
+			if (glutGetModifiers() == GLUT_ACTIVE_SHIFT)
+				translateY += 0.2;
+			else rotateY += 1.5;
+			break;
 	}
 }
 
@@ -47,23 +86,74 @@ void addLights() {
 }
 
 void addQuads() {
+	glColor3f(0.0f, 0.5f, 1.0f); // blue
+	
 	GLuint index = glGenLists(1);
 	glNewList(index, GL_COMPILE);
-	glBegin(GL_QUADS);
-	
-	for (int a=0; a<quads.size(); a++) {
-		MatrixXf quad = quads[a];
-		glNormal3f(quad(0,4), quad(1,4), quad(2,4));
-		glVertex3f(quad(0,0), quad(1,0), quad(2,0));
-		glNormal3f(quad(0,5), quad(1,5), quad(2,5));
-		glVertex3f(quad(0,1), quad(1,1), quad(2,1));
-		glNormal3f(quad(0,6), quad(1,6), quad(2,6));
-		glVertex3f(quad(0,2), quad(1,2), quad(2,2));
-		glNormal3f(quad(0,7), quad(1,7), quad(2,7));
-		glVertex3f(quad(0,3), quad(1,3), quad(2,3));
+	if (wireframe) {
+		for (int a=0; a<quads.size(); a++) {
+			MatrixXf quad = quads[a];
+			
+			if (hiddenLine) {
+				// draw giant black quad to block out frames behind it
+				glColor3f(0.0f, 0.0f, 0.0f); // black
+				glBegin(GL_QUADS);
+				glVertex3f(quad(0,0), quad(1,0), quad(2,0));
+				glVertex3f(quad(0,1), quad(1,1), quad(2,1));
+				glVertex3f(quad(0,2), quad(1,2), quad(2,2));
+				glVertex3f(quad(0,3), quad(1,3), quad(2,3));
+				glEnd();
+				glColor3f(0.0f, 0.5f, 1.0f); // blue
+			}
+			
+			glBegin(GL_LINE_STRIP);
+			glVertex3f(quad(0,0), quad(1,0), quad(2,0));
+			glVertex3f(quad(0,1), quad(1,1), quad(2,1));
+			glVertex3f(quad(0,2), quad(1,2), quad(2,2));
+			glVertex3f(quad(0,3), quad(1,3), quad(2,3));
+			glVertex3f(quad(0,0), quad(1,0), quad(2,0));
+			glEnd();
+		}
+	}
+	else {
+		glBegin(GL_QUADS);
+		if (smooth) {
+			glShadeModel(GL_SMOOTH); //Enable smooth shading
+			for (int a=0; a<quads.size(); a++) {
+				MatrixXf quad = quads[a];
+				glNormal3f(quad(0,4), quad(1,4), quad(2,4));
+				glVertex3f(quad(0,0), quad(1,0), quad(2,0));
+				glNormal3f(quad(0,5), quad(1,5), quad(2,5));
+				glVertex3f(quad(0,1), quad(1,1), quad(2,1));
+				glNormal3f(quad(0,6), quad(1,6), quad(2,6));
+				glVertex3f(quad(0,2), quad(1,2), quad(2,2));
+				glNormal3f(quad(0,7), quad(1,7), quad(2,7));
+				glVertex3f(quad(0,3), quad(1,3), quad(2,3));
+			}
+		}
+		else {
+			glShadeModel(GL_FLAT); //Enable smooth shading
+			for (int a=0; a<quads.size(); a++) {
+				MatrixXf quad = quads[a];
+				Vector3f side1; 
+				side1 << quad(0,1)-quad(0,0),
+						quad(1,1)-quad(1,0),
+						quad(2,1)-quad(2,0);
+				Vector3f side2;
+				side2 << quad(0,2)-quad(0,1),
+						quad(1,2)-quad(1,1),
+						quad(2,2)-quad(2,1);
+				Vector3f cross = side1.cross(side2);
+				glNormal3f(cross(0), cross(1), cross(2));
+				glVertex3f(quad(0,0), quad(1,0), quad(2,0));
+				glVertex3f(quad(0,1), quad(1,1), quad(2,1));
+				glVertex3f(quad(0,2), quad(1,2), quad(2,2));
+				glVertex3f(quad(0,3), quad(1,3), quad(2,3));
+			}
+		}
+		glEnd();
 	}
 	
-	glEnd();
 	glEndList();
 	
 	glCallList(index);
@@ -81,12 +171,12 @@ void drawScene() {
 	glLoadIdentity();
 	
 	// put pinhole at 0, 0, -8
-	glTranslatef(translateX, translateY, zoom);
+	glTranslatef(translateX, translateY, -8.0 / zoom);
 	
 	addLights();
 	
-	glRotatef(_angle, _angle*0.1, _angle * 0.2, 0.0f);
-	glColor3f(0.0f, 0.5f, 1.0f); // blue
+	glRotatef(rotateY, 1.0f, 0.0f, 0.0f);
+	glRotatef(rotateX, 0.0f, 1.0f, 0.0f);
 	
 	addQuads();
 	addTriangles();
@@ -129,6 +219,7 @@ void Window::show(int argc, char *argv[]) {
 	//Set handler functions
 	glutDisplayFunc(drawScene);
 	glutKeyboardFunc(handleKeypress);
+	glutSpecialFunc(handleSpecialKeypress);
 	glutReshapeFunc(handleResize);
 	
 	glutTimerFunc(25, update, 0); //Add a timer
