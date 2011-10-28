@@ -1,16 +1,16 @@
 #include "parser.h"
 
-Model* Parser::loadFile(char* filename) {
-	Model* model = new Model();
+vector<Patch> Parser::loadFile(char* filename) {
+	vector<Patch> patches;
+	
 	ifstream myfile(filename);
 	if (myfile.is_open()) {
 		
-		vector<Vertex> verticies;
 		string line;
 		
 		while (myfile.good()) {
-			getline(myfile, line);
-			vector<string> tokens = split(line, ' ');
+			/* getline(myfile, line);
+			vector<string> tokens = split(line, '   ');
 			if (line[0] == 'v') {
 				if (tokens.size() < 4)
 					continue;
@@ -28,9 +28,11 @@ Model* Parser::loadFile(char* filename) {
 				}
 				model->addPolygon(p);
 			}
+			
+			patches.push_back(patch); */
 		}
 	}
-	return model;
+	return patches;
 }
 
 vector<string> Parser::split(string line, char delimiter) {
