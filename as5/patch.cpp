@@ -28,8 +28,10 @@ vector<Vector3f> Patch::bezcurveinterp(vector<Vector3f> curve, float u) {
 	Vector3f A = curve[0] * (1.0 - u) + curve[1] * u;
 	Vector3f B = curve[1] * (1.0 - u) + curve[2] * u;
 	Vector3f C = curve[2] * (1.0 - u) + curve[3] * u;
+	
 	Vector3f D = A * (1.0 - u) + B * u;
 	Vector3f E = B * (1.0 - u) + C * u;
+	
 	Vector3f p = D * (1.0 - u) + E * u;
 	Vector3f dPdu = 3 * (E - D);
 	result.push_back(p);
@@ -74,17 +76,18 @@ vector<Vector3f> Patch::bezpatchinterp(float u, float v) {
 	Vector3f dPdu = surfaceDerivativeU[1];
 	Vector3f dPdv = surfaceDerivativeV[1];
 	Vector3f n = dPdu.cross(dPdv);
-	Vector3f norm = n / n.size();
+	n = n / n.size();
 	
 	result.push_back(surfaceDerivativeU[0]);
-	result.push_back(norm);
+	result.push_back(n);
 	return result;
 }
 
 void Patch::subdividepatch(float step) {
 	// compute how many subdivisions there are
 	// for this step size
-	int numdiv = (1+0.001) / step;
+	step = 0.05;
+	int numdiv = ((1 + 0.001) / step) + 1;
 	float u, v = 0;
 	int size = numdiv * numdiv;
 	int start = 0;
@@ -102,37 +105,41 @@ void Patch::subdividepatch(float step) {
 			sdNormals.push_back(pointAndNorm[1]);
 		}
 	}
-	while (end+1 < size) {
-		MatrixXf quad;
+
+	while ((end+1) < size) {
+		MatrixXf quad (3,8);
 		// add point vectors
 		quad(0,0) = sdPoints[start](0,0);
 		quad(1,0) = sdPoints[start](1,0);
 		quad(2,0) = sdPoints[start](2,0);
-		quad(0,1) = sdPoints[start+1](0,0);
-		quad(1,1) = sdPoints[start+1](1,0);
-		quad(2,1) = sdPoints[start+1](2,0);
-		quad(0,2) = sdPoints[end](0,0);
-		quad(1,2) = sdPoints[end](1,0);
-		quad(2,2) = sdPoints[end](2,0);
-		quad(0,3) = sdPoints[end+1](0,0);
-		quad(1,3) = sdPoints[end+1](1,0);
-		quad(2,3) = sdPoints[end+1](2,0);
+		quad(0,1) = sdPoints[end](0,0);
+		quad(1,1) = sdPoints[end](1,0);
+		quad(2,1) = sdPoints[end](2,0);
+		quad(0,2) = sdPoints[end+1](0,0);
+		quad(1,2) = sdPoints[end+1](1,0);
+		quad(2,2) = sdPoints[end+1](2,0);
+		quad(0,3) = sdPoints[start+1](0,0);
+		quad(1,3) = sdPoints[start+1](1,0);
+		quad(2,3) = sdPoints[start+1](2,0);
 
 		// add normal vectors
 		quad(0,4) = sdNormals[start](0,0);
 		quad(1,4) = sdNormals[start](1,0);
 		quad(2,4) = sdNormals[start](2,0);
-		quad(0,5) = sdNormals[start+1](0,0);
-		quad(1,5) = sdNormals[start+1](1,0);
-		quad(2,5) = sdNormals[start+1](2,0);
-		quad(0,6) = sdNormals[end](0,0);
-		quad(1,6) = sdNormals[end](1,0);
-		quad(2,6) = sdNormals[end](2,0);
-		quad(0,7) = sdNormals[end+1](0,0);
-		quad(1,7) = sdNormals[end+1](1,0);
-		quad(2,7) = sdNormals[end+1](2,0);
+		quad(0,5) = sdNormals[end](0,0);
+		quad(1,5) = sdNormals[end](1,0);
+		quad(2,5) = sdNormals[end](2,0);
+		quad(0,6) = sdNormals[end+1](0,0);
+		quad(1,6) = sdNormals[end+1](1,0);
+		quad(2,6) = sdNormals[end+1](2,0);
+		quad(0,7) = sdNormals[start+1](0,0);
+		quad(1,7) = sdNormals[start+1](1,0);
+		quad(2,7) = sdNormals[start+1](2,0);
 		quads.push_back(quad);
-		start += 2;
+		start += 1;
+		if ((start % numdiv) == (numdiv-1)) {
+			start += 1;
+		}
 		end = start + numdiv;
 	}
 	
@@ -177,7 +184,7 @@ vector<vector<Vector3f> > Patch::controlForU() {
 	vector<Vector3f> row2;
 	row2.push_back(points[1]);
 	row2.push_back(points[5]);
-	row2.push_back(points[8]);
+	row2.push_back(points[9]);
 	row2.push_back(points[13]);
 	vector<Vector3f> row3;
 	row3.push_back(points[2]);
