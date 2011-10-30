@@ -86,13 +86,13 @@ vector<Vector3f> Patch::bezpatchinterp(float u, float v) {
 void Patch::subdividepatch(float step) {
 	// compute how many subdivisions there are
 	// for this step size
-	step = 0.05;
+	step = 0.1;
 	int numdiv = ((1 + 0.001) / step) + 1;
 	float u, v = 0;
 	int size = numdiv * numdiv;
 	int start = 0;
 	int end = numdiv;
-	
+		
 	// for each parametric value of u
 	for (int iu=0; iu<numdiv; iu++) {
 		u = iu * step;
@@ -101,6 +101,11 @@ void Patch::subdividepatch(float step) {
 			v = iv * step;
 			// evaluate surface
 			vector<Vector3f> pointAndNorm = bezpatchinterp(u,v);
+			if (pointAndNorm[1].norm() == 0) {
+				vector<Vector3f> next = bezpatchinterp((iu+1)*step, (iv+1)*step);
+				pointAndNorm[1] = next[1];
+			}
+
 			sdPoints.push_back(pointAndNorm[0]);
 			sdNormals.push_back(pointAndNorm[1]);
 		}
