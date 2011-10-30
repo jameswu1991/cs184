@@ -83,6 +83,72 @@ vector<Vector3f> Patch::bezpatchinterp(float u, float v) {
 	return result;
 }
 
+Vector2f midpoint (Vector2f p1, Vector2f p2) {
+	return (p1+p2)/2;
+}
+
+Triangle::Triangle (Vector2f _p1, Vector2f _p2, Vector2f _p3) {
+	p1 = _p1;
+	p2 = _p2;
+	p3 = _p3;
+}
+
+MatrixXf Triangle::getMatrix() {
+	MatrixXf m (3, 6);
+	m << p1(0), p1(1), 0,
+		p2(0), p2(1), 0,
+		p3(0), p3(1), 0,
+		0, 0, 0,
+		0, 0, 0,
+		0, 0, 0;
+	return m.transpose();
+}
+
+vector<Triangle> Triangle::divide(bool side1, bool side2, bool side3, bool center) {
+	vector<Triangle> subtriangles;
+	if (side1 && side2 && side3) {
+		subtriangles.push_back(Triangle(p1, midpoint(p1, p2), midpoint(p1, p3)));
+		subtriangles.push_back(Triangle(midpoint(p1, p2), p2, midpoint(p2, p3)));
+		subtriangles.push_back(Triangle(midpoint(p1, p3), midpoint(p2, p3), p3));
+		subtriangles.push_back(Triangle(midpoint(p1, p2), midpoint(p2, p3), midpoint(p3, p1)));
+	}
+	if (side1 && side2 && !side3) {
+		subtriangles.push_back(Triangle(p1, midpoint(p1, p2), midpoint(p1, p3)));
+		subtriangles.push_back(Triangle(midpoint(p1, p2), p2, midpoint(p1, p3)));
+		subtriangles.push_back(Triangle(midpoint(p1, p3), p2, p3));
+	}
+	if (side1 && !side2 && side3) {
+		subtriangles.push_back(Triangle(p1, midpoint(p1, p2), p3));
+		subtriangles.push_back(Triangle(midpoint(p1, p2), p2, midpoint(p2, p3)));
+		subtriangles.push_back(Triangle(midpoint(p1, p2), midpoint(p2, p3), p3));
+	}
+	if (!side1 && side2 && side3) {
+		subtriangles.push_back(Triangle(p1, p2, midpoint(p2, p3)));
+		subtriangles.push_back(Triangle(p1, midpoint(p2, p3), midpoint(p1, p3)));
+		subtriangles.push_back(Triangle(midpoint(p1, p3), midpoint(p2, p3), p3));
+	}
+	if (side1 && !side2 && !side3) {
+		subtriangles.push_back(Triangle(p1, midpoint(p1, p2), p3));
+		subtriangles.push_back(Triangle(midpoint(p1, p2), p2, p3));
+	}
+	if (!side1 && side2 && !side3) {
+		subtriangles.push_back(Triangle(p1, p2, midpoint(p1, p3)));
+		subtriangles.push_back(Triangle(midpoint(p2, p3), p2, p3));
+	}
+	if (!side1 && !side2 && side3) {
+		subtriangles.push_back(Triangle(p1, p2, midpoint(p2, p3)));
+		subtriangles.push_back(Triangle(p1, midpoint(p2, p3), p3));
+	}
+	if (!side1 && !side2 && !side3) {
+		subtriangles.push_back(Triangle(p1, p2, p3));
+	}
+	return subtriangles;
+}
+
+void Patch::tessellate(float error) {
+	// bezpatchinterp(u, v);
+}
+
 void Patch::subdividepatch(float step) {
 	// compute how many subdivisions there are
 	// for this step size
