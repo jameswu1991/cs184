@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>parser.h</string>
+	<string>window.cpp</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -13,13 +13,19 @@
 					<key>filename</key>
 					<string>parser.h</string>
 					<key>lastUsed</key>
-					<date>2011-10-28T03:03:56Z</date>
-					<key>selected</key>
-					<true/>
+					<date>2011-10-28T06:41:58Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>patch.h</string>
+					<key>lastUsed</key>
+					<date>2011-10-28T06:57:50Z</date>
+				</dict>
+				<dict>
+					<key>filename</key>
+					<string>window.h</string>
+					<key>lastUsed</key>
+					<date>2011-10-28T07:51:52Z</date>
 				</dict>
 			</array>
 			<key>expanded</key>
@@ -32,15 +38,29 @@
 			<array>
 				<dict>
 					<key>filename</key>
+					<string>window.cpp</string>
+					<key>lastUsed</key>
+					<date>2011-10-28T07:52:13Z</date>
+					<key>selected</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>filename</key>
 					<string>main.cpp</string>
+					<key>lastUsed</key>
+					<date>2011-10-28T07:52:13Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>parser.cpp</string>
+					<key>lastUsed</key>
+					<date>2011-10-28T06:57:19Z</date>
 				</dict>
 				<dict>
 					<key>filename</key>
 					<string>patch.cpp</string>
+					<key>lastUsed</key>
+					<date>2011-10-28T06:56:53Z</date>
 				</dict>
 			</array>
 			<key>expanded</key>
@@ -61,30 +81,185 @@
 		<dict>
 			<key>filename</key>
 			<string>makefile</string>
+			<key>lastUsed</key>
+			<date>2011-10-28T05:08:42Z</date>
 		</dict>
 	</array>
 	<key>fileHierarchyDrawerWidth</key>
 	<integer>200</integer>
 	<key>metaData</key>
 	<dict>
-		<key>parser.h</key>
+		<key>main.cpp</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
 				<integer>0</integer>
 				<key>line</key>
-				<integer>10</integer>
+				<integer>18</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>25</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>35</integer>
+				<key>line</key>
+				<integer>38</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>18</integer>
+			</dict>
+		</dict>
+		<key>makefile</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>48</integer>
+				<key>line</key>
+				<integer>24</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
 		</dict>
+		<key>parser.cpp</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>18</integer>
+				<key>line</key>
+				<integer>28</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>parser.h</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>16</integer>
+				<key>line</key>
+				<integer>7</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>patch.cpp</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>43</integer>
+				<key>line</key>
+				<integer>41</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>19</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>38</integer>
+				<key>line</key>
+				<integer>41</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>49</integer>
+				<key>line</key>
+				<integer>41</integer>
+			</dict>
+		</dict>
+		<key>patch.h</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>17</integer>
+				<key>line</key>
+				<integer>21</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>6</integer>
+				<key>line</key>
+				<integer>21</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>20</integer>
+				<key>line</key>
+				<integer>21</integer>
+			</dict>
+		</dict>
+		<key>window.cpp</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>3</integer>
+				<key>line</key>
+				<integer>95</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>79</integer>
+		</dict>
+		<key>window.h</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>24</integer>
+				<key>line</key>
+				<integer>10</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>5</integer>
+		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
 		<string>parser.h</string>
+		<string>main.cpp</string>
+		<string>window.cpp</string>
+		<string>parser.cpp</string>
+		<string>patch.h</string>
+		<string>patch.cpp</string>
+		<string>window.h</string>
+		<string>makefile</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
