@@ -145,9 +145,23 @@ void addQuads() {
 						quad(1,2)-quad(1,1),
 						quad(2,2)-quad(2,1);
 				Vector3f cross = side1.cross(side2);
-				if (cross.norm() == 0) {
-					cout << cross.norm() << endl;
-				}
+				
+				int side1Index = 0;
+				do {
+					int side2Index = (side1Index+1)%4;
+					int side3Index = (side1Index+2)%4;
+					Vector3f side1;
+					side1 << quad(0,side2Index)-quad(0,side1Index),
+							 quad(1,side2Index)-quad(1,side1Index),
+							 quad(2,side2Index)-quad(2,side1Index);
+					Vector3f side2;
+					side2 << quad(0,side3Index)-quad(0,side2Index),
+							 quad(1,side3Index)-quad(1,side2Index),
+							 quad(2,side3Index)-quad(2,side2Index);
+					cross = side1.cross(side2);
+					side1Index++;
+				} while (cross.norm() < 0.00001 && side1Index<4);
+				
 				glNormal3f(cross(0), cross(1), cross(2));
 				glVertex3f(quad(0,0), quad(1,0), quad(2,0));
 				glVertex3f(quad(0,1), quad(1,1), quad(2,1));
@@ -209,7 +223,7 @@ void addTriangles() {
 		else {
 			glShadeModel(GL_FLAT); //Enable smooth shading
 			for (int a=0; a<triangles.size(); a++) {
-				MatrixXf triangle = triangle[a];
+				MatrixXf triangle = triangles[a];
 				Vector3f side1; 
 				side1 << triangle(0,1)-triangle(0,0),
 						triangle(1,1)-triangle(1,0),
@@ -219,14 +233,28 @@ void addTriangles() {
 						triangle(1,2)-triangle(1,1),
 						triangle(2,2)-triangle(2,1);
 				Vector3f cross = side1.cross(side2);
-				if (cross.norm() == 0) {
-					cout << cross.norm() << endl;
-				}
+				
+				int side1Index = 0;
+				do {
+					int side2Index = (side1Index+1)%3;
+					int side3Index = (side1Index+2)%3;
+					Vector3f side1;
+					side1 << triangle(0,side2Index)-triangle(0,side1Index),
+							 triangle(1,side2Index)-triangle(1,side1Index),
+							 triangle(2,side2Index)-triangle(2,side1Index);
+					Vector3f side2;
+					side2 << triangle(0,side3Index)-triangle(0,side2Index),
+							 triangle(1,side3Index)-triangle(1,side2Index),
+							 triangle(2,side3Index)-triangle(2,side2Index);
+					cross = side1.cross(side2);
+					side1Index++;
+				} while (cross.norm() < 0.00001 && side1Index<3);
+				
 				glNormal3f(cross(0), cross(1), cross(2));
-				glVertex3f(quad(0,0), quad(1,0), quad(2,0));
-				glVertex3f(quad(0,1), quad(1,1), quad(2,1));
-				glVertex3f(quad(0,2), quad(1,2), quad(2,2));
-				glVertex3f(quad(0,3), quad(1,3), quad(2,3));
+				glVertex3f(triangle(0,0), triangle(1,0), triangle(2,0));
+				glVertex3f(triangle(0,1), triangle(1,1), triangle(2,1));
+				glVertex3f(triangle(0,2), triangle(1,2), triangle(2,2));
+				glVertex3f(triangle(0,3), triangle(1,3), triangle(2,3));
 			}
 		}
 		glEnd();
