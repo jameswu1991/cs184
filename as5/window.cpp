@@ -135,15 +135,29 @@ void addQuads() {
 			glShadeModel(GL_FLAT); //Enable smooth shading
 			for (int a=0; a<quads.size(); a++) {
 				MatrixXf quad = quads[a];
-				Vector3f side1; 
-				side1 << quad(0,1)-quad(0,0),
-						quad(1,1)-quad(1,0),
-						quad(2,1)-quad(2,0);
-				Vector3f side2;
-				side2 << quad(0,2)-quad(0,1),
-						quad(1,2)-quad(1,1),
-						quad(2,2)-quad(2,1);
-				Vector3f cross = side1.cross(side2);
+				
+				MatrixXf nextQuad = quads[a+1];
+				if (a+1>=quads.size())
+					nextQuad = quads[a-1];
+				
+				Vector3f cross;
+				
+				int side1Index = 0;
+				do {
+					int side2Index = (side1Index+1)%4;
+					int side3Index = (side1Index+2)%4;
+					Vector3f side1;
+					side1 << quad(0,side2Index)-quad(0,side1Index),
+							 quad(1,side2Index)-quad(1,side1Index),
+							 quad(2,side2Index)-quad(2,side1Index);
+					Vector3f side2;
+					side2 << quad(0,side3Index)-quad(0,side2Index),
+							 quad(1,side3Index)-quad(1,side2Index),
+							 quad(2,side3Index)-quad(2,side2Index);
+					cross = side1.cross(side2);
+					side1Index++;
+				} while (cross.norm() < 0.00001 && side1Index<4);
+				
 				glNormal3f(cross(0), cross(1), cross(2));
 				glVertex3f(quad(0,0), quad(1,0), quad(2,0));
 				glVertex3f(quad(0,1), quad(1,1), quad(2,1));
