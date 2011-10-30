@@ -10,12 +10,13 @@ float translateY = 0.0f;
 float zoom = 1.0f;
 
 vector<MatrixXf> quads;
+vector<MatrixXf> triangles;
 float _angle = -70.0f;
 
 //Called when a key is pressed
 void handleKeypress(unsigned char key, int x, int y) {
 	switch (key) {
-		case 61: // equals button
+		case 43: // plus button
 			zoom += 0.05;
 			break;
 		case 45: // minus button
@@ -103,7 +104,7 @@ void addQuads() {
 				glVertex3f(quad(0,2), quad(1,2), quad(2,2));
 				glVertex3f(quad(0,3), quad(1,3), quad(2,3));
 				glEnd();
-				glColor3f(0.0f, 0.5f, 1.0f); // blue
+				glColor3f(0.0f, 0.5, 1.0f); // blue
 			}
 			
 			glBegin(GL_LINE_STRIP);
@@ -144,6 +145,9 @@ void addQuads() {
 						quad(1,2)-quad(1,1),
 						quad(2,2)-quad(2,1);
 				Vector3f cross = side1.cross(side2);
+				if (cross.norm() == 0) {
+					cout << cross.norm() << endl;
+				}
 				glNormal3f(cross(0), cross(1), cross(2));
 				glVertex3f(quad(0,0), quad(1,0), quad(2,0));
 				glVertex3f(quad(0,1), quad(1,1), quad(2,1));
@@ -161,6 +165,77 @@ void addQuads() {
 }
 
 void addTriangles() {
+	glColor3f(0.0f, 0.5f, 1.0f); // blue
+	
+	GLuint index = glGenLists(1);
+	glNewList(index, GL_COMPILE);
+	if (wireframe) {
+		for (int a=0; a<triangles.size(); a++) {
+			MatrixXf triangle = triangles[a];
+			
+			if (hiddenLine) {
+				// draw giant black quad to block out frames behind it
+				glColor3f(0.0f, 0.0f, 0.0f); // black
+				glBegin(GL_TRIANGLES);
+				glVertex3f(triangle(0,0), triangle(1,0), triangle(2,0));
+				glVertex3f(triangle(0,1), triangle(1,1), triangle(2,1));
+				glVertex3f(triangle(0,2), triangle(1,2), triangle(2,2));
+				glEnd();
+				glColor3f(0.0f, 0.5, 1.0f); // blue
+			}
+			
+			glBegin(GL_LINE_STRIP);
+			glVertex3f(triangle(0,0), triangle(1,0), triangle(2,0));
+			glVertex3f(triangle(0,1), triangle(1,1), triangle(2,1));
+			glVertex3f(triangle(0,2), triangle(1,2), triangle(2,2));
+			glVertex3f(triangle(0,0), triangle(1,0), triangle(2,0));
+			glEnd();
+		}
+	}
+	else {
+		glBegin(GL_TRIANGLES);
+		if (smooth) {
+			glShadeModel(GL_SMOOTH); //Enable smooth shading
+			for (int a=0; a<triangles.size(); a++) {
+				MatrixXf triangle = triangles[a];
+				glNormal3f(triangle(0,3), triangle(1,3), triangle(2,3));
+				glVertex3f(triangle(0,0), triangle(1,0), triangle(2,0));
+				glNormal3f(triangle(0,4), triangle(1,4), triangle(2,4));
+				glVertex3f(triangle(0,1), triangle(1,1), triangle(2,1));
+				glNormal3f(triangle(0,5), triangle(1,5), triangle(2,5));
+				glVertex3f(triangle(0,2), triangle(1,2), triangle(2,2));
+			}
+		}
+		else {
+			glShadeModel(GL_FLAT); //Enable smooth shading
+			for (int a=0; a<triangles.size(); a++) {
+				MatrixXf triangle = triangle[a];
+				Vector3f side1; 
+				side1 << triangle(0,1)-triangle(0,0),
+						triangle(1,1)-triangle(1,0),
+						triangle(2,1)-triangle(2,0);
+				Vector3f side2;
+				side2 << triangle(0,2)-triangle(0,1),
+						triangle(1,2)-triangle(1,1),
+						triangle(2,2)-triangle(2,1);
+				Vector3f cross = side1.cross(side2);
+				if (cross.norm() == 0) {
+					cout << cross.norm() << endl;
+				}
+				glNormal3f(cross(0), cross(1), cross(2));
+				glVertex3f(quad(0,0), quad(1,0), quad(2,0));
+				glVertex3f(quad(0,1), quad(1,1), quad(2,1));
+				glVertex3f(quad(0,2), quad(1,2), quad(2,2));
+				glVertex3f(quad(0,3), quad(1,3), quad(2,3));
+			}
+		}
+		glEnd();
+	}
+	
+	glEndList();
+	
+	glCallList(index);
+	glDeleteLists(index,1);
 	
 }
 
