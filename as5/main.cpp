@@ -9,60 +9,45 @@ using namespace Eigen;
 Parser parser;
 Window window;
 
+bool adaptive = false;
+
 int main(int argc, char *argv[]) {
 	vector<Patch> patches = parser.loadFile(argv[1]);
-	for (int a=0; a<patches.size(); a++) {
-		patches[a].subdividepatch(0.3);
-		vector<MatrixXf> quadrilaterals =  patches[a].quads;
-		for (int i=0; i<quadrilaterals.size(); i++) {
-			window.addQuad(quadrilaterals[i]);
+	float step = atof(argv[2]);
+	MatrixXf front (6, 3);
+	        front << -1.5f, -1.0f, 1.5f,
+	                1.5f, -1.0f, 1.5f,
+	                1.5f, 1.0f, 1.5f,
+	                -1.5f, 1.0f, 1.5f,
+	                -1.0f, 0.0f, 1.0f,
+					1.0f, 0.0f, 1.0f;
+	window.addTriangle(front.transpose());
+	/*
+	for (int i=0; i<argc; i++) {
+		string s (argv[i]);
+		if (s.compare("-a") == 0) {
+			adaptive = true;
 		}
 	}
-	
-	
-	MatrixXf front (8, 3);
-	front << -1.5f, -1.0f, 1.5f,
-		1.5f, -1.0f, 1.5f,
-		1.5f, 1.0f, 1.5f,
-		-1.5f, 1.0f, 1.5f,
-		-1.0f, 0.0f, 1.0f,
-		1.0f, 0.0f, 1.0f,
-		1.0f, 0.0f, 1.0f,
-		-1.0f, 0.0f, 1.0f;
-	window.addQuad(front.transpose());
-
-	MatrixXf right (8, 3);
-	right << 1.5f, -1.0f, -1.5f,
-		1.5f, 1.0f, -1.5f,
-		1.5f, 1.0f, 1.5f,
-		1.5f, -1.0f, 1.5f,
-		1.0f, 0.0f, -1.0f,
-		1.0f, 0.0f, -1.0f,
-		1.0f, 0.0f, 1.0f,
-		1.0f, 0.0f, 1.0f;
-	window.addQuad(right.transpose());
-
-	MatrixXf back (8, 3);
-	back << -1.5f, -1.0f, -1.5f,
-		-1.5f, 1.0f, -1.5f,
-		1.5f, 1.0f, -1.5f,
-		1.5f, -1.0f, -1.5f,
-		-1.0f, 0.0f, -1.0f,
-		-1.0f, 0.0f, -1.0f,
-		1.0f, 0.0f, -1.0f,
-		1.0f, 0.0f, -1.0f;
-	window.addQuad(back.transpose());
-
-	MatrixXf left (8, 3);
-	left << -1.5f, -1.0f, -1.5f,
-		-1.5f, -1.0f, 1.5f,
-		-1.5f, 1.0f, 1.5f,
-		-1.5f, 1.0f, -1.5f,
-		-1.0f, 0.0f, -1.0f,
-		-1.0f, 0.0f, 1.0f,
-		-1.0f, 0.0f, 1.0f,
-		-1.0f, 0.0f, -1.0f;
-	window.addQuad(left.transpose());
+	if (adaptive == true) {		
+		for (int a=0; a<patches.size(); a++) {
+			patches[a].subdividepatch(step);
+			vector<MatrixXf> triangles =  patches[a].triangles;
+			for (int i=0; i<triangles.size(); i++) {
+				window.addTriangle(triangles[i]);
+			}
+		}	
+	}
+	else {
+		
+		for (int a=0; a<patches.size(); a++) {
+			patches[a].subdividepatch(step);
+			vector<MatrixXf> quadrilaterals =  patches[a].quads;
+			for (int i=0; i<quadrilaterals.size(); i++) {
+				window.addQuad(quadrilaterals[i]);
+			}
+		}
+	}*/
 	
 	window.show(argc, argv);
 }

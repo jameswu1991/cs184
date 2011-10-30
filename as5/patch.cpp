@@ -86,7 +86,6 @@ vector<Vector3f> Patch::bezpatchinterp(float u, float v) {
 void Patch::subdividepatch(float step) {
 	// compute how many subdivisions there are
 	// for this step size
-	step = 0.1;
 	int numdiv = ((1 + 0.001) / step) + 1;
 	float u, v = 0;
 	int size = numdiv * numdiv;

@@ -301,6 +301,10 @@ void Window::addQuad(MatrixXf quad) {
 	quads.push_back(quad);
 }
 
+void Window::addTriangle(MatrixXf triangle) {
+	triangles.push_back(triangle);
+}
+
 void Window::show(int argc, char *argv[]) {
 	//Initialize GLUT
 	glutInit(&argc, argv);

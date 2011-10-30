@@ -15,6 +15,7 @@ public:
 	vector<Vector3f> sdPoints;
 	vector<Vector3f> sdNormals;
 	vector<MatrixXf> quads;
+	vector<MatrixXf> triangles;
 public:
 	Patch (vector<Vector3f> points);
 	void print();
