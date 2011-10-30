@@ -42,6 +42,7 @@ using namespace Eigen;
 class Window {
 public:
 	void addQuad(MatrixXf quad);
+	void addTriangle(MatrixXf triangle);
 	void show(int argc, char *argv[]);
 };
 

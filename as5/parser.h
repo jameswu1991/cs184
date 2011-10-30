@@ -7,7 +7,7 @@
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
-#include <Eigen/Core>
+#include <Eigen/Dense>
 
 #include "patch.h"
 

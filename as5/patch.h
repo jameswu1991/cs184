@@ -15,6 +15,7 @@ public:
 	vector<Vector3f> sdPoints;
 	vector<Vector3f> sdNormals;
 	vector<MatrixXf> quads;
+	vector<MatrixXf> triangles;
 public:
 	Patch (vector<Vector3f> points);
 	void print();
@@ -30,7 +31,7 @@ class Triangle {
 public:
 	Vector2f p1, p2, p3;
 	Triangle (Vector2f _p1, Vector2f _p2, Vector2f _p3);
-	vector<Triangle> divide(bool side1, bool side2, bool side3, bool center);
+	vector<Triangle> divide(bool side1, bool side2, bool side3);
 	MatrixXf getMatrix();
 };
 

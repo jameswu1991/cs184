@@ -94,23 +94,23 @@ Triangle::Triangle (Vector2f _p1, Vector2f _p2, Vector2f _p3) {
 }
 
 MatrixXf Triangle::getMatrix() {
-	MatrixXf m (3, 6);
+	MatrixXf m (6, 3);
 	m << p1(0), p1(1), 0,
 		p2(0), p2(1), 0,
 		p3(0), p3(1), 0,
-		0, 0, 0,
-		0, 0, 0,
-		0, 0, 0;
+		0, 0, 1,
+		0, 0, 1,
+		0, 0, 1;
 	return m.transpose();
 }
 
-vector<Triangle> Triangle::divide(bool side1, bool side2, bool side3, bool center) {
+vector<Triangle> Triangle::divide(bool side1, bool side2, bool side3) {
 	vector<Triangle> subtriangles;
 	if (side1 && side2 && side3) {
 		subtriangles.push_back(Triangle(p1, midpoint(p1, p2), midpoint(p1, p3)));
 		subtriangles.push_back(Triangle(midpoint(p1, p2), p2, midpoint(p2, p3)));
 		subtriangles.push_back(Triangle(midpoint(p1, p3), midpoint(p2, p3), p3));
-		subtriangles.push_back(Triangle(midpoint(p1, p2), midpoint(p2, p3), midpoint(p3, p1)));
+		subtriangles.push_back(Triangle(midpoint(p1, p2), midpoint(p2, p3), midpoint(p1, p3)));
 	}
 	if (side1 && side2 && !side3) {
 		subtriangles.push_back(Triangle(p1, midpoint(p1, p2), midpoint(p1, p3)));
@@ -133,7 +133,7 @@ vector<Triangle> Triangle::divide(bool side1, bool side2, bool side3, bool cente
 	}
 	if (!side1 && side2 && !side3) {
 		subtriangles.push_back(Triangle(p1, p2, midpoint(p1, p3)));
-		subtriangles.push_back(Triangle(midpoint(p2, p3), p2, p3));
+		subtriangles.push_back(Triangle(midpoint(p1, p3), p2, p3));
 	}
 	if (!side1 && !side2 && side3) {
 		subtriangles.push_back(Triangle(p1, p2, midpoint(p2, p3)));
@@ -146,13 +146,51 @@ vector<Triangle> Triangle::divide(bool side1, bool side2, bool side3, bool cente
 }
 
 void Patch::tessellate(float error) {
-	// bezpatchinterp(u, v);
+	vector<Triangle> queue;
+	Triangle lowerLeft(Vector2f(0,0), Vector2f(0,1), Vector2f(1,0));
+	Triangle upperRight(Vector2f(0,1), Vector2f(1,1), Vector2f(1,0));
+	queue.push_back(upperRight);
+	queue.push_back(lowerLeft);
+	while (queue.size() > 0) {
+		Triangle trig = queue.back();
+		queue.pop_back();
+		vector<Vector3f> evaledP1 = bezpatchinterp(trig.p1(0), trig.p1(1));
+		vector<Vector3f> evaledP2 = bezpatchinterp(trig.p2(0), trig.p2(1));
+		vector<Vector3f> evaledP3 = bezpatchinterp(trig.p3(0), trig.p3(1));
+		Vector3f interpS1 = (evaledP1[0]+evaledP2[0])/2;
+		Vector3f interpS2 = (evaledP1[0]+evaledP3[0])/2;
+		Vector3f interpS3 = (evaledP2[0]+evaledP3[0])/2;
+		Triangle inner = trig.divide(true, true, true)[3];
+		Vector3f evaledS1 = bezpatchinterp(inner.p1(0), inner.p1(1))[0];
+		Vector3f evaledS2 = bezpatchinterp(inner.p3(0), inner.p3(1))[0];
+		Vector3f evaledS3 = bezpatchinterp(inner.p2(0), inner.p2(1))[0];
+		bool splitS1 = (interpS1 - evaledS1).norm() > error;
+		bool splitS2 = (interpS2 - evaledS2).norm() > error;
+		bool splitS3 = (interpS3 - evaledS3).norm() > error;
+		if (!splitS1 && !splitS2 && !splitS3) {
+			MatrixXf triangle (6, 3);
+			
+			if (evaledP1[1].norm()==0) evaledP1[1]=evaledP2[1];
+			if (evaledP2[1].norm()==0) evaledP2[1]=evaledP3[1];
+			if (evaledP3[1].norm()==0) evaledP3[1]=evaledP1[1];
+			
+			triangle << evaledP1[0](0), evaledP1[0](1), evaledP1[0](2),
+				evaledP2[0](0), evaledP2[0](1), evaledP2[0](2),
+				evaledP3[0](0), evaledP3[0](1), evaledP3[0](2),
+				evaledP1[1](0), evaledP1[1](1), evaledP1[1](2),
+				evaledP2[1](0), evaledP2[1](1), evaledP2[1](2),
+				evaledP3[1](0), evaledP3[1](1), evaledP3[1](2);
+			triangles.push_back(triangle.transpose());
+		} else {
+			vector<Triangle> fragments = trig.divide(splitS1, splitS2, splitS3);
+			queue.insert(queue.end(), fragments.begin(), fragments.end());
+		}
+	}
 }
 
 void Patch::subdividepatch(float step) {
 	// compute how many subdivisions there are
 	// for this step size
-	step = 0.1;
 	int numdiv = ((1 + 0.001) / step) + 1;
 	float u, v = 0;
 	int size = numdiv * numdiv;

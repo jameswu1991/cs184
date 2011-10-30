@@ -31,6 +31,7 @@ vector<Patch> Parser::loadFile(char* filename) {
 			}
 		}
 	}
+
 	return patches;
 }
 
