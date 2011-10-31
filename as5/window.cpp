@@ -95,8 +95,18 @@ void addQuads() {
 		for (int a=0; a<quads.size(); a++) {
 			MatrixXf quad = quads[a];
 			
+			glBegin(GL_LINE_STRIP);
+			glVertex3f(quad(0,0), quad(1,0), quad(2,0));
+			glVertex3f(quad(0,1), quad(1,1), quad(2,1));
+			glVertex3f(quad(0,2), quad(1,2), quad(2,2));
+			glVertex3f(quad(0,3), quad(1,3), quad(2,3));
+			glVertex3f(quad(0,0), quad(1,0), quad(2,0));
+			glEnd();
 			if (hiddenLine) {
 				// draw giant black quad to block out frames behind it
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+				glEnable(GL_POLYGON_OFFSET_FILL);
+				glPolygonOffset(1.0, 1.0);
 				glColor3f(0.0f, 0.0f, 0.0f); // black
 				glBegin(GL_QUADS);
 				glVertex3f(quad(0,0), quad(1,0), quad(2,0));
@@ -105,15 +115,8 @@ void addQuads() {
 				glVertex3f(quad(0,3), quad(1,3), quad(2,3));
 				glEnd();
 				glColor3f(0.0f, 0.5, 1.0f); // blue
+				glDisable(GL_POLYGON_OFFSET_FILL);
 			}
-			
-			glBegin(GL_LINE_STRIP);
-			glVertex3f(quad(0,0), quad(1,0), quad(2,0));
-			glVertex3f(quad(0,1), quad(1,1), quad(2,1));
-			glVertex3f(quad(0,2), quad(1,2), quad(2,2));
-			glVertex3f(quad(0,3), quad(1,3), quad(2,3));
-			glVertex3f(quad(0,0), quad(1,0), quad(2,0));
-			glEnd();
 		}
 	}
 	else {
@@ -273,7 +276,7 @@ void drawScene() {
 	glLoadIdentity();
 	
 	// put pinhole at 0, 0, -8
-	glTranslatef(translateX, translateY, -8.0 / zoom);
+	glTranslatef(translateX, translateY, -12.0 / zoom);
 	
 	addLights();
 	
