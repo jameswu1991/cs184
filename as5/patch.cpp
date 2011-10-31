@@ -191,7 +191,7 @@ void Patch::tessellate(float error) {
 void Patch::subdividepatch(float step) {
 	// compute how many subdivisions there are
 	// for this step size
-	int numdiv = ((1 + 0.001) / step) + 1;
+	int numdiv = ((1 + 0.001) / step) + 2;
 	float u, v = 0;
 	int size = numdiv * numdiv;
 	int start = 0;
@@ -200,10 +200,12 @@ void Patch::subdividepatch(float step) {
 	// for each parametric value of u
 	for (int iu=0; iu<numdiv; iu++) {
 		u = iu * step;
+		if (u > 1) { u = 1; }
 		// for each parametric value of v
 		for (int iv=0; iv<numdiv; iv++) {
 			v = iv * step;
 			// evaluate surface
+			if (v > 1) { v = 1; }
 			vector<Vector3f> pointAndNorm = bezpatchinterp(u,v);
 			if (pointAndNorm[1].norm() == 0) {
 				vector<Vector3f> next = bezpatchinterp((iu+1)*step, (iv+1)*step);
