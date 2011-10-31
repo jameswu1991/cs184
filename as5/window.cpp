@@ -192,6 +192,9 @@ void addTriangles() {
 			
 			if (hiddenLine) {
 				// draw giant black quad to block out frames behind it
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+				glEnable(GL_POLYGON_OFFSET_FILL);
+				glPolygonOffset(1.0, 1.0);
 				glColor3f(0.0f, 0.0f, 0.0f); // black
 				glBegin(GL_TRIANGLES);
 				glVertex3f(triangle(0,0), triangle(1,0), triangle(2,0));
@@ -199,6 +202,7 @@ void addTriangles() {
 				glVertex3f(triangle(0,2), triangle(1,2), triangle(2,2));
 				glEnd();
 				glColor3f(0.0f, 0.5, 1.0f); // blue
+				glDisable(GL_POLYGON_OFFSET_FILL);
 			}
 			
 			glBegin(GL_LINE_STRIP);
