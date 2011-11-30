@@ -33,6 +33,8 @@ static DWORD lastTime;
 static struct timeval lastTime;
 #endif
 
+#include "scene.h"
+
 #define WIDTH 400
 #define HEIGHT 400
 
@@ -41,8 +43,7 @@ using namespace Eigen;
 
 class Window {
 public:
-	void addQuad(MatrixXf quad);
-	void addTriangle(MatrixXf triangle);
+	Window (Scene scene);
 	void show(int argc, char *argv[]);
 };
 

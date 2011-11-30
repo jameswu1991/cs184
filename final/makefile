@@ -22,7 +22,7 @@ GL_LIB  =   -lglut -lGLU -lGL -lX11
 
 #-----------------------------------------
 
-SOURCES=main.cpp patch.cpp parser.cpp window.cpp
+SOURCES=main.cpp window.cpp scene.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=run
 
