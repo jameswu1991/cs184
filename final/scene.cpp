@@ -8,9 +8,10 @@ Scene::Scene() {
 }
 
 void Scene::subdivideTo16() {
-	Scene::subdivide();
-	Scene::subdivide();
-	Scene::subdivide();
+	Scene::subdivide(); // 2x2
+	Scene::subdivide(); // 4x4
+	Scene::subdivide(); // 8x8
+	Scene::subdivide(); // 16x16
 }
 
 void Scene::subdivide() {
