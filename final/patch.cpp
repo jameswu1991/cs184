@@ -1,5 +1,8 @@
 #include "patch.h"
 
+using namespace std;
+using namespace Eigen;
+
 /*
 public:
 vector<Vector3f> vertices;
