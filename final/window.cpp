@@ -41,14 +41,10 @@ void addLights() {
 	*/
 }
 
+int a=273;
+
 void drawScene() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	
-	// put camera pinhole at 0, 0, -8
-	// glTranslatef(278, 273, -800);
 	
 	addLights();
 	
@@ -78,16 +74,25 @@ void handleKeypress(unsigned char key, int x, int y) {
 	}
 }
 
-int a=273;
-
 void handleResize(int w, int h) {
 	glViewport(0, 0, w, h);
+	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	//gluPerspective(fov y, aspect ratio, projection plane, far clipping plane)
-	gluPerspective(63.44, (double)w / (double)h, 0.0, 1000.0);
-	// glTranslatef(278.0, a++, -800.0);
+	// gluPerspective(fov y, aspect ratio, projection plane, far clipping plane)
+	gluPerspective(63.44, (double)w / (double)h, -1.0, 1000.0);
+	
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 	gluLookAt(278.0, a++, -800.0, 278.0, 273.0, 0.0, 0.0, 1.0, 0.0);
+	
+	// put camera pinhole at 0, 0, -8
+	// glTranslatef(278, 273, -800);
+	// glTranslated(-278.0, -a++, 800.0);
+	// glTranslated(0, 0, 0);
+	
+	glTranslated(0, 0, 0);
+	// gluLookAt(278.0, a++, -800.0, 278.0, 273.0, 0.0, 0.0, 1.0, 0.0);
 }
 
 Window::Window(Scene scene) {
