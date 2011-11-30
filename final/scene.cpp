@@ -117,7 +117,7 @@ Scene::Scene() {
 	patches.push_back(Patch(array, getVector(0.5, 0.5, 0.5), 0.5, 0));
 	
 	// subdivide the original patches
-	// subdivideTo16();
+	subdivideTo16();
 	
 	/*
 	cout << "Patches size is now " << patches.size() << endl;

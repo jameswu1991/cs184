@@ -80,7 +80,7 @@ void handleResize(int w, int h) {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	// gluPerspective(fov y, aspect ratio, projection plane, far clipping plane)
-	gluPerspective(63.44, (double)w / (double)h, -1.0, 1000.0);
+	gluPerspective(63.44, (double)w / (double)h, 600, 1600.0);
 	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
