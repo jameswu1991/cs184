@@ -64,7 +64,6 @@ void drawScene() {
 		glVertex3f(patch[3](0), patch[3](1), patch[3](2));
 		glVertex3f(patch[0](0), patch[0](1), patch[0](2));
 		glEnd();
-		cout << patch[0](0) << "," << patch[0](1) << "," << patch[0](2) << "\n";
 	}
 	
 	glutSwapBuffers();
@@ -87,8 +86,8 @@ void handleResize(int w, int h) {
 	glLoadIdentity();
 	//gluPerspective(fov y, aspect ratio, projection plane, far clipping plane)
 	gluPerspective(63.44, (double)w / (double)h, 0.0, 1000.0);
-	a++;
-	gluLookAt(278.0, 273.0, -800.0, 278, a, 0.0, 0.0, 1.0, 0.0);
+	// glTranslatef(278.0, a++, -800.0);
+	gluLookAt(278.0, a++, -800.0, 278.0, 273.0, 0.0, 0.0, 1.0, 0.0);
 }
 
 Window::Window(Scene scene) {
