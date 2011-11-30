@@ -1,5 +1,8 @@
 #include "patch.h"
 
-Patch::Patch(vector<Vector3f> vertices, vector<float> color, float reflectance, float irradiance, map<Patch, float> viewFactors){
+using namespace std;
+using namespace Eigen;
+
+Patch::Patch(vector<Vector3f> vertices, vector<float> color, float reflectance, float irradiance){
 	
 }

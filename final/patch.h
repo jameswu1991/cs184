@@ -19,7 +19,7 @@ public:
 	float irradiance;
 	map<Patch, float> viewFactors;
 public:
-	Patch(vector<Vector3f> vertices, vector<float> color, float reflectance, float irradiance, map<Patch, float> viewFactors);
+	Patch(vector<Vector3f> vertices, vector<float> color, float reflectance, float irradiance);
 };
 
 #endif
