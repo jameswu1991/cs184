@@ -6,12 +6,14 @@
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 
+#include "patch.h"
+
 using namespace std;
 using namespace Eigen;
 
 class Scene {
 public:
-	// vector<Patch> patches;
+	vector<Patch> patches;
 public:
 	Scene ();
 };
