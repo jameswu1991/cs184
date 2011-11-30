@@ -25,6 +25,7 @@ void addLights() {
 	GLfloat ambientColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
 	
+	/*
 	//Add positioned light
 	GLfloat lightColor0[] = {0.5f, 0.5f, 0.5f, 1.0f}; //Color (0.5, 0.5, 0.5)
 	GLfloat lightPos0[] = {4.0f, 0.0f, 8.0f, 1.0f}; //Positioned at (4, 0, 8)
@@ -34,9 +35,10 @@ void addLights() {
 	//Add directed light
 	GLfloat lightColor1[] = {0.2f, 0.2f, 0.2f, 1.0f}; //Color (0.2, 0.2, 0.2)
 	//Coming from the direction (-1, 0.5, 0.5)
-	GLfloat lightPos1[] = {-1.0f, 0.5f, 0.5f, 0.0f};
+	GLfloat lightPos1[] = {-1.0f, 1.0f, 1.0f, 0.0f};
 	glLightfv(GL_LIGHT1, GL_DIFFUSE, lightColor1);
 	glLightfv(GL_LIGHT1, GL_POSITION, lightPos1);
+	*/
 }
 
 void drawScene() {
@@ -60,6 +62,7 @@ void drawScene() {
 		glVertex3f(patch[1](0), patch[1](1), patch[1](2));
 		glVertex3f(patch[2](0), patch[2](1), patch[2](2));
 		glVertex3f(patch[3](0), patch[3](1), patch[3](2));
+		glVertex3f(patch[0](0), patch[0](1), patch[0](2));
 		glEnd();
 		cout << patch[0](0) << "," << patch[0](1) << "," << patch[0](2) << "\n";
 	}
@@ -76,13 +79,16 @@ void handleKeypress(unsigned char key, int x, int y) {
 	}
 }
 
+int a=273;
+
 void handleResize(int w, int h) {
 	glViewport(0, 0, w, h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	//gluPerspective(fov y, aspect ratio, projection plane, far clipping plane)
-	gluPerspective(90.0, (double)w / (double)h, 1.0, 800.0);
-	gluLookAt(278.0, 273.0, -800.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+	gluPerspective(63.44, (double)w / (double)h, 0.0, 1000.0);
+	a++;
+	gluLookAt(278.0, 273.0, -800.0, 278, a, 0.0, 0.0, 1.0, 0.0);
 }
 
 Window::Window(Scene scene) {
