@@ -6,6 +6,7 @@
 #include <math.h>
 #include <Eigen/Core>
 #include <Eigen/Geometry>
+#include <map>
 
 using namespace std;
 using namespace Eigen;
