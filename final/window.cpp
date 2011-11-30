@@ -16,7 +16,26 @@ void propagateLight(Scene scene) {
 	/*
 	do one value-iteration of the scene
 	*/
-	cout << "propagating light \n";
+	cout << "propagating light df\n";
+}
+
+void addLights() {
+	//Add ambient light
+	GLfloat ambientColor[] = {0.1f, 0.1f, 0.1f, 1.0f}; //Color (0.1, 0.1, 0.1)
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
+	
+	//Add positioned light
+	GLfloat lightColor0[] = {0.5f, 0.5f, 0.5f, 1.0f}; //Color (0.5, 0.5, 0.5)
+	GLfloat lightPos0[] = {4.0f, 0.0f, 8.0f, 1.0f}; //Positioned at (4, 0, 8)
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor0);
+	glLightfv(GL_LIGHT0, GL_POSITION, lightPos0);
+	
+	//Add directed light
+	GLfloat lightColor1[] = {0.2f, 0.2f, 0.2f, 1.0f}; //Color (0.2, 0.2, 0.2)
+	//Coming from the direction (-1, 0.5, 0.5)
+	GLfloat lightPos1[] = {-1.0f, 0.5f, 0.5f, 0.0f};
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, lightColor1);
+	glLightfv(GL_LIGHT1, GL_POSITION, lightPos1);
 }
 
 void drawScene() {
@@ -25,14 +44,24 @@ void drawScene() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	
-	// put pinhole at 0, 0, -8
-	glTranslatef(0, 0, -8);
+	// put camera pinhole at 0, 0, -8
+	glTranslatef(278, 273, -800);
+	
+	addLights();
 	
 	propagateLight(myScene);
-	/*
-	for patch in scene
-		draw patch with color
-	*/
+	
+	glColor3f(0.0f, 0.5f, 1.0f); // blue
+	for (int a=0; a<myScene.patches.size(); a++) {
+		vector<Vector3f> patch = myScene.patches[a].vertices;
+		glBegin(GL_LINE_STRIP);
+		glVertex3f(patch[0](0), patch[0](1), patch[0](2));
+		glVertex3f(patch[1](0), patch[1](1), patch[1](2));
+		glVertex3f(patch[2](0), patch[2](1), patch[2](2));
+		glVertex3f(patch[3](0), patch[3](1), patch[3](2));
+		glEnd();
+		cout << patch[0](0) << "," << patch[0](1) << "," << patch[0](2) << "\n";
+	}
 	
 	glutSwapBuffers();
 }
