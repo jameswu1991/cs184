@@ -11,6 +11,6 @@ float Rendering::formFactor(Patch p1, Patch p2){
 		
 }
 
-float Rendering::getNewIrradiance(float currentIrradiance, map<Patch,float> viewFactors);
+float Rendering::getNewIrradiance(float currentIrradiance, map<Patch,float> viewFactors){
 
 }
