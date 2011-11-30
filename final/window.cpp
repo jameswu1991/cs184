@@ -21,7 +21,8 @@ void propagateLight(Scene scene) {
 
 void addLights() {
 	//Add ambient light
-	GLfloat ambientColor[] = {0.1f, 0.1f, 0.1f, 1.0f}; //Color (0.1, 0.1, 0.1)
+	// GLfloat ambientColor[] = {0.1f, 0.1f, 0.1f, 1.0f}; //Color (0.1, 0.1, 0.1)
+	GLfloat ambientColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
 	
 	//Add positioned light
@@ -45,13 +46,13 @@ void drawScene() {
 	glLoadIdentity();
 	
 	// put camera pinhole at 0, 0, -8
-	glTranslatef(278, 273, -800);
+	// glTranslatef(278, 273, -800);
 	
 	addLights();
 	
 	propagateLight(myScene);
 	
-	glColor3f(0.0f, 0.5f, 1.0f); // blue
+	glColor3f(1.0f, 1.0f, 1.0f); // blue
 	for (int a=0; a<myScene.patches.size(); a++) {
 		vector<Vector3f> patch = myScene.patches[a].vertices;
 		glBegin(GL_LINE_STRIP);
@@ -80,7 +81,8 @@ void handleResize(int w, int h) {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	//gluPerspective(fov y, aspect ratio, projection plane, far clipping plane)
-	gluPerspective(45.0, (double)w / (double)h, 1.0, 200.0);
+	gluPerspective(90.0, (double)w / (double)h, 1.0, 800.0);
+	gluLookAt(278.0, 273.0, -800.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 }
 
 Window::Window(Scene scene) {
@@ -104,7 +106,8 @@ void Window::show(int argc, char *argv[]) {
 	glEnable(GL_LIGHT0); //Enable light #0
 	glEnable(GL_LIGHT1); //Enable light #1
 	glEnable(GL_NORMALIZE); //Automatically normalize normals
-	glShadeModel(GL_SMOOTH); //Enable smooth shading
+	// glShadeModel(GL_SMOOTH); //Enable smooth shading
+	glShadeModel(GL_FLAT);
 	
 	//Set handler functions
 	glutDisplayFunc(drawScene);

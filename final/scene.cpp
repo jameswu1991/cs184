@@ -12,14 +12,15 @@ vector<float> getVector(float r, float g, float b) {
 Scene::Scene() {
 	vector<Vector3f> array(4);
 	
+	/*
 	// test
 	array[0]=Vector3f(0, 1, 0);
 	array[1]=Vector3f(1, 1, 0);
 	array[2]=Vector3f(1, 0, 0);
 	array[3]=Vector3f(0, 0, 0);
 	patches.push_back(Patch(array, getVector(0.5, 0.5, 0.5), 0.5, 0));
+	*/
 		
-	/*
 	// floor
 	array[0]=Vector3f(552.8, 0, 0);
 	array[1]=Vector3f(0, 0, 0);
@@ -114,10 +115,9 @@ Scene::Scene() {
 	array[2]=Vector3f(423.0, 330.0, 247.0);
 	array[3]=Vector3f(423.0,   0.0, 247.0);
 	patches.push_back(Patch(array, getVector(0.5, 0.5, 0.5), 0.5, 0));
-	*/
 	
 	// subdivide the original patches
-	subdivideTo16();
+	// subdivideTo16();
 	
 	/*
 	cout << "Patches size is now " << patches.size() << endl;

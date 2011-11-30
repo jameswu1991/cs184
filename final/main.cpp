@@ -10,6 +10,6 @@ Scene scene;
 Window window(scene);
 
 int main(int argc, char *argv[]) {
-
+	window.show(argc, argv);
 }
 
