@@ -17,6 +17,7 @@ public:
 	vector<Patch> patches;
 public:
 	Scene ();
+	void calcFormFactors();
 	void subdivide();
 	void subdivideTo16();
 	Vector3f midpoint(Vector3f p1, Vector3f p2);

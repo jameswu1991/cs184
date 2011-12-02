@@ -117,7 +117,8 @@ Scene::Scene() {
 	patches.push_back(Patch(array, getVector(0.5, 0.5, 0.5), 0.5, 0));
 	
 	// subdivide the original patches
-	subdivideTo16();
+	subdivide();
+	// subdivideTo16();
 	
 	/*
 	cout << "Patches size is now " << patches.size() << endl;
@@ -130,6 +131,16 @@ Scene::Scene() {
 	}
 	*/
 	
+}
+
+void Scene::calcFormFactors() {
+	int i, j;
+	for (i=0; i<patches.size(); i++)
+		for (j=0; j<patches.size(); j++)
+			if (i != j) {
+				// patches[i].viewFactors[j] = patches[i].formFactor(patches[j]);
+				patches[i].viewFactors[j] = 0;
+			}
 }
 
 void Scene::subdivideTo16() {

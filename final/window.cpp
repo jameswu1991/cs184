@@ -9,14 +9,15 @@ void calculateFormFactors(Scene scene) {
 			if (patch1 != patch2)
 				patch1.formfactors[patch2] = rendering.calculateFormFator(patch1, patch2);
 	*/
-	cout << "calculating form factors \n";
+	cout << "calculating form factors" << endl;
+	scene.calcFormFactors();
 }
 
 void propagateLight(Scene scene) {
 	/*
 	do one value-iteration of the scene
 	*/
-	cout << "propagating light df\n";
+	cout << "propagating light df" << endl;
 }
 
 void addLights() {
@@ -98,6 +99,7 @@ void handleResize(int w, int h) {
 Window::Window(Scene scene) {
 	myScene = scene;
 	calculateFormFactors(myScene);
+	cout << "done" << endl;
 }
 
 void Window::show(int argc, char *argv[]) {
