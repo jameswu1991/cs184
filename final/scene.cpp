@@ -138,7 +138,7 @@ void Scene::calcFormFactors() {
 	for (i=0; i<patches.size(); i++)
 		for (j=0; j<patches.size(); j++)
 			if (i != j) {
-				cout << patches[i].formFactor(patches[j]) << endl;
+				//cout << patches[i].formFactor(patches[j]) << endl;
 				patches[i].viewFactors[j] = patches[i].formFactor(patches[j]);
 			}
 }
