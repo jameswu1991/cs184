@@ -138,9 +138,29 @@ void Scene::calcFormFactors() {
 	for (i=0; i<patches.size(); i++)
 		for (j=0; j<patches.size(); j++)
 			if (i != j) {
-				//cout << patches[i].formFactor(patches[j]) << endl;
-				patches[i].viewFactors[j] = patches[i].formFactor(patches[j]);
+				cout << patches[i].formFactor(patches[j]) << endl;
+				//patches[i].viewFactors[j] = patches[i].formFactor(patches[j]);
+				// patches[i].viewFactors[j] = patches[i].formFactor(patches[j]) * visibility(i,j);
+				//patches[i].viewFactors[j] = 0;
 			}
+}
+
+void Scene::visibility(p1Index, p2Index) {
+	Patch p1 = patches[p1Index];
+	Patch p2 = patches[p2Index];
+	/*
+	numObstructed = 0
+	for i in numSamples
+		d1 = p1.random() // returns a random point on the patch's surface
+		d1 = p1.random()
+		cast ray from d1 to d2
+		for k in patches.length
+			if k!=p1index and k!=p2index
+				if patches[k].obstructs(ray)
+					numObstructedSamples++
+					continue
+	return 1 - numObstructed / numSamples
+	*/
 }
 
 void Scene::subdivideTo16() {
