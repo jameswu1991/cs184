@@ -17,11 +17,11 @@ public:
 	vector<float> color;
 	float reflectance;
 	float irradiance;
-	map<Patch, float> viewFactors;
+	map<int, float> viewFactors;
 public:
 	Patch(vector<Vector3f> _vertices, vector<float> _color, float _reflectance, float _irradiance);
 	float formFactor(Patch p);
-	Vector3f midpoint(Vector3f p1, Vector3f p2);
+	Vector3f getCenter();
 	float distance(Vector3f p1, Vector3f p2);
 	Vector3f calculateNormal(Vector3f side1, Vector3f side2);
 };
