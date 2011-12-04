@@ -117,8 +117,8 @@ Scene::Scene() {
 	patches.push_back(Patch(array, getVector(0.5, 0.5, 0.5), 0.5, 0));
 	
 	// subdivide the original patches
-	subdivide();
-	// subdivideTo16();
+	//subdivide();
+	subdivideNTimes(2);
 	
 	/*
 	cout << "Patches size is now " << patches.size() << endl;
@@ -138,17 +138,18 @@ void Scene::calcFormFactors() {
 	for (i=0; i<patches.size(); i++)
 		for (j=0; j<patches.size(); j++)
 			if (i != j) {
-				cout << patches[i].formFactor(patches[j]) << endl;
-				//patches[i].viewFactors[j] = patches[i].formFactor(patches[j]);
+				//cout << patches[i].formFactor(patches[j]) << endl;
+				patches[i].viewFactors[j] = patches[i].formFactor(patches[j]);
 				// patches[i].viewFactors[j] = patches[i].formFactor(patches[j]) * visibility(i,j);
 				//patches[i].viewFactors[j] = 0;
 			}
 }
 
+/*
 void Scene::visibility(p1Index, p2Index) {
-	Patch p1 = patches[p1Index];
-	Patch p2 = patches[p2Index];
-	/*
+	//Patch p1 = patches[p1Index];
+	//Patch p2 = patches[p2Index];
+
 	numObstructed = 0
 	for i in numSamples
 		d1 = p1.random() // returns a random point on the patch's surface
@@ -160,14 +161,14 @@ void Scene::visibility(p1Index, p2Index) {
 					numObstructedSamples++
 					continue
 	return 1 - numObstructed / numSamples
-	*/
-}
+	
+}*/
 
-void Scene::subdivideTo16() {
-	subdivide(); // 2x2
-	subdivide(); // 4x4
-	subdivide(); // 8x8
-	subdivide(); // 16x16
+void Scene::subdivideNTimes(int n) {
+	int i;
+	for (i=0; i<n; i++) {
+		subdivide();
+	}
 }
 
 void Scene::subdivide() {
