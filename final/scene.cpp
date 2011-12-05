@@ -11,7 +11,8 @@ vector<float> getVector(float r, float g, float b) {
 
 Scene::Scene() {
 	vector<Vector3f> array(4);
-		
+	
+	/*	
 	// test
 	array[0]=Vector3f(0, 1, 0);
 	array[1]=Vector3f(1, 1, 0);
@@ -23,8 +24,9 @@ Scene::Scene() {
 		Vector3f sample = test.samplePoint();
 		cout << "Sample Point is " << sample << endl;
 	}
+	*/
 	
-	/*	
+		
 	// floor
 	array[0]=Vector3f(552.8, 0, 0);
 	array[1]=Vector3f(0, 0, 0);
@@ -122,8 +124,8 @@ Scene::Scene() {
 	
 	// subdivide the original patches
 	//subdivide();
-	subdivideNTimes(2);
-	*/
+	subdivideNTimes(3);
+	
 	/*
 	cout << "Patches size is now " << patches.size() << endl;
 	int i;
