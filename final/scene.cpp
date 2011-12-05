@@ -142,34 +142,35 @@ Scene::Scene() {
 
 void Scene::calcFormFactors() {
 	int i, j;
+	
 	for (i=0; i<patches.size(); i++)
 		for (j=0; j<patches.size(); j++)
 			if (i != j) {
-				//cout << patches[i].formFactor(patches[j]) << endl;
-				patches[i].viewFactors[j] = patches[i].formFactor(patches[j]);
-				// patches[i].viewFactors[j] = patches[i].formFactor(patches[j]) * visibility(i,j);
-				//patches[i].viewFactors[j] = 0;
+				patches[i].viewFactors[j] = patches[i].formFactor(patches[j]) * visibility(i,j);
 			}
 }
 
-/*
-void Scene::visibility(p1Index, p2Index) {
-	//Patch p1 = patches[p1Index];
-	//Patch p2 = patches[p2Index];
+float Scene::visibility(int p1Index, int p2Index) {
+	Patch p1 = patches[p1Index];
+	Patch p2 = patches[p2Index];
 
-	numObstructed = 0
-	for i in numSamples
-		d1 = p1.random() // returns a random point on the patch's surface
-		d2 = p2.random()
-		cast ray from d1 to d2
-		for k in patches.length
-			if k!=p1index and k!=p2index
-				if patches[k].obstructs(ray)
-					numObstructedSamples++
-					continue
-	return 1 - numObstructed / numSamples
-	
-}*/
+	int numObstructed = 0;
+	int numSamples = 10;
+	int i, k;
+	for (i=0; i<numSamples; i++) {
+		Vector3f start = p1.samplePoint(); // returns a random point on the patch's surface
+		Vector3f end = p2.samplePoint();
+		for (k=0; k<patches.size(); k++) {
+			if (k!=p1Index && k!=p2Index) {
+				if (patches[k].intersects(start, end)) {
+					numObstructed++;
+					continue;
+				}
+			}
+		}
+	}
+	return 1 - (float)numObstructed / numSamples;
+}
 
 void Scene::subdivideNTimes(int n) {
 	int i;

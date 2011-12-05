@@ -17,6 +17,7 @@ public:
 	vector<Patch> patches;
 public:
 	Scene ();
+	float visibility(int p1idx, int p2idx);
 	void calcFormFactors();
 	void subdivide();
 	void subdivideNTimes(int n);

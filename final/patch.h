@@ -20,6 +20,7 @@ public:
 	map<int, float> viewFactors;
 public:
 	Patch(vector<Vector3f> _vertices, vector<float> _color, float _reflectance, float _irradiance);
+	bool intersects(Vector3f start, Vector3f end);
 	float formFactor(Patch p);
 	Vector3f getCenter();
 	float distance(Vector3f p1, Vector3f p2);
