@@ -124,7 +124,7 @@ Scene::Scene() {
 	
 	// subdivide the original patches
 	//subdivide();
-	subdivideNTimes(3);
+	subdivideNTimes(2);
 	
 	/*
 	cout << "Patches size is now " << patches.size() << endl;
