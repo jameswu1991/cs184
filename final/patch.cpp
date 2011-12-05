@@ -78,22 +78,20 @@ float Patch::formFactor(Patch p) {
 	
 	float S;
 	S = distance(center, p_center);
+	Vector3f V = center - p_center;
+	V.normalize();
 
 	Vector3f p_side1 = p.vertices[1] - p.vertices[0];
 	Vector3f p_side2 = p.vertices[2] - p.vertices[1];
 	Vector3f n2 = calculateNormal(p_side1, p_side2);
-	Vector3f p_dv = center - p_center;
-	p_dv.normalize();
 	float dA2 = p_side1.norm() * p_side2.norm();
 	
 	Vector3f side1 = vertices[1] - vertices[0];
 	Vector3f side2 = vertices[2] - vertices[1];
 	Vector3f n1 = calculateNormal(side1, side2);
-	Vector3f dv = p_center - center;
-	dv.normalize();
 	float dA1 = side1.norm() * side2.norm();
 	
-	float differentialAngle = n2.dot(p_dv) * n1.dot(dv);
+	float differentialAngle = n2.dot(V) * n1.dot(V);
 	// make sure differential angle is between 0 and 1
 	if (differentialAngle < 0) {
 		differentialAngle = fabs(differentialAngle);
