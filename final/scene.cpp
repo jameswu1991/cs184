@@ -11,16 +11,20 @@ vector<float> getVector(float r, float g, float b) {
 
 Scene::Scene() {
 	vector<Vector3f> array(4);
-	
-	/*
+		
 	// test
 	array[0]=Vector3f(0, 1, 0);
 	array[1]=Vector3f(1, 1, 0);
 	array[2]=Vector3f(1, 0, 0);
 	array[3]=Vector3f(0, 0, 0);
-	patches.push_back(Patch(array, getVector(0.5, 0.5, 0.5), 0.5, 0));
-	*/
-		
+	Patch test = Patch(array, getVector(0.5, 0.5, 0.5), 0.5, 0);
+	int i;
+	for (i=0; i<10; i++) {
+		Vector3f sample = test.samplePoint();
+		cout << "Sample Point is " << sample << endl;
+	}
+	
+	/*	
 	// floor
 	array[0]=Vector3f(552.8, 0, 0);
 	array[1]=Vector3f(0, 0, 0);
@@ -119,7 +123,7 @@ Scene::Scene() {
 	// subdivide the original patches
 	//subdivide();
 	subdivideNTimes(2);
-	
+	*/
 	/*
 	cout << "Patches size is now " << patches.size() << endl;
 	int i;
@@ -130,6 +134,7 @@ Scene::Scene() {
 		cout << "Bottom left point for Patch " << i << " is " << patches[i].vertices[3] << endl;
 	}
 	*/
+	
 	
 }
 
@@ -151,8 +156,8 @@ float Scene::visibility(int p1Index, int p2Index) {
 	int numSamples = 10;
 	int i, k;
 	for (i=0; i<numSamples; i++) {
-		Vector3f start = p1.random(); // returns a random point on the patch's surface
-		Vector3f end = p2.random();
+		Vector3f start = p1.samplePoint(); // returns a random point on the patch's surface
+		Vector3f end = p2.samplePoint();
 		for (k=0; k<patches.size(); k++) {
 			if (k!=p1Index && k!=p2Index) {
 				if (patches[k].intersects(start, end)) {

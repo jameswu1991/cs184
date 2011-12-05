@@ -82,14 +82,14 @@ float Patch::formFactor(Patch p) {
 	Vector3f p_side1 = p.vertices[1] - p.vertices[0];
 	Vector3f p_side2 = p.vertices[2] - p.vertices[1];
 	Vector3f n2 = calculateNormal(p_side1, p_side2);
-	Vector3f p_dv = p_center - center;
+	Vector3f p_dv = center - p_center;
 	float theta2 = acos(n2.dot(p_dv)/(n2.norm() * p_dv.norm()));
 	float dA2 = p_side1.norm() * p_side2.norm();
 	
 	Vector3f side1 = vertices[1] - vertices[0];
 	Vector3f side2 = vertices[2] - vertices[1];
 	Vector3f n1 = calculateNormal(side1, side2);
-	Vector3f dv = center - p_center;
+	Vector3f dv = p_center - center;
 	float theta1 = acos(n1.dot(dv)/(n1.norm() * dv.norm()));
 	float dA1 = side1.norm() * side2.norm();	
 	
@@ -107,4 +107,16 @@ Vector3f Patch::calculateNormal(Vector3f side1, Vector3f side2) {
 	Vector3f normal = side1.cross(side2);
 	normal.normalize();
 	return normal;
+}
+
+// PierreBdR's formula
+// http://stackoverflow.com/questions/240778/random-points-inside-a-polygon
+Vector3f Patch::samplePoint() {
+	Vector3f side1 = vertices[1]-vertices[0];
+	Vector3f side2 = vertices[3]-vertices[0];
+	float a = (float)rand()/(float)RAND_MAX;
+	float b = (float)rand()/(float)RAND_MAX;
+	Vector3f p = a*side1 + b*side2;
+	Vector3f AP = vertices[0]+p;
+	return AP;
 }
