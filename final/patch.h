@@ -24,6 +24,7 @@ public:
 	Vector3f getCenter();
 	float distance(Vector3f p1, Vector3f p2);
 	Vector3f calculateNormal(Vector3f side1, Vector3f side2);
+	Vector3f samplePoint();
 };
 
 #endif
