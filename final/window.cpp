@@ -9,16 +9,17 @@ void calculateFormFactors() {
 			if (patch1 != patch2)
 				patch1.formfactors[patch2] = rendering.calculateFormFator(patch1, patch2);
 	*/
-	cout << "calculating form factors" << endl;
+	cout << "calculating form factors... " << endl;
 	myScene.calcFormFactors();
-	cout << "done1" << endl;
+	cout << "done" << endl;
 }
 
 void propagateLight(Scene scene) {
 	/*
 	do one value-iteration of the scene
 	*/
-	cout << "propagating light df" << endl;
+	cout << "propagating light df... " << endl;
+	cout << "done" << endl;
 }
 
 void addLights() {
@@ -52,8 +53,14 @@ void drawScene() {
 	
 	propagateLight(myScene);
 	
-	glColor3f(1.0f, 1.0f, 1.0f); // blue
 	for (int a=0; a<myScene.patches.size(); a++) {
+		
+		int idx = 0;
+		float color = 1;
+		if (a!=idx)
+			color = myScene.patches[idx].viewFactors[a];
+		glColor3f(color, color, color); // blue
+		
 		vector<Vector3f> patch = myScene.patches[a].vertices;
 		glBegin(GL_LINE_STRIP);
 		glVertex3f(patch[0](0), patch[0](1), patch[0](2));
@@ -100,7 +107,6 @@ void handleResize(int w, int h) {
 Window::Window(Scene scene) {
 	myScene = scene;
 	calculateFormFactors();
-	cout << "done" << endl;
 }
 
 void Window::show(int argc, char *argv[]) {

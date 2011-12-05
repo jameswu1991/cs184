@@ -6,10 +6,9 @@
 using namespace std;
 using namespace Eigen;
 
-Scene scene;
-Window window(scene);
-
 int main(int argc, char *argv[]) {
+	Scene scene;
+	Window window(scene);
 	window.show(argc, argv);
 }
 
