@@ -17,9 +17,10 @@ public:
 	vector<Patch> patches;
 public:
 	Scene ();
+	float visibility(int p1idx, int p2idx);
 	void calcFormFactors();
 	void subdivide();
-	void subdivideTo16();
+	void subdivideNTimes(int n);
 	Vector3f midpoint(Vector3f p1, Vector3f p2);
 };
 
