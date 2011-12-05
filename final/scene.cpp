@@ -26,7 +26,6 @@ Scene::Scene() {
 	}
 	*/
 	
-		
 	// floor
 	array[0]=Vector3f(552.8, 0, 0);
 	array[1]=Vector3f(0, 0, 0);
@@ -126,6 +125,8 @@ Scene::Scene() {
 	//subdivide();
 	subdivideNTimes(2);
 	
+	// subdivideNTimes(2);
+
 	/*
 	cout << "Patches size is now " << patches.size() << endl;
 	int i;
@@ -146,7 +147,8 @@ void Scene::calcFormFactors() {
 	for (i=0; i<patches.size(); i++)
 		for (j=0; j<patches.size(); j++)
 			if (i != j) {
-				patches[i].viewFactors[j] = patches[i].formFactor(patches[j]) * visibility(i,j);
+				cout << "Form factor is " << patches[i].formFactor(patches[j]) << endl;
+				//patches[i].viewFactors[j] = patches[i].formFactor(patches[j]) * visibility(i,j);
 			}
 }
 
@@ -160,11 +162,13 @@ float Scene::visibility(int p1Index, int p2Index) {
 	for (i=0; i<numSamples; i++) {
 		Vector3f start = p1.samplePoint(); // returns a random point on the patch's surface
 		Vector3f end = p2.samplePoint();
-		for (k=0; k<patches.size(); k++) {
+		
+		bool go = true; // stop iterating if you've already been obstructed
+		for (k=0; k<patches.size() && go; k++) {
 			if (k!=p1Index && k!=p2Index) {
 				if (patches[k].intersects(start, end)) {
 					numObstructed++;
-					continue;
+					go = false;
 				}
 			}
 		}

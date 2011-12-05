@@ -83,17 +83,23 @@ float Patch::formFactor(Patch p) {
 	Vector3f p_side2 = p.vertices[2] - p.vertices[1];
 	Vector3f n2 = calculateNormal(p_side1, p_side2);
 	Vector3f p_dv = center - p_center;
-	float theta2 = acos(n2.dot(p_dv)/(n2.norm() * p_dv.norm()));
+	p_dv.normalize();
 	float dA2 = p_side1.norm() * p_side2.norm();
 	
 	Vector3f side1 = vertices[1] - vertices[0];
 	Vector3f side2 = vertices[2] - vertices[1];
 	Vector3f n1 = calculateNormal(side1, side2);
 	Vector3f dv = p_center - center;
-	float theta1 = acos(n1.dot(dv)/(n1.norm() * dv.norm()));
-	float dA1 = side1.norm() * side2.norm();	
+	dv.normalize();
+	float dA1 = side1.norm() * side2.norm();
 	
-	float viewFactor = ((cos(theta1)*cos(theta2))/(pi * pow(S,2))) * dA2;
+	float differentialAngle = n2.dot(p_dv) * n1.dot(dv);
+	// make sure differential angle is between 0 and 1
+	if (differentialAngle < 0) {
+		differentialAngle = fabs(differentialAngle);
+	}	
+	
+	float viewFactor = differentialAngle/(pi * pow(S,2)) * dA2;
 	
 	return viewFactor;
 	
