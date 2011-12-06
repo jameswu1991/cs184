@@ -19,20 +19,21 @@ Vector3f mul (Vector3f a, Vector3f b) {
 	return c;
 }
 
-void propagateLight(Scene scene) {
+void propagateLight() {
 	/*
 	do one value-iteration of the scene
 	*/
+	
 	cout << "propagating light df... " << endl;
-	for (int i=0; i<scene.patches.size(); i++) {
+	for (int i=0; i<myScene.patches.size(); i++) {
 		Vector3f H;
-		for (int j=0; j<scene.patches.size(); j++) {
+		for (int j=0; j<myScene.patches.size(); j++) {
 			if (i!=j) {
 				// sum of all the form factors * Hj
-				H += scene.patches[i].viewFactors[j] * scene.patches[j].irradiance;
+				H += myScene.patches[i].viewFactors[j] * myScene.patches[j].irradiance;
 			}
 		}
-		scene.patches[i].irradiance += mul(scene.patches[i].reflectance, H); 
+		myScene.patches[i].irradiance += mul(myScene.patches[i].reflectance, H); 
 	}
 	cout << "done" << endl;	
 }
@@ -67,25 +68,35 @@ void drawScene() {
 	
 	addLights();
 	
-	propagateLight(myScene);
+	propagateLight();
+	
+	float max = 0;
+	for (int a=0; a<myScene.patches.size(); a++) {
+		if (myScene.patches[a].irradiance[0] > max)
+			max = myScene.patches[a].irradiance[0];
+		if (myScene.patches[a].irradiance[1] > max)
+			max = myScene.patches[a].irradiance[1];
+		if (myScene.patches[a].irradiance[2] > max)
+			max = myScene.patches[a].irradiance[2];
+	}
 	
 	for (int a=0; a<myScene.patches.size(); a++) {
 		
-		float color = 1;
-		if (a!=idx%myScene.patches.size()) {
-			color = myScene.patches[idx%myScene.patches.size()].viewFactors[a]*20; 
-			glColor3f(color, color, color);
-		}
-		else glColor3f(1, 0, 0); // blue
-		 // blue
+		Patch patch = myScene.patches[a];
+		vector<Vector3f> vertices = patch.vertices;
 		
-		vector<Vector3f> patch = myScene.patches[a].vertices;
+		float r, g, b;
+		r = patch.irradiance[0]/max;
+		g = patch.irradiance[1]/max;
+		b = patch.irradiance[2]/max;
+		glColor3f(r, g, b);
+		
 		glBegin(GL_QUADS);
-		glVertex3f(patch[0](0), patch[0](1), patch[0](2));
-		glVertex3f(patch[1](0), patch[1](1), patch[1](2));
-		glVertex3f(patch[2](0), patch[2](1), patch[2](2));
-		glVertex3f(patch[3](0), patch[3](1), patch[3](2));
-		glVertex3f(patch[0](0), patch[0](1), patch[0](2));
+		glVertex3f(vertices[0](0), vertices[0](1), vertices[0](2));
+		glVertex3f(vertices[1](0), vertices[1](1), vertices[1](2));
+		glVertex3f(vertices[2](0), vertices[2](1), vertices[2](2));
+		glVertex3f(vertices[3](0), vertices[3](1), vertices[3](2));
+		glVertex3f(vertices[0](0), vertices[0](1), vertices[0](2));
 		glEnd();
 	}
 	
