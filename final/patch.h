@@ -29,12 +29,11 @@ using namespace Eigen;
 class Patch {
 public:
 	vector<Vector3f> vertices;
-	vector<float> color;
-	float reflectance;
-	float irradiance;
+	Vector3f reflectance;
+	Vector3f irradiance;
 	map<int, float> viewFactors;
 public:
-	Patch(vector<Vector3f> _vertices, vector<float> _color, float _reflectance, float _irradiance);
+	Patch(vector<Vector3f> _vertices, Vector3f _reflectance, Vector3f _irradiance);
 	bool intersects(Vector3f start, Vector3f end, Vector3f patchNormal);
 	float formFactor(Patch p);
 	Vector3f getCenter();

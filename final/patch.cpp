@@ -14,9 +14,8 @@ float irradiance;
 map<Patch, float> viewFactors;
 */
 
-Patch::Patch(vector<Vector3f> _vertices, vector<float> _color, float _reflectance, float _irradiance){
+Patch::Patch(vector<Vector3f> _vertices,  Vector3f _reflectance, Vector3f _irradiance){
 	vertices = _vertices;
-	color = _color;
 	reflectance = _reflectance;
 	irradiance = _irradiance;
 }

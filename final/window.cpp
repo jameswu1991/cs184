@@ -14,12 +14,27 @@ void calculateFormFactors() {
 	cout << "done" << endl;
 }
 
+Vector3f mul (Vector3f a, Vector3f b) {
+	Vector3f c (a[0]*b[0], a[1]*b[1], a[2]*b[2]);
+	return c;
+}
+
 void propagateLight(Scene scene) {
 	/*
 	do one value-iteration of the scene
 	*/
 	cout << "propagating light df... " << endl;
-	cout << "done" << endl;
+	for (int i=0; i<scene.patches.size(); i++) {
+		Vector3f H;
+		for (int j=0; j<scene.patches.size(); j++) {
+			if (i!=j) {
+				// sum of all the form factors * Hj
+				H += scene.patches[i].viewFactors[j] * scene.patches[j].irradiance;
+			}
+		}
+		scene.patches[i].irradiance += mul(scene.patches[i].reflectance, H); 
+	}
+	cout << "done" << endl;	
 }
 
 void addLights() {

@@ -7,8 +7,8 @@ using namespace std;
 using namespace Eigen;
 
 int main(int argc, char *argv[]) {
-	Scene scene;
-	Window window(scene);
-	window.show(argc, argv);
+	//Scene scene;
+	//Window window(scene);
+	//window.show(argc, argv);
 }
 
