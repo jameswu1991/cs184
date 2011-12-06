@@ -14,10 +14,11 @@ float irradiance;
 map<Patch, float> viewFactors;
 */
 
-Patch::Patch(vector<Vector3f> _vertices,  Vector3f _reflectance, Vector3f _irradiance){
+Patch::Patch(vector<Vector3f> _vertices,  Vector3f _reflectance, Vector3f _emission){
 	vertices = _vertices;
 	reflectance = _reflectance;
-	irradiance = _irradiance;
+	irradiance = _emission;
+	emission = _emission;
 }
 
 bool Patch::intersects(Vector3f start, Vector3f end, Vector3f patchNormal) {

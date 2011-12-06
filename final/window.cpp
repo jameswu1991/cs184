@@ -23,17 +23,18 @@ void propagateLight() {
 	/*
 	do one value-iteration of the scene
 	*/
-	
 	cout << "propagating light df... " << endl;
-	for (int i=0; i<myScene.patches.size(); i++) {
-		Vector3f H;
-		for (int j=0; j<myScene.patches.size(); j++) {
+	vector<Patch> oldPatches = myScene.patches;
+	
+	for (int i=0; i<oldPatches.size(); i++) {
+		Vector3f weightedSum (0,0,0);
+		for (int j=0; j<oldPatches.size(); j++) {
 			if (i!=j) {
 				// sum of all the form factors * Hj
-				H += myScene.patches[i].viewFactors[j] * myScene.patches[j].irradiance;
+				weightedSum += oldPatches[i].viewFactors[j] * oldPatches[j].irradiance;
 			}
 		}
-		myScene.patches[i].irradiance += mul(myScene.patches[i].reflectance, H); 
+		myScene.patches[i].irradiance = oldPatches[i].emission + mul(oldPatches[i].reflectance, weightedSum); 
 	}
 	cout << "done" << endl;	
 }
@@ -68,6 +69,8 @@ void drawScene() {
 	
 	addLights();
 	
+	propagateLight();
+	propagateLight();
 	propagateLight();
 	
 	float max = 0;

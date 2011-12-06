@@ -31,9 +31,10 @@ public:
 	vector<Vector3f> vertices;
 	Vector3f reflectance;
 	Vector3f irradiance;
+	Vector3f emission;
 	map<int, float> viewFactors;
 public:
-	Patch(vector<Vector3f> _vertices, Vector3f _reflectance, Vector3f _irradiance);
+	Patch(vector<Vector3f> _vertices, Vector3f _reflectance, Vector3f _emission);
 	bool intersects(Vector3f start, Vector3f end, Vector3f patchNormal);
 	float formFactor(Patch p);
 	Vector3f getCenter();
