@@ -45,6 +45,7 @@ void addLights() {
 }
 
 int a=273;
+int idx = 0;
 
 void drawScene() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -55,14 +56,16 @@ void drawScene() {
 	
 	for (int a=0; a<myScene.patches.size(); a++) {
 		
-		int idx = 0;
 		float color = 1;
-		if (a!=idx)
-			color = myScene.patches[idx].viewFactors[a];
-		glColor3f(color, color, color); // blue
+		if (a!=idx%myScene.patches.size()) {
+			color = myScene.patches[idx%myScene.patches.size()].viewFactors[a]*20; 
+			glColor3f(color, color, color);
+		}
+		else glColor3f(1, 0, 0); // blue
+		 // blue
 		
 		vector<Vector3f> patch = myScene.patches[a].vertices;
-		glBegin(GL_LINE_STRIP);
+		glBegin(GL_QUADS);
 		glVertex3f(patch[0](0), patch[0](1), patch[0](2));
 		glVertex3f(patch[1](0), patch[1](1), patch[1](2));
 		glVertex3f(patch[2](0), patch[2](1), patch[2](2));
@@ -78,7 +81,8 @@ void drawScene() {
 void handleKeypress(unsigned char key, int x, int y) {
 	switch (key) {
 		case 32: // space key
-			exit(EXIT_SUCCESS);
+			idx++;
+			drawScene();
 			break;
 	}
 }
@@ -113,7 +117,7 @@ void Window::show(int argc, char *argv[]) {
 	//Initialize GLUT
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-	glutInitWindowSize(400, 400);
+	glutInitWindowSize(800, 800);
 	
 	//Create the window
 	glutCreateWindow("Radiosity Testing");

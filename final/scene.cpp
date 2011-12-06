@@ -11,7 +11,21 @@ vector<float> getVector(float r, float g, float b) {
 
 Scene::Scene() {
 	vector<Vector3f> array(4);
-		
+	
+	/*	
+	// test
+	array[0]=Vector3f(0, 1, 0);
+	array[1]=Vector3f(1, 1, 0);
+	array[2]=Vector3f(1, 0, 0);
+	array[3]=Vector3f(0, 0, 0);
+	Patch test = Patch(array, getVector(0.5, 0.5, 0.5), 0.5, 0);
+	int i;
+	for (i=0; i<10; i++) {
+		Vector3f sample = test.samplePoint();
+		cout << "Sample Point is " << sample << endl;
+	}
+	*/
+	
 	// floor
 	array[0]=Vector3f(552.8, 0, 0);
 	array[1]=Vector3f(0, 0, 0);
@@ -19,10 +33,10 @@ Scene::Scene() {
 	array[3]=Vector3f(549.6, 0, 559.2);
 	patches.push_back(Patch(array, getVector(0.5, 0.5, 0.5), 0.5, 0));
 	// light
-	array[0]=Vector3f(343, 548.8, 227);
-	array[1]=Vector3f(343, 548.8, 332);
-	array[2]=Vector3f(213, 548.8, 332);
-	array[3]=Vector3f(213, 548.8, 227);
+	array[0]=Vector3f(343, 548.7, 227);
+	array[1]=Vector3f(343, 548.7, 332);
+	array[2]=Vector3f(213, 548.7, 332);
+	array[3]=Vector3f(213, 548.7, 227);
 	patches.push_back(Patch(array, getVector(0.5, 0.5, 0.5), 0.5, 0));
 	
 	// ceiling
@@ -107,21 +121,7 @@ Scene::Scene() {
 	array[3]=Vector3f(423.0,   0.0, 247.0);
 	patches.push_back(Patch(array, getVector(0.5, 0.5, 0.5), 0.5, 0));
 	
-	// subdivide the original patches
 	subdivideNTimes(2);
-
-	/*
-	cout << "Patches size is now " << patches.size() << endl;
-	int i;
-	for (i=0; i<patches.size(); i++) {
-		cout << "Top left point for Patch " << i << " is " << patches[i].vertices[0] << endl;
-		cout << "Top right point for Patch " << i << " is " << patches[i].vertices[1] << endl;
-		cout << "Bottom right point for Patch " << i << " is " << patches[i].vertices[2] << endl;
-		cout << "Bottom left point for Patch " << i << " is " << patches[i].vertices[3] << endl;
-	}
-	*/
-	
-	
 }
 
 void Scene::calcFormFactors() {
@@ -130,6 +130,7 @@ void Scene::calcFormFactors() {
 	for (i=0; i<patches.size(); i++) {
 		for (j=0; j<patches.size(); j++)
 			if (i != j) {
+				//cout << "Form factor is " << patches[i].formFactor(patches[j]) << endl;
 				patches[i].viewFactors[j] = patches[i].formFactor(patches[j]) * visibility(i,j);
 			}
 		cout << "patch " << i << "/" << patches.size() << endl;
@@ -141,7 +142,7 @@ float Scene::visibility(int p1Index, int p2Index) {
 	Patch p2 = patches[p2Index];
 
 	int numObstructed = 0;
-	int numSamples = 10;
+	int numSamples = 1;
 	int i, k;
 	for (i=0; i<numSamples; i++) {
 		Vector3f start = p1.samplePoint(); // returns a random point on the patch's surface
@@ -150,7 +151,7 @@ float Scene::visibility(int p1Index, int p2Index) {
 		bool go = true; // stop iterating if you've already been obstructed
 		for (k=0; k<patches.size() && go; k++) {
 			if (k!=p1Index && k!=p2Index) {
-				if (patches[k].intersects(start, end)) {
+				if (patches[k].intersects(start, end, p1.normal())) {
 					numObstructed++;
 					go = false;
 				}

@@ -8,6 +8,21 @@
 #include <Eigen/Geometry>
 #include <map>
 
+
+#ifdef _WIN32
+#	include <windows.h>
+#else
+#	include <sys/time.h>
+#endif
+
+#ifdef OSX
+#include <GLUT/glut.h>
+#include <OpenGL/glu.h>
+#else
+#include <GL/glut.h>
+#include <GL/glu.h>
+#endif
+
 using namespace std;
 using namespace Eigen;
 
@@ -20,12 +35,13 @@ public:
 	map<int, float> viewFactors;
 public:
 	Patch(vector<Vector3f> _vertices, vector<float> _color, float _reflectance, float _irradiance);
-	bool intersects(Vector3f start, Vector3f end);
+	bool intersects(Vector3f start, Vector3f end, Vector3f patchNormal);
 	float formFactor(Patch p);
 	Vector3f getCenter();
 	float distance(Vector3f p1, Vector3f p2);
 	Vector3f calculateNormal(Vector3f side1, Vector3f side2);
 	Vector3f samplePoint();
+	Vector3f normal();
 };
 
 #endif

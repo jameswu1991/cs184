@@ -21,15 +21,19 @@ Patch::Patch(vector<Vector3f> _vertices, vector<float> _color, float _reflectanc
 	irradiance = _irradiance;
 }
 
-bool Patch::intersects(Vector3f start, Vector3f end) {
+bool Patch::intersects(Vector3f start, Vector3f end, Vector3f patchNormal) {
 	// code guided by softsurfer.com's ray-triangle implementation
 	
 	// patch's two sides and a normal
 	Vector3f u = vertices[1] - vertices[0];
 	Vector3f v = vertices[2] - vertices[0];
 	Vector3f n = u.cross(v);
-	
 	Vector3f dir = end - start;
+	
+	if (patchNormal.dot(dir) < 0) {
+		return true;
+	}
+	
 	Vector3f trans = start - vertices[0];
 	float a = -n.dot(trans);
 	float b = n.dot(dir);
@@ -78,22 +82,26 @@ float Patch::formFactor(Patch p) {
 	
 	float S;
 	S = distance(center, p_center);
+	Vector3f V = center - p_center;
+	V.normalize();
 
 	Vector3f p_side1 = p.vertices[1] - p.vertices[0];
 	Vector3f p_side2 = p.vertices[2] - p.vertices[1];
 	Vector3f n2 = calculateNormal(p_side1, p_side2);
-	Vector3f p_dv = center - p_center;
-	float theta2 = acos(n2.dot(p_dv)/(n2.norm() * p_dv.norm()));
 	float dA2 = p_side1.norm() * p_side2.norm();
 	
 	Vector3f side1 = vertices[1] - vertices[0];
 	Vector3f side2 = vertices[2] - vertices[1];
 	Vector3f n1 = calculateNormal(side1, side2);
-	Vector3f dv = p_center - center;
-	float theta1 = acos(n1.dot(dv)/(n1.norm() * dv.norm()));
-	float dA1 = side1.norm() * side2.norm();	
+	float dA1 = side1.norm() * side2.norm();
 	
-	float viewFactor = ((cos(theta1)*cos(theta2))/(pi * pow(S,2))) * dA2;
+	float differentialAngle = n2.dot(V) * n1.dot(V);
+	// make sure differential angle is between 0 and 1
+	if (differentialAngle < 0) {
+		differentialAngle = fabs(differentialAngle);
+	}	
+	
+	float viewFactor = differentialAngle/(pi * pow(S,2)) * dA2;
 	
 	return viewFactor;
 	
@@ -119,4 +127,12 @@ Vector3f Patch::samplePoint() {
 	Vector3f p = a*side1 + b*side2;
 	Vector3f AP = vertices[0]+p;
 	return AP;
+}
+
+Vector3f Patch::normal() {
+	Vector3f u = vertices[0] - vertices[1];
+	Vector3f v = vertices[2] - vertices[1];
+	Vector3f n = -u.cross(v);
+	n.normalize();
+	return n;
 }
