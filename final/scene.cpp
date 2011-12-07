@@ -122,7 +122,7 @@ Scene::Scene() {
 	array[3]=Vector3f(423.0,   0.0, 247.0);
 	patches.push_back(Patch(array, Vector3f(0.5, 0.5, 0.5), Vector3f(0, 0, 0)));
 	
-	subdivideNTimes(3);
+	divide(4);
 }
 
 void Scene::calcFormFactors() {
@@ -178,6 +178,101 @@ void Scene::subdivideNTimes(int n) {
 	for (i=0; i<n; i++) {
 		subdivide();
 	}
+}
+
+Vector3f evaluate(Patch p, float u, float v) {
+	vector<Vector3f> s = p.vertices;
+	/*
+	cout << "evaluating: " << u << "," << v << endl;
+	cout << "coord0: " << s[0][0] << "," << s[0][1] << "," << s[0][2] << "," << endl;
+	cout << "coord1: " << s[1][0] << "," << s[1][1] << "," << s[1][2] << "," << endl;
+	cout << "coord2: " << s[2][0] << "," << s[2][1] << "," << s[2][2] << "," << endl;
+	cout << "coord3: " << s[3][0] << "," << s[3][1] << "," << s[3][2] << "," << endl;
+	*/
+	Vector3f a1 = s[0] + (s[1]-s[0])*u + (s[2]-s[1])*v;
+	Vector3f a2 = s[1] + (((s[2]-s[3])*u+s[3]) - ((s[1]-s[0])*u+s[0]))*v;
+	/*
+	cout << "a1: " << a1[0] << "," << a1[1] << "," << a1[2] << "," << endl;
+	cout << "a2: " << a2[0] << "," << a2[1] << "," << a2[2] << "," << endl;
+	cout << endl;
+	*/
+	// TODO: WORRY AOUT THIS LATEr
+	return a1;
+}
+
+void Scene::divide(int width) {
+	vector<Patch> newPatches;
+	for (int a=0; a<patches.size();a++) {
+		Patch old = patches[a];
+		int offset = newPatches.size();
+		for (int row=0; row<width; row++) {
+			Vector3f rowHeight = (old.vertices[1] - old.vertices[0])/width;
+			for (int col=0; col<width; col++) {
+				Vector3f colWidth = (old.vertices[2] - old.vertices[1])/width;
+				
+				vector<Vector3f> array(4);
+				array[0]=evaluate(old,(float)row/width,(float)col/width);
+				array[1]=evaluate(old,(float)(row+1)/width,(float)col/width);
+				array[2]=evaluate(old,(float)(row+1)/width,(float)(col+1)/width);
+				array[3]=evaluate(old,(float)row/width,(float)(col+1)/width);
+				
+				vector<vector<int> > neighbors;
+				vector<int> topLeft;
+				vector<int> topRight;
+				vector<int> bottomLeft;
+				vector<int> bottomRight;
+				
+				// top row
+				if (row>0){
+					if (col>0)
+						topLeft.push_back(offset+(row-1)*width+col-1);
+					topLeft.push_back(offset+(row-1)*width+col);
+					topRight.push_back(offset+(row-1)*width+col);
+					if (col<width-1)
+						topRight.push_back(offset+(row-1)*width+col+1);
+				}
+				
+				// center row
+				if (col>0){
+					topLeft.push_back(offset+row*width+col-1);
+					bottomLeft.push_back(offset+row*width+col-1);
+				}
+				if (col<width-1){
+					topRight.push_back(offset+row*width+col+1);
+					bottomRight.push_back(offset+row*width+col+1);
+				}
+				
+				// bottom row
+				if (row<width-1) {
+					if (col>0)
+						bottomLeft.push_back(offset+(row+1)*width+col-1);
+					bottomLeft.push_back(offset+(row+1)*width+col);
+					bottomRight.push_back(offset+(row+1)*width+col);
+					if (col<width-1)
+						bottomRight.push_back(offset+(row+1)*width+col+1);
+				}
+				
+				neighbors.push_back(topLeft);
+				neighbors.push_back(topRight);
+				neighbors.push_back(bottomRight);
+				neighbors.push_back(bottomLeft);
+				
+				Patch p (array, old.reflectance, old.emission);
+				p.neighbors = neighbors;
+				/*
+				cout << "neighbors of " << row*width+col << endl;
+				for (int f = 0; f<neighbors.size(); f++) {
+					for (int g = 0; g<neighbors[f].size(); g++)
+						cout << neighbors[f][g] << ",";
+					cout << endl;
+				}
+				cout << endl;
+				*/
+				newPatches.push_back(p);
+			}
+		}
+	}
+	patches = newPatches;
 }
 
 void Scene::subdivide() {

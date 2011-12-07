@@ -75,9 +75,9 @@ void drawScene() {
 	glRotatef(rotateY, 1.0f, 0.0f, 0.0f);
 	glRotatef(rotateX, 0.0f, 1.0f, 0.0f);
 	
+/*	
 	vector<Vector3f> coords;
 	vector<Vector3f> colors;
-/*	
 	for (int a=0; a<myScene.patches.size(); a++) {
 		Patch patch = myScene.patches[a];
 		for (int b=0; b<patch.vertices.size(); b++) {
@@ -105,26 +105,38 @@ void drawScene() {
 		
 		Patch patch = myScene.patches[a];
 		vector<Vector3f> vertices = patch.vertices;
+		vector<vector<int> > neighbors = patch.neighbors;
 		
 		glBegin(GL_QUADS);
 		
-		// iterate through each vertex in the patch
 		for (int b=0; b<vertices.size(); b++) {
 			Vector3f coord = vertices[b];
-			Vector3f color;
-			// going through each list of neighbors for each vertex
-			for (int c=0; c<patch.neighbors.size(); c++) {
-					// iterating through each neighbor for that vertex
-					for (int d=0; d<patch.neighbors[c].size(); d++) {
-						color += myScene.patches[d].irradiance; // get the irradiance from neighbor patches;
-					}
-					// Average the color between neighbor patches
-					color /= patch.neighbors[c].size();
-					color *= 10; // scale the color back for display
-					glColor3f(color[0], color[1], color[2]);
-					glVertex3f(coord[0], coord[1], coord[2]);
+			Vector3f color = patch.irradiance;
+			vector<int> localNeighbors = neighbors[b];
+			
+			for (int d=0; d<localNeighbors.size(); d++) {
+				int idx = localNeighbors[d];
+				color += myScene.patches[idx].irradiance; // get the irradiance from neighbor patches;
 			}
+			color /= localNeighbors.size()+1;
+			color *= 10;
+			
+			if (a == idx)
+				color = Vector3f(1,0,0);
+			
+			glColor3f(color[0], color[1], color[2]);
+			glVertex3f(coord[0], coord[1], coord[2]);
+			
+			/*
+			// flat shading
+			glColor3f(patch.irradiance[0]*10, patch.irradiance[1]*10, patch.irradiance[2]*10);
+			glVertex3f(patch.vertices[0][0], patch.vertices[0][1], patch.vertices[0][2]);
+			glVertex3f(patch.vertices[1][0], patch.vertices[1][1], patch.vertices[1][2]);
+			glVertex3f(patch.vertices[2][0], patch.vertices[2][1], patch.vertices[2][2]);
+			glVertex3f(patch.vertices[3][0], patch.vertices[3][1], patch.vertices[3][2]);
+			*/
 		}
+		
 		glEnd();
 	}
 	
