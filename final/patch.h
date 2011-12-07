@@ -33,6 +33,7 @@ public:
 	Vector3f irradiance;
 	Vector3f emission;
 	map<int, float> viewFactors;
+	vector<vector<int> > neighbors;
 public:
 	Patch(vector<Vector3f> _vertices, Vector3f _reflectance, Vector3f _emission);
 	bool intersects(Vector3f start, Vector3f end, Vector3f patchNormal);
