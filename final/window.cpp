@@ -64,24 +64,18 @@ void addLights() {
 int a=273;
 int idx = 0;
 
+float rotateX = 0;
+float rotateY = 0;
+
 void drawScene() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	addLights();
 	
-	propagateLight();
-	propagateLight();
-	propagateLight();
+	glRotatef(rotateY, 1.0f, 0.0f, 0.0f);
+	glRotatef(rotateX, 0.0f, 1.0f, 0.0f);
 	
-	float max = 0;
-	for (int a=0; a<myScene.patches.size(); a++) {
-		if (myScene.patches[a].irradiance[0] > max)
-			max = myScene.patches[a].irradiance[0];
-		if (myScene.patches[a].irradiance[1] > max)
-			max = myScene.patches[a].irradiance[1];
-		if (myScene.patches[a].irradiance[2] > max)
-			max = myScene.patches[a].irradiance[2];
-	}
+	float max = 0.01;
 	
 	for (int a=0; a<myScene.patches.size(); a++) {
 		
@@ -111,9 +105,29 @@ void handleKeypress(unsigned char key, int x, int y) {
 	switch (key) {
 		case 32: // space key
 			idx++;
+			propagateLight();
 			drawScene();
 			break;
+		
 	}
+}
+
+void handleSpecialKeypress(int key, int x, int y) {
+	switch (key) {
+		case GLUT_KEY_LEFT:
+			rotateX -= 0.5;
+			break;
+		case GLUT_KEY_RIGHT:
+			rotateX += 0.5;
+			break;
+		case GLUT_KEY_DOWN:
+			rotateY -= 0.5;
+			break;
+		case GLUT_KEY_UP:
+			rotateY += 0.5;
+			break;
+	}
+	drawScene();
 }
 
 void handleResize(int w, int h) {
@@ -158,8 +172,7 @@ void Window::show(int argc, char *argv[]) {
 	glEnable(GL_LIGHT0); //Enable light #0
 	glEnable(GL_LIGHT1); //Enable light #1
 	glEnable(GL_NORMALIZE); //Automatically normalize normals
-	// glShadeModel(GL_SMOOTH); //Enable smooth shading
-	glShadeModel(GL_FLAT);
+	glShadeModel(GL_SMOOTH);
 	
 	//Set handler functions
 	glutDisplayFunc(drawScene);

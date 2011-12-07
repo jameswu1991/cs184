@@ -25,16 +25,12 @@ bool Patch::intersects(Vector3f start, Vector3f end, Vector3f patchNormal) {
 	// code guided by softsurfer.com's ray-triangle implementation
 	
 	// patch's two sides and a normal
-	Vector3f u = vertices[1] - vertices[0];
-	Vector3f v = vertices[2] - vertices[0];
-	Vector3f n = u.cross(v);
+	Vector3f u = vertices[0] - vertices[1];
+	Vector3f v = vertices[2] - vertices[1];
+	Vector3f n = -u.cross(v);
 	Vector3f dir = end - start;
 	
-	if (patchNormal.dot(dir) < 0) {
-		return true;
-	}
-	
-	Vector3f trans = start - vertices[0];
+	Vector3f trans = start - vertices[1];
 	float a = -n.dot(trans);
 	float b = n.dot(dir);
 	
@@ -52,7 +48,7 @@ bool Patch::intersects(Vector3f start, Vector3f end, Vector3f patchNormal) {
 	float uu = u.dot(u);
 	float uv = u.dot(v);
 	float vv = v.dot(v);
-	Vector3f w = intersection - vertices[0];
+	Vector3f w = intersection - vertices[1];
 	float wu = w.dot(u);
 	float wv = w.dot(v);
 	float D = uv * uv - uu * vv;

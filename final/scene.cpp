@@ -151,9 +151,20 @@ float Scene::visibility(int p1Index, int p2Index) {
 		bool go = true; // stop iterating if you've already been obstructed
 		for (k=0; k<patches.size() && go; k++) {
 			if (k!=p1Index && k!=p2Index) {
+				Vector3f n = patches[p1Index].normal();
+				Vector3f dir = end-start;
+				dir.normalize();
+				
+				if (dir.dot(n) < 0) {
+					numObstructed++;
+					go = false;
+					continue;
+				}
+				
 				if (patches[k].intersects(start, end, p1.normal())) {
 					numObstructed++;
 					go = false;
+					continue;
 				}
 			}
 		}
