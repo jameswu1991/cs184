@@ -99,7 +99,36 @@ void drawScene() {
 		}
 	}
 */
-	
+	/*
+	color the neighbors
+	for (int a=0; a<myScene.patches.size(); a++) {
+		if (a == idx) {
+			Patch patch = myScene.patches[a];
+			
+			glBegin(GL_QUADS);
+			glColor3f(1,0,0);
+			glVertex3f(patch.vertices[0][0], patch.vertices[0][1], patch.vertices[0][2]);
+			glVertex3f(patch.vertices[1][0], patch.vertices[1][1], patch.vertices[1][2]);
+			glVertex3f(patch.vertices[2][0], patch.vertices[2][1], patch.vertices[2][2]);
+			glVertex3f(patch.vertices[3][0], patch.vertices[3][1], patch.vertices[3][2]);
+			glEnd();
+			
+			for (int g=0;g<patch.neighbors.size();g++) {
+				if (g!=0) continue;
+				for (int h=0;h<patch.neighbors[g].size();h++) {
+					int ind = patch.neighbors[g][h];
+					Patch neighbor = myScene.patches[ind];
+					glBegin(GL_QUADS);
+					glColor3f(0,1,0);
+					glVertex3f(neighbor.vertices[0][0], neighbor.vertices[0][1], neighbor.vertices[0][2]);
+					glVertex3f(neighbor.vertices[1][0], neighbor.vertices[1][1], neighbor.vertices[1][2]);
+					glVertex3f(neighbor.vertices[2][0], neighbor.vertices[2][1], neighbor.vertices[2][2]);
+					glVertex3f(neighbor.vertices[3][0], neighbor.vertices[3][1], neighbor.vertices[3][2]);
+					glEnd();
+				}
+			}
+		}
+	}*/
 	
 	for (int a=0; a<myScene.patches.size(); a++) {
 		
@@ -119,10 +148,7 @@ void drawScene() {
 				color += myScene.patches[idx].irradiance; // get the irradiance from neighbor patches;
 			}
 			color /= localNeighbors.size()+1;
-			color *= 10;
-			
-			if (a == idx)
-				color = Vector3f(1,0,0);
+			color *= 20;
 			
 			glColor3f(color[0], color[1], color[2]);
 			glVertex3f(coord[0], coord[1], coord[2]);
