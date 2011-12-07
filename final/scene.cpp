@@ -252,10 +252,10 @@ void Scene::divide(int width) {
 						bottomRight.push_back(offset+(row+1)*width+col+1);
 				}
 				
-				neighbors.push_back(bottomLeft);
 				neighbors.push_back(topLeft);
-				neighbors.push_back(topRight);
+				neighbors.push_back(bottomLeft);
 				neighbors.push_back(bottomRight);
+				neighbors.push_back(topRight);
 				
 				Patch p (array, old.reflectance, old.emission);
 				p.neighbors = neighbors;
