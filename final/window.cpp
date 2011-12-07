@@ -75,25 +75,47 @@ void drawScene() {
 	glRotatef(rotateY, 1.0f, 0.0f, 0.0f);
 	glRotatef(rotateX, 0.0f, 1.0f, 0.0f);
 	
-	float max = 0.01;
+	vector<Vector3f> coords;
+	vector<Vector3f> colors;
+	
+	for (int a=0; a<myScene.patches.size(); a++) {
+		Patch patch = myScene.patches[a];
+		for (int b=0; b<patch.vertices.size(); b++) {
+			Vector3f coord = patch.vertices[b];
+			Vector3f color = patch.irradiance;
+			
+			bool found = false;
+			for(int c=0; c<coords.size(); c++) {
+				if (coords[c]==coord) {
+					colors[c]=colors[c]+color;
+					found = true;
+				}
+			}
+			if (!found) {
+				coords.push_back(coord);
+				colors.push_back(color);
+			}
+			
+		}
+	}
 	
 	for (int a=0; a<myScene.patches.size(); a++) {
 		
 		Patch patch = myScene.patches[a];
 		vector<Vector3f> vertices = patch.vertices;
 		
-		float r, g, b;
-		r = patch.irradiance[0]/max;
-		g = patch.irradiance[1]/max;
-		b = patch.irradiance[2]/max;
-		glColor3f(r, g, b);
-		
 		glBegin(GL_QUADS);
-		glVertex3f(vertices[0](0), vertices[0](1), vertices[0](2));
-		glVertex3f(vertices[1](0), vertices[1](1), vertices[1](2));
-		glVertex3f(vertices[2](0), vertices[2](1), vertices[2](2));
-		glVertex3f(vertices[3](0), vertices[3](1), vertices[3](2));
-		glVertex3f(vertices[0](0), vertices[0](1), vertices[0](2));
+		
+		for (int b=0; b<vertices.size(); b++) {
+			Vector3f coord = vertices[b];
+			for (int c=0; c<coords.size(); c++) {
+				if (coords[c] == coord) {
+					Vector3f color = colors[c]*10;
+					glColor3f(color[0], color[1], color[2]);
+					glVertex3f(coord[0], coord[1], coord[2]);
+				}
+			}
+		}
 		glEnd();
 	}
 	
@@ -172,6 +194,7 @@ void Window::show(int argc, char *argv[]) {
 	glEnable(GL_LIGHT0); //Enable light #0
 	glEnable(GL_LIGHT1); //Enable light #1
 	glEnable(GL_NORMALIZE); //Automatically normalize normals
+	// glShadeModel(GL_FLAT);
 	glShadeModel(GL_SMOOTH);
 	
 	//Set handler functions

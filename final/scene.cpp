@@ -32,6 +32,7 @@ Scene::Scene() {
 	array[2]=Vector3f(0, 0, 559.2);
 	array[3]=Vector3f(549.6, 0, 559.2);
 	patches.push_back(Patch(array, Vector3f(0.5, 0.5, 0.5), Vector3f(0, 0, 0)));
+	
 	// light
 	array[0]=Vector3f(343, 548.7, 227);
 	array[1]=Vector3f(343, 548.7, 332);
@@ -121,7 +122,7 @@ Scene::Scene() {
 	array[3]=Vector3f(423.0,   0.0, 247.0);
 	patches.push_back(Patch(array, Vector3f(0.5, 0.5, 0.5), Vector3f(0, 0, 0)));
 	
-	subdivideNTimes(2);
+	subdivideNTimes(3);
 }
 
 void Scene::calcFormFactors() {
