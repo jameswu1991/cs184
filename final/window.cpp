@@ -77,7 +77,7 @@ void drawScene() {
 	
 	vector<Vector3f> coords;
 	vector<Vector3f> colors;
-	
+/*	
 	for (int a=0; a<myScene.patches.size(); a++) {
 		Patch patch = myScene.patches[a];
 		for (int b=0; b<patch.vertices.size(); b++) {
@@ -98,6 +98,8 @@ void drawScene() {
 			
 		}
 	}
+*/
+	
 	
 	for (int a=0; a<myScene.patches.size(); a++) {
 		
@@ -106,14 +108,21 @@ void drawScene() {
 		
 		glBegin(GL_QUADS);
 		
+		// iterate through each vertex in the patch
 		for (int b=0; b<vertices.size(); b++) {
 			Vector3f coord = vertices[b];
-			for (int c=0; c<coords.size(); c++) {
-				if (coords[c] == coord) {
-					Vector3f color = colors[c]*10;
+			Vector3f color;
+			// going through each list of neighbors for each vertex
+			for (int c=0; c<patch.neighbors.size(); c++) {
+					// iterating through each neighbor for that vertex
+					for (int d=0; d<patch.neighbors[c].size(); d++) {
+						color += myScene.patches[d].irradiance; // get the irradiance from neighbor patches;
+					}
+					// Average the color between neighbor patches
+					color /= patch.neighbors[c].size();
+					color *= 10; // scale the color back for display
 					glColor3f(color[0], color[1], color[2]);
 					glVertex3f(coord[0], coord[1], coord[2]);
-				}
 			}
 		}
 		glEnd();
