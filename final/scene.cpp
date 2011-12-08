@@ -182,22 +182,28 @@ void Scene::subdivideNTimes(int n) {
 
 Vector3f evaluate(Patch p, float u, float v) {
 	vector<Vector3f> s = p.vertices;
-	/*
+	
 	cout << "evaluating: " << u << "," << v << endl;
 	cout << "coord0: " << s[0][0] << "," << s[0][1] << "," << s[0][2] << "," << endl;
 	cout << "coord1: " << s[1][0] << "," << s[1][1] << "," << s[1][2] << "," << endl;
 	cout << "coord2: " << s[2][0] << "," << s[2][1] << "," << s[2][2] << "," << endl;
 	cout << "coord3: " << s[3][0] << "," << s[3][1] << "," << s[3][2] << "," << endl;
-	*/
+	
 	Vector3f a1 = s[0] + (s[1]-s[0])*u + (s[2]-s[1])*v;
-	Vector3f a2 = s[1] + (((s[2]-s[3])*u+s[3]) - ((s[1]-s[0])*u+s[0]))*v;
-	/*
+	Vector3f p1 = ((s[2]-s[3])*u+s[3]);
+	Vector3f p2 = ((s[1]-s[0])*u+s[0]);
+	Vector3f a2 = p2 + (p1-p2)*v;
+	
+	
+	cout << "p1: " << p1[0] << "," << p1[1] << "," << p1[2] << "," << endl;
+	cout << "p2: " << p2[0] << "," << p2[1] << "," << p2[2] << "," << endl;
+	
 	cout << "a1: " << a1[0] << "," << a1[1] << "," << a1[2] << "," << endl;
 	cout << "a2: " << a2[0] << "," << a2[1] << "," << a2[2] << "," << endl;
 	cout << endl;
-	*/
+	
 	// TODO: WORRY AOUT THIS LATEr
-	return a1;
+	return a2;
 }
 
 void Scene::divide(int width) {
