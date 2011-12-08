@@ -148,7 +148,7 @@ void drawScene() {
 				color += myScene.patches[idx].irradiance; // get the irradiance from neighbor patches;
 			}
 			color /= localNeighbors.size()+1;
-			color *= 20;
+			color *= 50;
 			
 			glColor3f(color[0], color[1], color[2]);
 			glVertex3f(coord[0], coord[1], coord[2]);
